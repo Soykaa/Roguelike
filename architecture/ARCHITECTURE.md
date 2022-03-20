@@ -329,7 +329,7 @@
   - `InventoryItem type` - тип инвентаря
 
 
-##### class LevelCharacteristic
+##### abstract class LevelCharacteristic
 
 Класс для предоставления информации о том, что должно быть на рандомно сгенерированном уровне
 
@@ -339,6 +339,14 @@
 - `Map<int, Character> characters` - отображение из `id` в объект, который должен быть на поле
 - `List<int> charactersToPlace` - объекты, которые должны быть рандомно расположены при генерации уровня
 - `List<Pair<int, int>> emptyCells` - список еще не занятых клеток, в которые можно помещать объекты при рандомной генерации
+
+**Наследники**:
+
+- **class FirstLevelCharacteristic**
+- **class SecondLevelCharacteristic**
+- **class ThirdLevelCharacteristic**
+- **class FourthLevelCharacteristic**
+- **class FifthLevelCharacteristic**
 
 ##### class FileUtils
 
