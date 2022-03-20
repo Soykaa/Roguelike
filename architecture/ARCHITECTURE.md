@@ -213,8 +213,61 @@
 ##### enumeration SelectedItem
 Опции главного экрана, одна из которых выделена в любой момент времени.
 
+##### abstract class Action
+Отвечает за некоторое действие, совершенное в игре игроком.
+Наследники: `Attack`, `MoveLeft`, `MoveRight`, `MoveUp`, `MoveDown`, `ChangeEquiption`.
+
 ##### Диаграмма:
 <img src="images/controller_component.png"/>
+
+#### Input manager
+Отвечает за получение, обработку и перенаправление пользовательского ввода.
+##### abstract class InputObservableFactory
+Абстрактная фабрика для создания наследников интерфейса `InputObservable`.
+При необходимости добавить новый источник ввода пользователю достаточно определить нового наследника для нее.
+
+**Методы**:
++ `createInputObservable(): InputObservable`
+
+
+**Реализация**:
+- **class ConsoleInputObservableFactory** - создает элемент типа `ConsoleInputObservable`
+
+##### interface InputObservable
+Интерфейс, определяющий методы для добавления, удаления и оповещения наблюдателей;
+
+**Методы**:
++ `addListener(InputListener)` - добавление наблюдателя
++ `removeListener(InputListener)` - удаление наблюдателя
+
+**Реализация**:
+- **class ConsoleInputObservable** 
+
+##### interface InputListener
+Интерфейс, определяющий метод для получения оповещений.
+
+**Методы**:
++ `update(InputCommand)` - оповещение наблюдателя о введении команды
+
+**Реализация**:
+- **class ApplicationInteractionManager**
+- **class GameInteractionManager**
+
+##### abstract class InputCommand
+Описывает команду, введенную пользователем.
+
+**Методы**:
++ `type(): String` - возвращает тип команды.
+
+**Реализация**:
+- **class LeftCommand**
+- **class UpCommand**
+- **class RightCommand**
+- **class DownCommand**
+- **class EnterCommand**
+- **class ShiftCommand**
+##### Диаграмма:
+<img src="images/input_component.png"/>
 
 ### Взаимодействия и состояния
 
