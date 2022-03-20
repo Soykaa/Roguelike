@@ -101,6 +101,62 @@
 
 
 #### View
+Графическое отображение игры
+##### interface ApplicationView
+
+Отвечает за отображение главного экрана игры.
+
+**Методы**:
+- `void showInitialScreen()` - отрисовывает экран, на котором есть следующие опции: `start game`, `start game with levels from file`, 
+`show rules`, `exit`. Опция, которую выбирает игрок, выделена. Изначально выделена опция `start game`
+- `void setSelectedItem` - изменяет выделенную опцию
+
+**Реализация**:
+- **class ApplicationViewConsole** - отображает все в консоли 
+
+##### interface GameRulesView
+
+Отвечает за отображение экрана с правилами игры
+
+**Методы**:
+- `void showGameRules()` - отрисовывает экран, на котором выведены текстом правила игры
+
+**Реализация**:
+- **class GameRulesViewConsole** - отображает все в консоли
+
+##### interface GameView
+
+Отвечает за отображение самой игры
+
+**Методы**:
+- `void showBoard(int[][] board)` - выводит поле со всеми расположенными на нем объектами
+- `void moveCharacter(Pair<int, int> from, Pair<int, int> to)` - клетку поля с координатами `from` отрисовывает пустой, а
+персонажа, который был на этом месте, отрисовывает в клетке с координатами `to`
+- `void removeCharacter(Pair<int, int> from)` - отображает клетку с координатами `from` пустой
+- `void placeCharacter(Character character, Pair<int, int> to)` - отображает в клетке с координатами `from` символ, соответствующий
+типу `character`
+- `void showPoints(int points)` - под игровым полем отображает количество очков у персонажа.
+- `void showLives(int lives)` - под игровым полем и очками отображает сколько у персонажа осталось жизней
+
+**Реализация**:
+- **class GameViewConsole** - отображает все в консоли
+
+##### interface AbstractViewFactory
+
+Объявляет методы для создания различных абстрактных объектов типов `ApplicationView`, `GameRulesView`, `GameView`.
+Смысл введения данной фабрики заключается в том, что можно создавать все три объекта из одного семейства, то есть, например, все 
+три класса будут работать с выводом в консоль. В случае, если придется изменить вывод, то достаточно будет создать другую реализацию 
+абстрактной фабрики.
+
+**Методы**:
+- `ApplicationView createApplicationView()`
+- `GameRulesView createGameRulesView()`
+- `GameView createGameView()`
+
+**Реализация**:
+- **class ConsoleViewFactory** - создает элементы типов `ApplicationViewConsole`, `GameRulesViewConsole` и `GameViewConsole`
+
+##### Диаграмма:
 <img src="images/view_component.png"/>
 
 ### Взаимодействия и состояния
