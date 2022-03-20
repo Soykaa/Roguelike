@@ -97,7 +97,7 @@
 ### Логическая структура
 
 #### Model
-<img src="images/model_cmponent.png"/>
+<img src="images/model_component.png"/>
 
 
 #### View
