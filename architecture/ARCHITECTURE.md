@@ -95,5 +95,13 @@
 - **View** отвечает за графическое отображение игры
 
 ### Логическая структура
+
+#### Model
+<img src="images/model_cmponent.png"/>
+
+
+#### View
+<img src="images/view_component.png"/>
+
 ### Взаимодействия и состояния
 
