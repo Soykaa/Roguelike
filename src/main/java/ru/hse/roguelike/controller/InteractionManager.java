@@ -1,28 +1,24 @@
 package ru.hse.roguelike.controller;
 
-import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.terminal.Terminal;
-import ru.hse.roguelike.input.InputCommand;
-import ru.hse.roguelike.view.ApplicationView;
-import ru.hse.roguelike.view.ApplicationViewConsole;
-import ru.hse.roguelike.view.GameRulesView;
-import ru.hse.roguelike.view.GameRulesViewConsole;
+import ru.hse.roguelike.controller.input.InputCommand;
+import ru.hse.roguelike.view.MainScreenView;
+import ru.hse.roguelike.view.GameRulesScreenView;
 
 public class InteractionManager {
-    private State state = State.MAIN_MENU;
-    private final ApplicationView applicationView;
+    private Screen screen = Screen.MAIN_MENU;
+    private final MainScreenView mainScreenView;
     private final ItemHolder itemHolder = new ItemHolder();
-    private final GameRulesView gameRulesView;
+    private final GameRulesScreenView gameRulesView;
     public boolean isRunning = true;
 
-    public InteractionManager(Terminal terminal, TextGraphics textGraphics) {
-        applicationView = new ApplicationViewConsole(terminal, textGraphics);
-        gameRulesView = new GameRulesViewConsole(terminal, textGraphics);
-        applicationView.showInitialScreen();
+    public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView) {
+        this.mainScreenView = mainScreenView;
+        this.gameRulesView = gameRulesScreenView;
+        this.mainScreenView.showMainScreen();
     }
 
     public void processCommand(InputCommand command) {
-        switch (state) {
+        switch (screen) {
             case MAIN_MENU -> processCommandMainMenu(command);
             case GAME_RULES -> processCommandRules(command);
         }
@@ -30,28 +26,26 @@ public class InteractionManager {
 
     private void processCommandRules(InputCommand command) {
         if (command == InputCommand.ESCAPE) {
-            applicationView.showInitialScreen();
-            state = State.MAIN_MENU;
+            mainScreenView.showMainScreen();
+            screen = Screen.MAIN_MENU;
         }
     }
 
     private void processCommandMainMenu(InputCommand command) {
-        if (command != InputCommand.ENTER) {
-            applicationView.setSelectedItem(itemHolder.setSelectedItem(command));
-            return;
-        }
-        if (itemHolder.getCurrentItem() == SelectedItem.EXIT) {
-            isRunning = false;
-            return;
-        }
-        if (itemHolder.getCurrentItem() == SelectedItem.SHOW_RULES) {
-            state = State.GAME_RULES;
-            gameRulesView.showGameRules();
-            return;
-        }
-        if (itemHolder.getCurrentItem() == SelectedItem.START_GAME) {
-            // TODO
+        switch (command) {
+            case UP, DOWN -> mainScreenView.setSelectedItem(itemHolder.setSelectedItem(command));
+            case ENTER -> {
+                switch (itemHolder.getCurrentItem()) {
+                    case EXIT -> isRunning = false;
+                    case SHOW_RULES -> {
+                        screen = Screen.GAME_RULES;
+                        gameRulesView.showGameRules();
+                    }
+                    case START_GAME, START_GAME_FROM_FILE -> {
+                        // TODO
+                    }
+                }
+            }
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package ru.hse.roguelike.input;
+package ru.hse.roguelike.controller.input;
 
 public enum InputCommand {
     UP,

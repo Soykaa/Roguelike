@@ -7,11 +7,11 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
-public class GameRulesViewConsole implements GameRulesView {
+public class GameRulesScreenViewConsole implements GameRulesScreenView {
     private final Terminal terminal;
     private final TextGraphics textGraphics;
 
-    public GameRulesViewConsole(Terminal terminal, TextGraphics textGraphics) {
+    public GameRulesScreenViewConsole(Terminal terminal, TextGraphics textGraphics) {
         this.terminal = terminal;
         this.textGraphics = textGraphics;
     }
