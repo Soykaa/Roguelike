@@ -1,5 +1,5 @@
 package ru.hse.roguelike.view;
 
-public interface GameRulesView {
+public interface GameRulesScreenView {
     void showGameRules();
 }

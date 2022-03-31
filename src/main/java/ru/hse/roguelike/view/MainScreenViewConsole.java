@@ -7,10 +7,9 @@ import com.googlecode.lanterna.terminal.Terminal;
 import ru.hse.roguelike.controller.SelectedItem;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-public class ApplicationViewConsole implements ApplicationView {
+public class MainScreenViewConsole implements MainScreenView {
     private final Terminal terminal;
     private final TextGraphics textGraphics;
     private final Map<SelectedItem, GraphicItem> itemToGraphics;
@@ -24,7 +23,7 @@ public class ApplicationViewConsole implements ApplicationView {
         }
     }
 
-    public ApplicationViewConsole(Terminal terminal, TextGraphics textGraphics) {
+    public MainScreenViewConsole(Terminal terminal, TextGraphics textGraphics) {
         this.terminal = terminal;
         this.textGraphics = textGraphics;
         itemToGraphics = Map.of(SelectedItem.START_GAME, new GraphicItem(3, "Start game"),
@@ -32,11 +31,10 @@ public class ApplicationViewConsole implements ApplicationView {
                                 SelectedItem.SHOW_RULES, new GraphicItem(7, "Show rules"),
                                 SelectedItem.EXIT, new GraphicItem(9, "Exit"));
         currentItem = SelectedItem.START_GAME;
-
     }
 
     @Override
-    public void showInitialScreen() {
+    public void showMainScreen() {
         try {
             terminal.clearScreen();
         } catch (IOException e) {

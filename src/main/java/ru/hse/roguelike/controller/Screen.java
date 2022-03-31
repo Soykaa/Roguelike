@@ -1,6 +1,6 @@
 package ru.hse.roguelike.controller;
 
-public enum State {
+public enum Screen {
     MAIN_MENU,
     GAME_RULES,
     GAME

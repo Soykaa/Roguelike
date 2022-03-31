@@ -1,11 +1,11 @@
 package ru.hse.roguelike.controller;
 
-import ru.hse.roguelike.input.InputCommand;
+import ru.hse.roguelike.controller.input.InputCommand;
 
 import java.util.List;
 
 public class ItemHolder {
-    private List<SelectedItem> items = List.of(SelectedItem.START_GAME,
+    private final List<SelectedItem> items = List.of(SelectedItem.START_GAME,
                                        SelectedItem.START_GAME_FROM_FILE,
                                        SelectedItem.SHOW_RULES,
                                        SelectedItem.EXIT);
