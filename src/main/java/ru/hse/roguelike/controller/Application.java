@@ -1,5 +1,6 @@
 package ru.hse.roguelike.controller;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -7,6 +8,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 import ru.hse.roguelike.controller.input.InputCommand;
+import ru.hse.roguelike.view.GameScreenViewConsole;
 import ru.hse.roguelike.view.MainScreenViewConsole;
 import ru.hse.roguelike.view.GameRulesScreenViewConsole;
 
@@ -38,8 +40,9 @@ public class Application {
         return InputCommand.UNKNOWN_COMMAND;
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(20, 20));
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
             terminal.enterPrivateMode();
             terminal.clearScreen();
@@ -47,7 +50,8 @@ public class Application {
             final TextGraphics textGraphics = terminal.newTextGraphics();
             var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
             var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView);
+            var gameView = new GameScreenViewConsole(terminal, textGraphics);
+            InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView, gameView);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
                 var command = getCommand(keyStroke);
@@ -61,7 +65,7 @@ public class Application {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         var application = new Application();
         application.start();
     }
