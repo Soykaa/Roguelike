@@ -1,81 +1,204 @@
 package ru.hse.roguelike.view;
 
-import static java.lang.Thread.sleep;
+import static ru.hse.roguelike.model.GameCharacter.Empty;
 
 import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor.ANSI;
-import com.googlecode.lanterna.graphics.BasicTextImage;
+import com.googlecode.lanterna.TextColor.RGB;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
+import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.GameCharacter;
 
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;
-    private TextGraphics textGraphics;
+    private final Screen screen;
+    private final TextGraphics textGraphics;
+    private GameCharacter[][] board;
 
-    public GameScreenViewConsole(Terminal terminal, TextGraphics textGraphics) {
+    private final RGB ChineseWhite = new RGB(215, 231, 230);
+    private final RGB LightYellow = new RGB(246, 225, 207);
+    private final RGB Lavender = new RGB(227, 211, 240);
+    private final RGB White = new RGB(255, 255, 255);
+
+    public GameScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
-        this.textGraphics = textGraphics;
+        this.screen = new TerminalScreen(terminal);
+        textGraphics = screen.newTextGraphics();
+    }
+
+    private TerminalPosition getAbsolutePositionOfBoardCellLeftUpperCorner(int relativeX, int relativeY) {
+        return new TerminalPosition(3 * relativeX + 1, 2 * relativeY + 1);
+    }
+
+    private TerminalSize getAbsoluteBoardSize(int relativeWidth, int relativeHeight) {
+        return new TerminalSize(3 * relativeWidth + 1, 2 * relativeHeight + 1);
+    }
+
+    private void drawCharacter(GameCharacter character, TerminalPosition position) {
+        textGraphics.setForegroundColor(ANSI.WHITE);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        switch (character) {
+            case EnemyWeak, EnemyStrong -> {
+                textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
+                textGraphics.putString(position, "\uC6C3");
+            }
+            case Obstacle -> {
+                textGraphics.setBackgroundColor(ANSI.BLACK_BRIGHT);
+                textGraphics.setForegroundColor(ANSI.BLACK);
+                textGraphics.putString(position, "xx");
+            }
+            case Empty -> {
+                textGraphics.setBackgroundColor(ANSI.BLACK);
+                textGraphics.putString(position, "  ");
+            }
+            case ShelterLavender -> {
+                textGraphics.setBackgroundColor(Lavender);
+                textGraphics.putString(position, "  ");
+            }
+            case ShelterPink -> {
+                textGraphics.setBackgroundColor(ChineseWhite);
+                textGraphics.putString(position, "  ");
+            }
+            case ShelterYellow -> {
+                textGraphics.setBackgroundColor(LightYellow);
+                textGraphics.putString(position, "  ");
+            }
+            case Points -> {
+                textGraphics.setForegroundColor(ANSI.GREEN_BRIGHT);
+                textGraphics.putString(position, "+3");
+            }
+            case InventoryAttack, InventoryProtect -> {
+                textGraphics.setForegroundColor(ANSI.WHITE);
+                textGraphics.putString(position, "??");
+            }
+            case Player -> {
+                textGraphics.setForegroundColor(White);
+                textGraphics.putString(position, "\uC6C3");
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + character);
+        }
+    }
+
+    private void drawBoardImage(GameCharacter[][] board) {
+        int boardWidth = board.length;
+        int boardHeight = board[0].length;
+
+        for (int col = 0; col < boardWidth; col++) {
+            for (int row = 0; row < boardHeight; row++) {
+                TerminalPosition currentPosition = getAbsolutePositionOfBoardCellLeftUpperCorner(col, row);
+                drawCharacter(board[col][row], currentPosition);
+            }
+        }
+    }
+
+    private void drawBorders(TerminalSize boardSize) {
+        int boardHeight = boardSize.getRows();
+        int boardWidth = boardSize.getColumns();
+        textGraphics.setForegroundColor(ANSI.WHITE);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        for (int i = 0; i <= boardHeight; i += 2) {
+            textGraphics.drawLine(1, i, boardWidth - 2, i, '-');
+        }
+        for (int i = 0; i <= boardWidth; i += 3) {
+            textGraphics.drawLine(i, 1, i, boardHeight - 2, '|');
+        }
+        textGraphics.setCharacter(0, 0, '\u250C');
+        textGraphics.setCharacter(boardWidth - 1, boardHeight - 1, '\u2518');
+        textGraphics.setCharacter(0, boardHeight - 1, '\u2514');
+        textGraphics.setCharacter(boardWidth - 1, 0, '\u2510');
     }
 
     @Override
-    public void showBoard(GameCharacter[][] board) throws IOException, InterruptedException {
+    public void showBoard(GameCharacter[][] board) throws IOException {
+        this.board = board;
         terminal.clearScreen();
         if (board.length == 0) {
             throw new RuntimeException("Board cannot be empty");
         }
-        Screen screen = new TerminalScreen(terminal);
         screen.startScreen();
-        textGraphics = screen.newTextGraphics();
-        System.out.println("Size " + textGraphics.getSize().toString());
-        System.out.println("Terminal " + terminal.getTerminalSize().toString());
-
-        var textImage = new BasicTextImage(board.length, board[0].length);
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                TextCharacter character;
-                System.out.println("Setting " + i + " " + j + " " + board[i][j]);
-                switch (board[i][j]) {
-                    case EnemyWeak -> character = TextCharacter.fromCharacter('o', ANSI.RED_BRIGHT, ANSI.BLACK_BRIGHT)[0];
-                    case EnemyStrong -> character = TextCharacter.fromCharacter('o', ANSI.RED, ANSI.BLACK_BRIGHT)[0];
-                    case Obstacle -> character = TextCharacter.fromCharacter(' ', ANSI.BLACK, ANSI.BLACK)[0];
-                    case Empty -> character = TextCharacter.fromCharacter(' ', ANSI.BLACK_BRIGHT, ANSI.BLACK_BRIGHT)[0];
-                    case ShelterGreen -> character = TextCharacter.fromCharacter(' ', ANSI.GREEN, ANSI.GREEN)[0];
-                    case ShelterBlue -> character = TextCharacter.fromCharacter(' ', ANSI.BLUE, ANSI.BLUE)[0];
-                    case ShelterYellow -> character = TextCharacter.fromCharacter(' ', ANSI.YELLOW, ANSI.YELLOW)[0];
-                    case Points -> character = TextCharacter.fromCharacter('1', ANSI.BLACK, ANSI.BLACK_BRIGHT)[0];
-                    case InventoryAttack, InventoryProtect -> character = TextCharacter.fromCharacter('?', ANSI.BLACK, ANSI.BLACK_BRIGHT)[0];
-                    case Player -> character = TextCharacter.fromCharacter('*', ANSI.BLACK, ANSI.BLACK_BRIGHT)[0];
-                    default -> throw new IllegalStateException("Unexpected value: " + board[i][j]);
-                }
-                textImage.setCharacterAt(i, j, character);
-            }
-        }
-        textGraphics.drawImage(TerminalPosition.OFFSET_1x1, textImage);
+        drawBoardImage(board);
+        drawBorders(getAbsoluteBoardSize(board.length, board[0].length));
         screen.refresh();
-        //terminal.flush();
-//        sleep(3000);
-//        textImage.setCharacterAt(5, 5, new TextCharacter("x", ANSI.GREEN, ANSI.YELLOW, EnumSet.noneOf(SGR.class)));
-//        System.out.println("Changed");
-////        textGraphics.drawImage(TerminalPosition.OFFSET_1x1, textImage);
-//        terminal.flush();
-//        textGraphics.putString(10, 1, "GAME RULES", SGR.BOLD);
-//        textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
-//        textGraphics.putString(10, 3, "Print ESC to return to main menu", SGR.BOLD);
-//        textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
-//        textGraphics.putString(5, 5, "Use arrows to move", SGR.BOLD);
-//        textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
-//        textGraphics.putString(5, 7, "Use '/' to change inventory", SGR.BOLD);
-//        textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
-//        textGraphics.putString(5, 9, "Use space to beat your enemies", SGR.BOLD);
-//        try {
-//            terminal.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    }
+
+    @Override
+    public void moveCharacter(int xFrom, int yFrom, int xTo, int yTo) throws IOException {
+        GameCharacter character = board[xFrom][yFrom];
+        removeCharacter(xFrom, yFrom);
+        placeCharacter(character, xTo, yTo);
+    }
+
+    @Override
+    public void setMessage(String message) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.setForegroundColor(ANSI.CYAN);
+        textGraphics.putString(1, boardSize.getRows() + 1, message);
+        screen.refresh();
+    }
+
+    @Override
+    public void removeMessage() throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.putString(1, boardSize.getRows() + 1, String.format("%-20s", " "));
+        screen.refresh();
+    }
+
+    @Override
+    public void removeCharacter(int x, int y) throws IOException {
+        TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
+        drawCharacter(GameCharacter.Empty, positionFrom);
+        board[x][y] = Empty;
+        screen.refresh();
+    }
+
+    @Override
+    public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
+        TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
+        drawCharacter(character, positionTo);
+        board[x][y] = character;
+        screen.refresh();
+    }
+
+    @Override
+    public void showPoints(int currentPoints, int totalPoints) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.setForegroundColor(ANSI.CYAN);
+        textGraphics.putString(boardSize.getColumns() + 3, 1, "Points: " + currentPoints + " / " + totalPoints);
+        screen.refresh();
+    }
+
+    @Override
+    public void showLives(int lives) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.setForegroundColor(ANSI.CYAN);
+        textGraphics.putString(boardSize.getColumns() + 3, 3, "Lives: " + lives + " \u2665");
+        screen.refresh();
+    }
+
+    @Override
+    public void showBackpack(Backpack selectedItem) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
+        int row = 9;
+        for (var backpackItem: Backpack.values()) {
+            if (backpackItem == selectedItem) {
+                textGraphics.setBackgroundColor(ANSI.CYAN);
+            } else {
+                textGraphics.setBackgroundColor(ANSI.BLACK);
+            }
+            textGraphics.setForegroundColor(ANSI.WHITE);
+            textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.name());
+            row += 1;
+        }
+        screen.refresh();
     }
 }

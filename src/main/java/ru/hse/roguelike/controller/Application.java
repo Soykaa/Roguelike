@@ -42,7 +42,7 @@ public class Application {
 
     public void start() throws IOException, InterruptedException {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(20, 20));
+        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
             terminal.enterPrivateMode();
             terminal.clearScreen();
@@ -50,7 +50,7 @@ public class Application {
             final TextGraphics textGraphics = terminal.newTextGraphics();
             var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
             var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            var gameView = new GameScreenViewConsole(terminal, textGraphics);
+            var gameView = new GameScreenViewConsole(terminal);
             InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView, gameView);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
