@@ -1,7 +1,10 @@
 package ru.hse.roguelike.model;
 
-public enum Backpack {
-    Empty,
-    Attacker,
-    Protector
+import ru.hse.roguelike.model.Characters.Inventory;
+
+import java.util.List;
+
+public class Backpack {
+    private Inventory activeItem = null;
+    private List<Inventory> allItems;
 }
