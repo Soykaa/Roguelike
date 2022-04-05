@@ -44,40 +44,40 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         switch (character) {
-            case EnemyWeak, EnemyStrong -> {
+            case ENEMY_WEAK, ENEMY_STRONG -> {
                 textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
                 textGraphics.putString(position, "\uC6C3");
             }
-            case Obstacle -> {
+            case OBSTACLE -> {
                 textGraphics.setBackgroundColor(ANSI.BLACK_BRIGHT);
                 textGraphics.setForegroundColor(ANSI.BLACK);
                 textGraphics.putString(position, "xx");
             }
-            case Empty -> {
+            case EMPTY -> {
                 textGraphics.setBackgroundColor(ANSI.BLACK);
                 textGraphics.putString(position, "  ");
             }
-            case ShelterLavender -> {
+            case SHELTER_LAVENDER -> {
                 textGraphics.setBackgroundColor(Lavender);
                 textGraphics.putString(position, "  ");
             }
-            case ShelterPink -> {
+            case SHELTER_PINK -> {
                 textGraphics.setBackgroundColor(ChineseWhite);
                 textGraphics.putString(position, "  ");
             }
-            case ShelterYellow -> {
+            case SHELTER_YELLOW -> {
                 textGraphics.setBackgroundColor(LightYellow);
                 textGraphics.putString(position, "  ");
             }
-            case Points -> {
+            case POINTS -> {
                 textGraphics.setForegroundColor(ANSI.GREEN_BRIGHT);
                 textGraphics.putString(position, "+3");
             }
-            case InventoryAttack, InventoryProtect -> {
+            case INVENTORY_ATTACK, INVENTORY_PROTECT -> {
                 textGraphics.setForegroundColor(ANSI.WHITE);
                 textGraphics.putString(position, "??");
             }
-            case Player -> {
+            case PLAYER -> {
                 textGraphics.setForegroundColor(White);
                 textGraphics.putString(position, "\uC6C3");
             }
