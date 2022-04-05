@@ -18,8 +18,13 @@ public class Level {
         this.levelTimer = levelTimer;
     }
 
+    private LevelTimer createLevelTimer() {
+        return new LevelTimer();
+    }
+
     public void Play() {
-        throw new UnsupportedOperationException();
+        LevelTimer levelTimer = createLevelTimer();
+        levelTimer.startCountDown();
     }
 
     public void movePlayer() {

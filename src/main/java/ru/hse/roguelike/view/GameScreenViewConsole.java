@@ -13,6 +13,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.GameCharacter;
+import ru.hse.roguelike.model.InventoryItem;
 
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;
@@ -189,8 +190,8 @@ public class GameScreenViewConsole implements GameScreenView {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
-        for (var backpackItem: Backpack.values()) {
-            if (backpackItem == selectedItem) {
+        for (var backpackItem: InventoryItem.values()) {
+            if (backpackItem == selectedItem.getActiveItem().getType()) {
                 textGraphics.setBackgroundColor(ANSI.CYAN);
             } else {
                 textGraphics.setBackgroundColor(ANSI.BLACK);

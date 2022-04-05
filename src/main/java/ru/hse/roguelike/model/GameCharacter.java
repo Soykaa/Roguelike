@@ -1,15 +1,15 @@
 package ru.hse.roguelike.model;
 
 public enum GameCharacter {
-    EnemyWeak,
-    EnemyStrong,
-    Obstacle,
-    Empty,
-    ShelterLavender,
-    ShelterYellow,
-    ShelterPink,
-    Points,
-    InventoryAttack,
-    InventoryProtect,
-    Player
+    ENEMY_WEAK,
+    ENEMY_STRONG,
+    OBSTACLE,
+    EMPTY,
+    SHELTER_LAVENDER,
+    SHELTER_YELLOW,
+    SHELTER_PINK,
+    POINTS,
+    INVENTORY_ATTACK,
+    INVENTORY_PROTECT,
+    PLAYER
 }
