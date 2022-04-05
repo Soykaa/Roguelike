@@ -1,7 +1,9 @@
 package ru.hse.roguelike.model.Characters;
 
-public class Obstacle extends Character {
+import ru.hse.roguelike.model.CharacterType;
+
+public class Obstacle extends GameCharacter {
     public Obstacle() {
-        super("Obstacle");
+        super(CharacterType.OBSTACLE);
     }
 }

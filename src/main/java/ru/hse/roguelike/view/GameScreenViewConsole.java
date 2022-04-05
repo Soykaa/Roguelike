@@ -1,7 +1,5 @@
 package ru.hse.roguelike.view;
 
-import static ru.hse.roguelike.model.GameCharacter.Empty;
-
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor.ANSI;
@@ -12,7 +10,8 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
-import ru.hse.roguelike.model.GameCharacter;
+import ru.hse.roguelike.model.Characters.GameCharacter;
+import ru.hse.roguelike.model.CharacterType;
 import ru.hse.roguelike.model.InventoryItem;
 
 public class GameScreenViewConsole implements GameScreenView {
@@ -40,48 +39,51 @@ public class GameScreenViewConsole implements GameScreenView {
         return new TerminalSize(3 * relativeWidth + 1, 2 * relativeHeight + 1);
     }
 
-    private void drawCharacter(GameCharacter character, TerminalPosition position) {
+    private void drawCharacter(CharacterType character, TerminalPosition position) {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         switch (character) {
-            case ENEMY_WEAK, ENEMY_STRONG -> {
+            case ENEMY_WEAK:
+            case ENEMY_STRONG:
                 textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
                 textGraphics.putString(position, "\uC6C3");
-            }
-            case OBSTACLE -> {
+                break;
+            case OBSTACLE:
                 textGraphics.setBackgroundColor(ANSI.BLACK_BRIGHT);
                 textGraphics.setForegroundColor(ANSI.BLACK);
                 textGraphics.putString(position, "xx");
-            }
-            case EMPTY -> {
+                break;
+            case EMPTY:
                 textGraphics.setBackgroundColor(ANSI.BLACK);
                 textGraphics.putString(position, "  ");
-            }
-            case SHELTER_LAVENDER -> {
+                break;
+            case SHELTER_LAVENDER:
                 textGraphics.setBackgroundColor(Lavender);
                 textGraphics.putString(position, "  ");
-            }
-            case SHELTER_PINK -> {
+                break;
+            case SHELTER_PINK:
                 textGraphics.setBackgroundColor(ChineseWhite);
                 textGraphics.putString(position, "  ");
-            }
-            case SHELTER_YELLOW -> {
+                break;
+            case SHELTER_YELLOW:
                 textGraphics.setBackgroundColor(LightYellow);
                 textGraphics.putString(position, "  ");
-            }
-            case POINTS -> {
+                break;
+            case POINTS:
                 textGraphics.setForegroundColor(ANSI.GREEN_BRIGHT);
                 textGraphics.putString(position, "+3");
-            }
-            case INVENTORY_ATTACK, INVENTORY_PROTECT -> {
+                break;
+            case INVENTORY_ATTACK:
+            case INVENTORY_PROTECT:
                 textGraphics.setForegroundColor(ANSI.WHITE);
                 textGraphics.putString(position, "??");
-            }
-            case PLAYER -> {
+                break;
+            case PLAYER:
                 textGraphics.setForegroundColor(White);
                 textGraphics.putString(position, "\uC6C3");
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + character);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + character);
         }
     }
 
@@ -92,7 +94,7 @@ public class GameScreenViewConsole implements GameScreenView {
         for (int col = 0; col < boardWidth; col++) {
             for (int row = 0; row < boardHeight; row++) {
                 TerminalPosition currentPosition = getAbsolutePositionOfBoardCellLeftUpperCorner(col, row);
-                drawCharacter(board[col][row], currentPosition);
+                drawCharacter(board[col][row].getCharacterType(), currentPosition);
             }
         }
     }
@@ -154,16 +156,16 @@ public class GameScreenViewConsole implements GameScreenView {
     @Override
     public void removeCharacter(int x, int y) throws IOException {
         TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
-        drawCharacter(GameCharacter.Empty, positionFrom);
-        board[x][y] = Empty;
+        drawCharacter(CharacterType.EMPTY, positionFrom);
+        // board[x][y] = CharacterType.EMPTY;
         screen.refresh();
     }
 
     @Override
     public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
         TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
-        drawCharacter(character, positionTo);
-        board[x][y] = character;
+        drawCharacter(character.getCharacterType(), positionTo);
+        // board[x][y] = character;
         screen.refresh();
     }
 

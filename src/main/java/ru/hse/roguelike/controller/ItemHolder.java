@@ -17,8 +17,12 @@ public class ItemHolder {
 
     public SelectedItem setSelectedItem(InputCommand command) {
         switch (command) {
-            case DOWN -> currentItemNumber = (currentItemNumber + 1) % items.size();
-            case UP -> currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
+            case DOWN:
+                currentItemNumber = (currentItemNumber + 1) % items.size();
+                break;
+            case UP:
+                currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
+                break;
         }
         return items.get(currentItemNumber);
     }

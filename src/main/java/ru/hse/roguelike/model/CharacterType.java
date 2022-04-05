@@ -1,6 +1,6 @@
 package ru.hse.roguelike.model;
 
-public enum GameCharacter {
+public enum CharacterType {
     ENEMY_WEAK,
     ENEMY_STRONG,
     OBSTACLE,

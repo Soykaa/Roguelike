@@ -1,7 +1,9 @@
 package ru.hse.roguelike.model.Characters;
 
-public class Empty extends Character {
+import ru.hse.roguelike.model.CharacterType;
+
+public class Empty extends GameCharacter {
     public Empty() {
-        super("Empty");
+        super(CharacterType.EMPTY);
     }
 }
