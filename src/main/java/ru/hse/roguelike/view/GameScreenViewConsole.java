@@ -11,7 +11,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.CharacterType;
+import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.InventoryItem;
 
 public class GameScreenViewConsole implements GameScreenView {

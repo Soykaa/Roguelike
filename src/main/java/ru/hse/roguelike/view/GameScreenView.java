@@ -3,7 +3,6 @@ package ru.hse.roguelike.view;
 import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.CharacterType;
 
 public interface GameScreenView {
     void showBoard(GameCharacter[][] board) throws IOException;

@@ -1,4 +1,4 @@
-package ru.hse.roguelike.model;
+package ru.hse.roguelike.model.Characters;
 
 public enum CharacterType {
     ENEMY_WEAK,

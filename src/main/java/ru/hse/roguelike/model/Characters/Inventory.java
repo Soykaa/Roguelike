@@ -1,6 +1,5 @@
 package ru.hse.roguelike.model.Characters;
 
-import ru.hse.roguelike.model.CharacterType;
 import ru.hse.roguelike.model.InventoryItem;
 
 public class Inventory extends GameCharacter {

@@ -1,7 +1,6 @@
 package ru.hse.roguelike.model.Characters;
 
 import ru.hse.roguelike.model.Backpack;
-import ru.hse.roguelike.model.CharacterType;
 import ru.hse.roguelike.model.Coordinates;
 
 public class Player extends GameCharacter {
