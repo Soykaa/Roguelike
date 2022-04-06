@@ -50,8 +50,7 @@ public class Application {
             final TextGraphics textGraphics = terminal.newTextGraphics();
             var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
             var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            var gameView = new GameScreenViewConsole(terminal);
-            InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView, gameView);
+            InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView, terminal);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
                 var command = getCommand(keyStroke);

@@ -1,10 +1,6 @@
 package ru.hse.roguelike.model;
 
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.view.GameScreenView;
+import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -19,8 +15,8 @@ public class Game {
         this.levelFilesPath = levelFilesPath;
     }
 
-    public void startGame(boolean generateLevelsFromFile, GameScreenView gameView) throws IOException {
-        levelGenerator = new LevelGenerator(Optional.empty(), Collections.emptyList(), gameView);
+    public void startGame(boolean generateLevelsFromFile, Terminal terminal) throws IOException {
+        levelGenerator = new LevelGenerator(Optional.empty(), Collections.emptyList(), terminal);
         if (!levelGenerator.hasNextLevel()) {
             throw new RuntimeException("Wrong level generation");
         }

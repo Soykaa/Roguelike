@@ -2,11 +2,11 @@ package ru.hse.roguelike.controller;
 
 import java.io.IOException;
 
+import com.googlecode.lanterna.terminal.Terminal;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.model.Result;
-import ru.hse.roguelike.view.GameScreenView;
 import ru.hse.roguelike.view.MainScreenView;
 import ru.hse.roguelike.view.GameRulesScreenView;
 
@@ -15,15 +15,15 @@ public class InteractionManager {
     private final MainScreenView mainScreenView;
     private final ItemHolder itemHolder = new ItemHolder();
     private final GameRulesScreenView gameRulesView;
-    private final GameScreenView gameView;
-    private Game game = new Game("");
+    private final Game game = new Game("");
     public boolean isRunning = true;
+    private final Terminal terminal;
 
-    public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView, GameScreenView gameView) {
+    public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView, Terminal terminal) {
         this.mainScreenView = mainScreenView;
         this.gameRulesView = gameRulesScreenView;
-        this.gameView = gameView;
         this.mainScreenView.showMainScreen();
+        this.terminal = terminal;
     }
 
     public void processCommand(InputCommand command) throws IOException, InterruptedException {
@@ -90,7 +90,7 @@ public class InteractionManager {
                     case START_GAME:
                     case START_GAME_FROM_FILE:
                         screen = Screen.GAME;
-                        game.startGame(false, gameView);
+                        game.startGame(false, terminal);
                         break;
                 }
         }

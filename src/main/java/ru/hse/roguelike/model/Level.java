@@ -26,6 +26,7 @@ public class Level {
             gameView.showBoard(board);
             gameView.showLives(player.getLives());
             gameView.showBackpack(player.getBackpack());
+            gameView.showPoints(player.getPoints(), victoryPoints);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,10 +68,12 @@ public class Level {
                     var points = (Points)nextCell;
                     player.increasePoints(points.getNumberOfPoints());
                     playerShelter = null;
+                    gameView.showPoints(player.getPoints(), victoryPoints);
                     break;
                 case INVENTORY:
                     var inventory = (Inventory)nextCell;
                     player.getBackpack().putItem(inventory);
+                    gameView.showBackpack(player.getBackpack());
                     break;
                 case SHELTER_LAVENDER:
                     playerShelter = CharacterType.SHELTER_LAVENDER;
@@ -85,7 +88,6 @@ public class Level {
                     return Result.IS_RUNNING;
             }
             moveCharacter(player, currentCoordinates, newX, newY);
-            gameView.showBackpack(player.getBackpack());
             if (player.getPoints() >= victoryPoints) {
                 return Result.VICTORY;
             }
