@@ -6,26 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backpack {
-    private Inventory activeItem = null;
-    private List<Inventory> allItems = new ArrayList<>();
+    private int activeItemNum = 0;
+    private final List<Inventory> allItems = new ArrayList<>();
+
+    public Backpack() {
+        allItems.add(new Inventory(InventoryItem.DEFAULT));
+    }
 
     public Inventory getActiveItem() {
-        return activeItem;
+        return allItems.get(activeItemNum);
     }
 
     public List<Inventory> getAllItems() {
         return allItems;
     }
 
-    public void setActiveItem(Inventory activeItem) {
-        this.activeItem = activeItem;
-    }
-
-    public void addItem(Inventory item) {
+    public void putItem(Inventory item) {
         allItems.add(item);
     }
 
-    public void removeAllItems() {
-        allItems.clear();
+    public void setNextActiveItem() {
+        activeItemNum = (activeItemNum + 1) % allItems.size();
     }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
+import ru.hse.roguelike.model.Result;
 import ru.hse.roguelike.view.GameScreenView;
 import ru.hse.roguelike.view.MainScreenView;
 import ru.hse.roguelike.view.GameRulesScreenView;
@@ -47,19 +48,27 @@ public class InteractionManager {
     }
 
     private void processCommandGame(InputCommand command) throws IOException {
+        Result result = Result.IS_RUNNING;
         switch (command) {
             case UP:
-                game.makeAction(Action.MOVE_UP);
+                result = game.manageGame(Action.MOVE_UP);
                 break;
             case DOWN:
-                game.makeAction(Action.MOVE_DOWN);
+                result = game.manageGame(Action.MOVE_DOWN);
                 break;
             case LEFT:
-                game.makeAction(Action.MOVE_LEFT);
+                result = game.manageGame(Action.MOVE_LEFT);
                 break;
             case RIGHT:
-                game.makeAction(Action.MOVE_RIGHT);
+                result = game.manageGame(Action.MOVE_RIGHT);
                 break;
+            case BACK_SLASH:
+                game.makeAction(Action.CHANGE_EQUIPTION);
+                break;
+        }
+        if (result != Result.IS_RUNNING) {
+            screen = Screen.MAIN_MENU;
+            mainScreenView.showMainScreen();
         }
     }
 

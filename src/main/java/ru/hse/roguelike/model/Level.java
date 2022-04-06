@@ -4,41 +4,88 @@ import ru.hse.roguelike.model.Characters.*;
 import ru.hse.roguelike.view.GameScreenView;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Level {
     private GameCharacter[][] board;
     private GameScreenView gameView;
     private Player player;
     private final int victoryPoints = 10;
+    private Map<Enemy, Coordinates> enemies;
+    private final CharacterType realShelterType;
+    private CharacterType playerShelter = null;
 
-    public Level(GameCharacter[][] board, GameScreenView gameView, Player player) {
+    public Level(GameCharacter[][] board, GameScreenView gameView, Player player,
+                 Map<Enemy, Coordinates> enemies, CharacterType realShelterType) {
         this.board = board;
         this.gameView = gameView;
         this.player = player;
+        this.enemies = enemies;
+        this.realShelterType = realShelterType;
+        try {
+            gameView.showBoard(board);
+            gameView.showLives(player.getLives());
+            gameView.showBackpack(player.getBackpack());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Result movePlayer(int dx, int dy) throws IOException {
+    private void moveCharacter(GameCharacter characterToMove, Coordinates currentCoordinates, int newX, int newY) throws IOException {
+        gameView.moveCharacter(currentCoordinates.getX(), currentCoordinates.getY(), newX, newY);
+        board[currentCoordinates.getX()][currentCoordinates.getY()] = new Empty();
+        currentCoordinates.setX(newX);
+        currentCoordinates.setY(newY);
+        board[currentCoordinates.getX()][currentCoordinates.getY()] = characterToMove;
+    }
+
+    private boolean isValidCoordinates(int x, int y) {
+        return x >= 0 && x < board.length && y < board[0].length && y >= 0;
+    }
+
+    private boolean charactersAreClose(Coordinates first, Coordinates second) {
+        if (first.getX() == second.getX()) {
+            return Math.abs(first.getY() - second.getY()) <= 1;
+        }
+        if (first.getY() == second.getY()) {
+            return Math.abs(first.getX() - second.getX()) <= 1;
+        }
+        return false;
+    }
+
+    private Result movePlayer(int dx, int dy) throws IOException {
         Coordinates currentCoordinates = player.getCurrentCoordinates();
         int newX = currentCoordinates.getX() + dx;
         int newY = currentCoordinates.getY() + dy;
-        if (newX >= 0 && newX < board.length && newY < board[0].length && newY >= 0) {
+        if (isValidCoordinates(newX, newY)) {
             GameCharacter nextCell = board[newX][newY];
             switch (nextCell.getCharacterType()) {
                 case EMPTY:
+                    playerShelter = null;
                     break;
                 case POINTS:
                     var points = (Points)nextCell;
                     player.increasePoints(points.getNumberOfPoints());
+                    playerShelter = null;
+                    break;
+                case INVENTORY:
+                    var inventory = (Inventory)nextCell;
+                    player.getBackpack().putItem(inventory);
+                    break;
+                case SHELTER_LAVENDER:
+                    playerShelter = CharacterType.SHELTER_LAVENDER;
+                    break;
+                case SHELTER_PINK:
+                    playerShelter = CharacterType.SHELTER_PINK;
+                    break;
+                case SHELTER_YELLOW:
+                    playerShelter = CharacterType.SHELTER_YELLOW;
                     break;
                 default:
                     return Result.IS_RUNNING;
             }
-            board[currentCoordinates.getX()][currentCoordinates.getY()] = new Empty();
-            gameView.removeCharacter(currentCoordinates.getX(), currentCoordinates.getY());
-            currentCoordinates.setX(newX);
-            currentCoordinates.setY(newY);
-            board[currentCoordinates.getX()][currentCoordinates.getY()] = player;
-            gameView.placeCharacter(player, newX, newY);
+            moveCharacter(player, currentCoordinates, newX, newY);
+            gameView.showBackpack(player.getBackpack());
             if (player.getPoints() >= victoryPoints) {
                 return Result.VICTORY;
             }
@@ -46,16 +93,42 @@ public class Level {
         return Result.IS_RUNNING;
     }
 
-    public Result moveEnemies() {
-        throw new UnsupportedOperationException();
+    private Result moveEnemies() throws IOException {
+        for (var entry: enemies.entrySet()) {
+            var enemy = entry.getKey();
+            var coordinates = entry.getValue();
+            var shift = enemy.makeNextMove();
+            int newX = coordinates.getX() + shift.getX();
+            int newY = coordinates.getY() + shift.getY();
+            if (isValidCoordinates(newX, newY)) {
+                if(board[newX][newY].getCharacterType() == CharacterType.EMPTY) {
+                    moveCharacter(enemy, coordinates, newX, newY);
+                }
+            }
+            if (charactersAreClose(player.getCurrentCoordinates(), coordinates)) {
+                if (playerShelter == null | playerShelter != realShelterType) {
+                    enemy.attack(player);
+                }
+            }
+            gameView.showLives(player.getLives());
+            if (player.getLives() <= 0) {
+                return Result.DEFEAT;
+            }
+        }
+        return Result.IS_RUNNING;
     }
 
-    public Result moveCharacters() {
-        throw new UnsupportedOperationException();
+    public Result moveCharacters(int dx, int dy) throws IOException {
+        var movePlayerResult = movePlayer(dx, dy);
+        if (movePlayerResult != Result.IS_RUNNING){
+            return movePlayerResult;
+        }
+        return moveEnemies();
     }
 
-    public void changeEquiption() {
-        throw new UnsupportedOperationException();
+    public void changeEquiption() throws IOException {
+        player.getBackpack().setNextActiveItem();
+        gameView.showBackpack(player.getBackpack());
     }
 
     public void attackFromPlayer() {

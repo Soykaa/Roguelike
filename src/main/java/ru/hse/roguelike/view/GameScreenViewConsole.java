@@ -10,8 +10,10 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
+import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.CharacterType;
+import ru.hse.roguelike.model.Characters.Points;
 import ru.hse.roguelike.model.InventoryItem;
 
 public class GameScreenViewConsole implements GameScreenView {
@@ -39,10 +41,10 @@ public class GameScreenViewConsole implements GameScreenView {
         return new TerminalSize(3 * relativeWidth + 1, 2 * relativeHeight + 1);
     }
 
-    private void drawCharacter(CharacterType character, TerminalPosition position) {
+    private void drawCharacter(GameCharacter character, TerminalPosition position) {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
-        switch (character) {
+        switch (character.getCharacterType()) {
             case ENEMY_WEAK:
             case ENEMY_STRONG:
                 textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
@@ -71,10 +73,9 @@ public class GameScreenViewConsole implements GameScreenView {
                 break;
             case POINTS:
                 textGraphics.setForegroundColor(ANSI.GREEN_BRIGHT);
-                textGraphics.putString(position, "+3");
+                textGraphics.putString(position, "+" + ((Points) character).getNumberOfPoints());
                 break;
-            case INVENTORY_ATTACK:
-            case INVENTORY_PROTECT:
+            case INVENTORY:
                 textGraphics.setForegroundColor(ANSI.WHITE);
                 textGraphics.putString(position, "??");
                 break;
@@ -94,7 +95,7 @@ public class GameScreenViewConsole implements GameScreenView {
         for (int col = 0; col < boardWidth; col++) {
             for (int row = 0; row < boardHeight; row++) {
                 TerminalPosition currentPosition = getAbsolutePositionOfBoardCellLeftUpperCorner(col, row);
-                drawCharacter(board[col][row].getCharacterType(), currentPosition);
+                drawCharacter(board[col][row], currentPosition);
             }
         }
     }
@@ -156,7 +157,7 @@ public class GameScreenViewConsole implements GameScreenView {
     @Override
     public void removeCharacter(int x, int y) throws IOException {
         TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
-        drawCharacter(CharacterType.EMPTY, positionFrom);
+        drawCharacter(new Empty(), positionFrom);
         // board[x][y] = CharacterType.EMPTY;
         screen.refresh();
     }
@@ -164,7 +165,7 @@ public class GameScreenViewConsole implements GameScreenView {
     @Override
     public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
         TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
-        drawCharacter(character.getCharacterType(), positionTo);
+        drawCharacter(character, positionTo);
         // board[x][y] = character;
         screen.refresh();
     }
@@ -188,18 +189,20 @@ public class GameScreenViewConsole implements GameScreenView {
     }
 
     @Override
-    public void showBackpack(Backpack selectedItem) throws IOException {
+    public void showBackpack(Backpack backpack) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setForegroundColor(ANSI.WHITE);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
-        for (var backpackItem: InventoryItem.values()) {
-            if (backpackItem == selectedItem.getActiveItem().getType()) {
+        for (var backpackItem: backpack.getAllItems()) {
+            if (backpackItem.getType() == backpack.getActiveItem().getType()) {
                 textGraphics.setBackgroundColor(ANSI.CYAN);
             } else {
                 textGraphics.setBackgroundColor(ANSI.BLACK);
             }
             textGraphics.setForegroundColor(ANSI.WHITE);
-            textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.name());
+            textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.getType().name());
             row += 1;
         }
         screen.refresh();

@@ -1,17 +1,18 @@
 package ru.hse.roguelike.model.Characters;
 
 import ru.hse.roguelike.model.Coordinates;
+import ru.hse.roguelike.model.InventoryItem;
 
-public class Enemy extends GameCharacter {
+public abstract class Enemy extends GameCharacter {
     public Enemy(CharacterType characterType) {
         super(characterType);
     }
 
-    Coordinates makeNextMove() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract Coordinates makeNextMove();
 
-    void attack(Player player) {
-
+    public void attack(Player player) {
+        if (player.getBackpack().getActiveItem().getType() != InventoryItem.PROTECTION) {
+            player.decreaseLives(1);
+        }
     }
 }

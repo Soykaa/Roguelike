@@ -15,12 +15,24 @@ public class Player extends GameCharacter {
         this.points = points;
     }
 
+    public int getLives() {
+        return lives;
+    }
+
     public Coordinates getCurrentCoordinates() {
         return currentCoordinates;
     }
 
     public void increasePoints(int points) {
         this.points += points;
+    }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public void decreaseLives(int delta) {
+        this.lives -= delta;
     }
 
     public int getPoints() {

@@ -9,7 +9,6 @@ public enum CharacterType {
     SHELTER_YELLOW,
     SHELTER_PINK,
     POINTS,
-    INVENTORY_ATTACK,
-    INVENTORY_PROTECT,
+    INVENTORY,
     PLAYER
 }

@@ -6,7 +6,7 @@ public class Inventory extends GameCharacter {
     private final InventoryItem type;
 
     public Inventory(InventoryItem type) {
-        super(CharacterType.INVENTORY_ATTACK);
+        super(CharacterType.INVENTORY);
         this.type = type;
     }
 
