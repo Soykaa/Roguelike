@@ -28,4 +28,9 @@ public class Backpack {
     public void setNextActiveItem() {
         activeItemNum = (activeItemNum + 1) % allItems.size();
     }
+
+    public void clear() {
+        allItems.clear();
+        allItems.add(new Inventory(InventoryItem.DEFAULT));
+    }
 }

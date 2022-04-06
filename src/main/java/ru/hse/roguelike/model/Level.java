@@ -10,18 +10,19 @@ public class Level {
     private GameCharacter[][] board;
     private GameScreenView gameView;
     private Player player;
-    private final int victoryPoints = 10;
+    private final int victoryPoints;
     private Map<Enemy, Coordinates> enemies;
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
     public Level(GameCharacter[][] board, GameScreenView gameView, Player player,
-                 Map<Enemy, Coordinates> enemies, CharacterType realShelterType) {
+                 Map<Enemy, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
         this.board = board;
         this.gameView = gameView;
         this.player = player;
         this.enemies = enemies;
         this.realShelterType = realShelterType;
+        this.victoryPoints = victoryPoints;
         try {
             gameView.showBoard(board);
             gameView.showLives(player.getLives());

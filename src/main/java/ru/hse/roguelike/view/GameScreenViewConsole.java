@@ -158,7 +158,6 @@ public class GameScreenViewConsole implements GameScreenView {
     public void removeCharacter(int x, int y) throws IOException {
         TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
         drawCharacter(new Empty(), positionFrom);
-        // board[x][y] = CharacterType.EMPTY;
         screen.refresh();
     }
 
@@ -166,7 +165,6 @@ public class GameScreenViewConsole implements GameScreenView {
     public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
         TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
         drawCharacter(character, positionTo);
-        // board[x][y] = character;
         screen.refresh();
     }
 

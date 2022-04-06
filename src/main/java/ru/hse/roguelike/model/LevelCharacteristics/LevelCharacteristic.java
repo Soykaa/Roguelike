@@ -1,37 +1,64 @@
 package ru.hse.roguelike.model.LevelCharacteristics;
 
+import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Coordinates;
+import ru.hse.roguelike.model.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public abstract class LevelCharacteristic {
-    private int[][] board;
-    private Map<Integer, Character> characters;
-    private List<Integer> charactersToPlace;
-    private List<Coordinates> emptyCells;
+    private final int xSize;
+    private final int ySize;
+    private final Map<CharacterType, Integer> charactersToPlace;
+    private final List<Coordinates> emptyCells = new ArrayList<>();
+    private final CharacterType shelterType;
 
-    public LevelCharacteristic(int[][] board, Map<Integer, Character> characters,
-                               List<Integer> charactersToPlace, List<Coordinates> emptyCells) {
-        this.board = board;
-        this.characters = characters;
+
+    public LevelCharacteristic(int xSize, int ySize, CharacterType shelterType, Map<CharacterType, Integer> charactersToPlace) {
+        this.xSize = xSize;
+        this.ySize = ySize;
         this.charactersToPlace = charactersToPlace;
-        this.emptyCells = emptyCells;
+        this.shelterType = shelterType;
+        System.out.println(xSize);
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++) {
+                emptyCells.add(new Coordinates(i, j));
+            }
+        }
     }
 
-    public int[][] getBoard() {
-        return board;
+    public int getX() {
+        return xSize;
     }
 
-    public Map<Integer, Character> getCharacters() {
-        return characters;
+    public int getY() {
+        return ySize;
     }
 
-    public List<Integer> getCharactersToPlace() {
+    public Map<CharacterType, Integer> getCharactersToPlace() {
         return charactersToPlace;
     }
 
     public List<Coordinates> getEmptyCells() {
         return emptyCells;
+    }
+
+    public CharacterType getShelterType() {
+        return shelterType;
+    }
+
+    public Coordinates getRandomCell() {
+        Random rand = new Random();
+        int cellIndex = rand.nextInt(emptyCells.size());
+        var cell = emptyCells.get(cellIndex);
+        emptyCells.remove(cellIndex);
+        return cell;
+    }
+
+    public boolean haveEmptyCells() {
+        return emptyCells.size() > 0;
     }
 }

@@ -6,7 +6,7 @@ import ru.hse.roguelike.model.Coordinates;
 public class Player extends GameCharacter {
     private int lives;
     private int points;
-    private Coordinates currentCoordinates = new Coordinates(0 , 0);
+    private Coordinates currentCoordinates = new Coordinates(0, 0);
     private final Backpack backpack = new Backpack();
 
     public Player(int lives, int points) {
@@ -43,11 +43,11 @@ public class Player extends GameCharacter {
         this.currentCoordinates = currentCoordinates;
     }
 
-    boolean canAttack() {
-        throw new UnsupportedOperationException();
+    public void setPoints(int points) {
+        this.points = points;
     }
 
-    void decreaseLives() {
-
+    boolean canAttack() {
+        throw new UnsupportedOperationException();
     }
 }
