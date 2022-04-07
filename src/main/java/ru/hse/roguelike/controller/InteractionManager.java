@@ -63,8 +63,10 @@ public class InteractionManager {
                 result = game.manageGame(Action.MOVE_RIGHT);
                 break;
             case BACK_SLASH:
-                game.makeAction(Action.CHANGE_EQUIPTION);
+                game.manageGame(Action.CHANGE_EQUIPTION);
                 break;
+            case SPACE:
+                game.manageGame(Action.DESTROY);
         }
         if (result != Result.IS_RUNNING) {
             screen = Screen.MAIN_MENU;

@@ -130,7 +130,7 @@ public class LevelGenerator {
                         if (i == 1) {
                             characterToPlace = new Inventory(InventoryItem.PROTECTION);
                         } else {
-                            characterToPlace = new Inventory(InventoryItem.ATTACK);
+                            characterToPlace = new Inventory(InventoryItem.DESTROY);
                         }
                         break;
                     default:

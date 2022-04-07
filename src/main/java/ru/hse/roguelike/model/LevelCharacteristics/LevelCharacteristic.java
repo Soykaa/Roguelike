@@ -22,7 +22,6 @@ public abstract class LevelCharacteristic {
         this.ySize = ySize;
         this.charactersToPlace = charactersToPlace;
         this.shelterType = shelterType;
-        System.out.println(xSize);
         for (int i = 0; i < xSize; i++){
             for (int j = 0; j < ySize; j++) {
                 emptyCells.add(new Coordinates(i, j));

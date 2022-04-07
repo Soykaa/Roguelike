@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model;
 
 public enum InventoryItem {
-    ATTACK,
+    DESTROY,
     PROTECTION,
     DEFAULT
 }

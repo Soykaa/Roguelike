@@ -2,6 +2,7 @@ package ru.hse.roguelike.model.Characters;
 
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Coordinates;
+import ru.hse.roguelike.model.InventoryItem;
 
 public class Player extends GameCharacter {
     private int lives;
@@ -47,7 +48,7 @@ public class Player extends GameCharacter {
         this.points = points;
     }
 
-    boolean canAttack() {
-        throw new UnsupportedOperationException();
+    public boolean canDestroy() {
+        return backpack.getActiveItem().getType() == InventoryItem.DESTROY;
     }
 }

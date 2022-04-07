@@ -14,7 +14,7 @@ public class FourthLevelCharacteristic extends LevelCharacteristic {
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 4,
                         CharacterType.SHELTER_PINK, 4,
-                        CharacterType.INVENTORY, 5
+                        CharacterType.INVENTORY, 2
                 )
         );
     }

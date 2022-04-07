@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model;
 
 public enum Action {
-    ATTACK,
+    DESTROY,
     MOVE_LEFT,
     MOVE_RIGHT,
     MOVE_UP,

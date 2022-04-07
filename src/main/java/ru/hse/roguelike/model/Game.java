@@ -3,7 +3,6 @@ package ru.hse.roguelike.model;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Optional;
 
 public class Game {
@@ -41,8 +40,8 @@ public class Game {
     public Result makeAction(Action action) throws IOException {
         Result result = Result.IS_RUNNING;
         switch (action) {
-            case ATTACK:
-                currentLevel.attackFromPlayer();
+            case DESTROY:
+                result = currentLevel.destroyObstacle();
                 break;
             case MOVE_DOWN:
                 result = currentLevel.moveCharacters(0, 1);

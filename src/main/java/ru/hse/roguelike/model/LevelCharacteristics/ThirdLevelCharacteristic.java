@@ -14,7 +14,7 @@ public class ThirdLevelCharacteristic extends LevelCharacteristic {
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 2,
                         CharacterType.SHELTER_PINK, 2,
-                        CharacterType.INVENTORY, 3
+                        CharacterType.INVENTORY, 2
                 )
         );
     }

@@ -4,6 +4,7 @@ import ru.hse.roguelike.model.Characters.*;
 import ru.hse.roguelike.view.GameScreenView;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class Level {
@@ -134,7 +135,29 @@ public class Level {
         gameView.showBackpack(player.getBackpack());
     }
 
-    public void attackFromPlayer() {
-        throw new UnsupportedOperationException();
+    public Result destroyObstacle() throws IOException {
+        if (!player.canDestroy()) {
+            return Result.IS_RUNNING;
+        }
+        List<Coordinates> neighbours = List.of(new Coordinates(1, 0),
+                                                new Coordinates(-1, 0),
+                                                new Coordinates(0, 1),
+                                                new Coordinates(0, -1)
+                                        );
+        for (var neighbour: neighbours) {
+            int x = player.getCurrentCoordinates().getX() + neighbour.getX();
+            int y = player.getCurrentCoordinates().getY() + neighbour.getY();
+            if (!isValidCoordinates(x, y) || board[x][y].getCharacterType() != CharacterType.OBSTACLE) {
+                continue;
+            }
+            player.increasePoints(((Obstacle)board[x][y]).getDestroyBonus());
+            board[x][y] = new Empty();
+            gameView.showPoints(player.getPoints(), victoryPoints);
+            gameView.removeCharacter(x, y);
+            if (player.getPoints() >= victoryPoints) {
+                return Result.VICTORY;
+            }
+        }
+        return Result.IS_RUNNING;
     }
 }

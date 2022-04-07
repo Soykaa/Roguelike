@@ -31,6 +31,7 @@ public class Backpack {
 
     public void clear() {
         allItems.clear();
+        activeItemNum = 0;
         allItems.add(new Inventory(InventoryItem.DEFAULT));
     }
 }
