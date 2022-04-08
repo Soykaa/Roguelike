@@ -77,9 +77,9 @@ public class LevelGenerator {
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
         List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
-                                            new Coordinates(1, 0),
-                                            new Coordinates(0, -1),
-                                            new Coordinates(0, 1));
+                new Coordinates(1, 0),
+                new Coordinates(0, -1),
+                new Coordinates(0, 1));
         return new EnemyWeak(maxStep, shifts.get(randomShift));
     }
 
@@ -176,7 +176,7 @@ public class LevelGenerator {
         GameCharacter[][] board = new GameCharacter[levelCharacteristic.getX()][levelCharacteristic.getY()];
         Map<Enemy, Coordinates> enemies = new HashMap<>();
         int victoryPoints = 0;
-        for (var entry: levelCharacteristic.getCharactersToPlace().entrySet()) {
+        for (var entry : levelCharacteristic.getCharactersToPlace().entrySet()) {
             int characterNumber = entry.getValue();
             for (int i = 0; i < characterNumber; i++) {
                 var coordinates = levelCharacteristic.getRandomCell();
@@ -188,7 +188,7 @@ public class LevelGenerator {
                         break;
                     case POINTS:
                         characterToPlace = generatePoints();
-                        victoryPoints += ((Points)characterToPlace).getNumberOfPoints();
+                        victoryPoints += ((Points) characterToPlace).getNumberOfPoints();
                         break;
                     case ENEMY_STRONG:
                         var enemyStrong = new EnemyStrong();

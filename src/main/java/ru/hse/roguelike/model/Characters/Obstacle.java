@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Obstacle extends GameCharacter {
     int destroyBonus = 1;
+
     public Obstacle() {
         super(CharacterType.OBSTACLE);
     }
