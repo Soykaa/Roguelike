@@ -14,9 +14,11 @@ public class MainScreenViewConsole implements MainScreenView {
     private final TextGraphics textGraphics;
     private final Map<SelectedItem, GraphicItem> itemToGraphics;
     private SelectedItem currentItem;
+
     private static class GraphicItem {
         int rowNumber;
         String text;
+
         GraphicItem(int rowNumber, String text) {
             this.rowNumber = rowNumber;
             this.text = text;
@@ -27,9 +29,9 @@ public class MainScreenViewConsole implements MainScreenView {
         this.terminal = terminal;
         this.textGraphics = textGraphics;
         itemToGraphics = Map.of(SelectedItem.START_GAME, new GraphicItem(3, "Start game"),
-                                SelectedItem.START_GAME_FROM_FILE, new GraphicItem(5, "Start game from file"),
-                                SelectedItem.SHOW_RULES, new GraphicItem(7, "Show rules"),
-                                SelectedItem.EXIT, new GraphicItem(9, "Exit"));
+                SelectedItem.START_GAME_FROM_FILE, new GraphicItem(5, "Start game from file"),
+                SelectedItem.SHOW_RULES, new GraphicItem(7, "Show rules"),
+                SelectedItem.EXIT, new GraphicItem(9, "Exit"));
         currentItem = SelectedItem.START_GAME;
     }
 
@@ -43,7 +45,7 @@ public class MainScreenViewConsole implements MainScreenView {
         textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
         textGraphics.setBackgroundColor(TextColor.ANSI.CYAN);
         textGraphics.putString(2, 1, "Welcome to ESCAPE from ******", SGR.BOLD);
-        for (var graphicItem: itemToGraphics.values()) {
+        for (var graphicItem : itemToGraphics.values()) {
             textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
             textGraphics.putString(5, graphicItem.rowNumber, graphicItem.text, SGR.BOLD);
         }
@@ -63,7 +65,7 @@ public class MainScreenViewConsole implements MainScreenView {
         try {
             textGraphics.setBackgroundColor(TextColor.ANSI.DEFAULT);
             textGraphics.putString(5, itemToGraphics.get(currentItem).rowNumber,
-                                             itemToGraphics.get(currentItem).text, SGR.BOLD);
+                    itemToGraphics.get(currentItem).text, SGR.BOLD);
             currentItem = item;
             textGraphics.setBackgroundColor(TextColor.ANSI.RED_BRIGHT);
             textGraphics.putString(5, itemToGraphics.get(currentItem).rowNumber,

@@ -67,13 +67,13 @@ public class Level {
                     playerShelter = null;
                     break;
                 case POINTS:
-                    var points = (Points)nextCell;
+                    var points = (Points) nextCell;
                     player.increasePoints(points.getNumberOfPoints());
                     playerShelter = null;
                     gameView.showPoints(player.getPoints(), victoryPoints);
                     break;
                 case INVENTORY:
-                    var inventory = (Inventory)nextCell;
+                    var inventory = (Inventory) nextCell;
                     player.getBackpack().putItem(inventory);
                     gameView.showBackpack(player.getBackpack());
                     break;
@@ -98,14 +98,14 @@ public class Level {
     }
 
     private Result moveEnemies() throws IOException {
-        for (var entry: enemies.entrySet()) {
+        for (var entry : enemies.entrySet()) {
             var enemy = entry.getKey();
             var coordinates = entry.getValue();
             var shift = enemy.makeNextMove();
             int newX = coordinates.getX() + shift.getX();
             int newY = coordinates.getY() + shift.getY();
             if (isValidCoordinates(newX, newY)) {
-                if(board[newX][newY].getCharacterType() == CharacterType.EMPTY) {
+                if (board[newX][newY].getCharacterType() == CharacterType.EMPTY) {
                     moveCharacter(enemy, coordinates, newX, newY);
                 }
             }
@@ -124,7 +124,7 @@ public class Level {
 
     public Result moveCharacters(int dx, int dy) throws IOException {
         var movePlayerResult = movePlayer(dx, dy);
-        if (movePlayerResult != Result.IS_RUNNING){
+        if (movePlayerResult != Result.IS_RUNNING) {
             return movePlayerResult;
         }
         return moveEnemies();
@@ -140,17 +140,17 @@ public class Level {
             return Result.IS_RUNNING;
         }
         List<Coordinates> neighbours = List.of(new Coordinates(1, 0),
-                                                new Coordinates(-1, 0),
-                                                new Coordinates(0, 1),
-                                                new Coordinates(0, -1)
-                                        );
-        for (var neighbour: neighbours) {
+                new Coordinates(-1, 0),
+                new Coordinates(0, 1),
+                new Coordinates(0, -1)
+        );
+        for (var neighbour : neighbours) {
             int x = player.getCurrentCoordinates().getX() + neighbour.getX();
             int y = player.getCurrentCoordinates().getY() + neighbour.getY();
             if (!isValidCoordinates(x, y) || board[x][y].getCharacterType() != CharacterType.OBSTACLE) {
                 continue;
             }
-            player.increasePoints(((Obstacle)board[x][y]).getDestroyBonus());
+            player.increasePoints(((Obstacle) board[x][y]).getDestroyBonus());
             board[x][y] = new Empty();
             gameView.showPoints(player.getPoints(), victoryPoints);
             gameView.removeCharacter(x, y);

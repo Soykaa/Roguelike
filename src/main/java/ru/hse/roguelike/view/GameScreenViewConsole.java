@@ -8,13 +8,12 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
-import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.model.InventoryItem;
+
+import java.io.IOException;
 
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;
@@ -193,7 +192,7 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
-        for (var backpackItem: backpack.getAllItems()) {
+        for (var backpackItem : backpack.getAllItems()) {
             if (backpackItem.getType() == backpack.getActiveItem().getType()) {
                 textGraphics.setBackgroundColor(ANSI.CYAN);
             } else {

@@ -7,8 +7,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+
 import ru.hse.roguelike.controller.input.InputCommand;
-import ru.hse.roguelike.view.GameScreenViewConsole;
 import ru.hse.roguelike.view.MainScreenViewConsole;
 import ru.hse.roguelike.view.GameRulesScreenViewConsole;
 

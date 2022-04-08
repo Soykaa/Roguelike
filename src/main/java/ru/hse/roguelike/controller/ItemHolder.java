@@ -6,9 +6,9 @@ import java.util.List;
 
 public class ItemHolder {
     private final List<SelectedItem> items = List.of(SelectedItem.START_GAME,
-                                       SelectedItem.START_GAME_FROM_FILE,
-                                       SelectedItem.SHOW_RULES,
-                                       SelectedItem.EXIT);
+            SelectedItem.START_GAME_FROM_FILE,
+            SelectedItem.SHOW_RULES,
+            SelectedItem.EXIT);
     private int currentItemNumber = 0;
 
     public SelectedItem getCurrentItem() {
