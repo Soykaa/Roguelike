@@ -13,18 +13,30 @@ import ru.hse.roguelike.view.GameRulesScreenView;
 public class InteractionManager {
     private Screen screen = Screen.MAIN_MENU;
     private final MainScreenView mainScreenView;
-    private final ItemHolder itemHolder = new ItemHolder();
+    private final ItemHolder itemHolder;
     private final GameRulesScreenView gameRulesView;
     private final Game game;
     public boolean isRunning = true;
     private final Terminal terminal;
 
-    public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView, Terminal terminal) {
+    public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
+                              Terminal terminal) {
         this.mainScreenView = mainScreenView;
         this.gameRulesView = gameRulesScreenView;
         this.mainScreenView.showMainScreen();
         this.terminal = terminal;
         this.game = new Game(filesPath);
+        this.itemHolder = new ItemHolder();
+    }
+
+    public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
+                              Terminal terminal, ItemHolder itemHolder) {
+        this.mainScreenView = mainScreenView;
+        this.gameRulesView = gameRulesScreenView;
+        this.mainScreenView.showMainScreen();
+        this.terminal = terminal;
+        this.game = new Game(filesPath);
+        this.itemHolder = itemHolder;
     }
 
     public void processCommand(InputCommand command) throws IOException {
