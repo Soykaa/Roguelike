@@ -73,13 +73,17 @@ public class Application {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Application application;
         if (args.length > 0) {
             application = new Application(args[0]);
         } else {
             application = new Application();
         }
-        application.start();
+        try {
+            application.start();
+        } catch (IOException e) {
+            System.out.println("Problem while running application: " + e.getMessage());
+        }
     }
 }

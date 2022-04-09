@@ -64,18 +64,6 @@ public class LevelGenerator {
         this.maxLevelAmount = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/" + filePath).listFiles()).length;
     }
 
-    public Optional<String> getFilesPath() {
-        return filesPath;
-    }
-
-    public int getLevelNumber() {
-        return levelNumber;
-    }
-
-    public List<LevelCharacteristic> getLevelCharacteristics() {
-        return levelCharacteristics;
-    }
-
     public boolean hasNextLevel() {
         return levelNumber + 1 < maxLevelAmount;
     }

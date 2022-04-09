@@ -28,9 +28,14 @@ public class InteractionManager {
         this.game = new Game(filesPath);
     }
 
-    public Screen getScreen() {
-        return screen;
-    }
+    /**
+     * Create new InteractionManager instance.
+     * Used only for tests to provide opportunity to mock class Game
+     * @param mainScreenView mainScreenView object
+     * @param gameRulesScreenView GameRulesScreenView object
+     * @param terminal Terminal object
+     * @param game Game object
+     */
 
     public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
                               Terminal terminal, Game game) {
@@ -39,6 +44,10 @@ public class InteractionManager {
         this.mainScreenView.showMainScreen();
         this.terminal = terminal;
         this.game = game;
+    }
+
+    public Screen getScreen() {
+        return screen;
     }
 
     public void processCommand(InputCommand command) throws IOException {
