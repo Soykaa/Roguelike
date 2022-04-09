@@ -20,4 +20,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.hse.roguelike.controller.Application'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

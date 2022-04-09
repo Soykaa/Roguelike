@@ -12,9 +12,7 @@ import java.io.IOException;
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.model.InventoryItem;
 
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;

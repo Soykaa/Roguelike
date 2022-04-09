@@ -53,7 +53,6 @@ public class Application {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
-            terminal.enterPrivateMode();
             terminal.clearScreen();
             terminal.setCursorVisible(false);
             final TextGraphics textGraphics = terminal.newTextGraphics();
