@@ -15,18 +15,19 @@ public class InteractionManager {
     private final MainScreenView mainScreenView;
     private final ItemHolder itemHolder = new ItemHolder();
     private final GameRulesScreenView gameRulesView;
-    private final Game game = new Game("");
+    private final Game game;
     public boolean isRunning = true;
     private final Terminal terminal;
 
-    public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView, Terminal terminal) {
+    public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView, Terminal terminal) {
         this.mainScreenView = mainScreenView;
         this.gameRulesView = gameRulesScreenView;
         this.mainScreenView.showMainScreen();
         this.terminal = terminal;
+        this.game = new Game(filesPath);
     }
 
-    public void processCommand(InputCommand command) throws IOException, InterruptedException {
+    public void processCommand(InputCommand command) throws IOException {
         switch (screen) {
             case MAIN_MENU:
                 processCommandMainMenu(command);
@@ -89,8 +90,11 @@ public class InteractionManager {
                         screen = Screen.GAME_RULES;
                         gameRulesView.showGameRules();
                         break;
-                    case START_GAME:
                     case START_GAME_FROM_FILE:
+                        screen = Screen.GAME;
+                        game.startGame(true, terminal);
+                        break;
+                    case START_GAME:
                         screen = Screen.GAME;
                         game.startGame(false, terminal);
                         break;

@@ -15,7 +15,11 @@ public class Game {
     }
 
     public void startGame(boolean generateLevelsFromFile, Terminal terminal) throws IOException {
-        levelGenerator = new LevelGenerator(Optional.empty(), terminal);
+        if (generateLevelsFromFile) {
+            levelGenerator = new LevelGenerator(levelFilesPath, terminal);
+        } else {
+            levelGenerator = new LevelGenerator(terminal, 5);
+        }
         if (!levelGenerator.hasNextLevel()) {
             throw new RuntimeException("Wrong level generation");
         }

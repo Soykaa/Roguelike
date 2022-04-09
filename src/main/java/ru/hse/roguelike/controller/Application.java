@@ -8,11 +8,20 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 import ru.hse.roguelike.controller.input.InputCommand;
-import ru.hse.roguelike.view.GameScreenViewConsole;
 import ru.hse.roguelike.view.MainScreenViewConsole;
 import ru.hse.roguelike.view.GameRulesScreenViewConsole;
 
 public class Application {
+    private final String filesPath;
+
+    public Application() {
+        this.filesPath = "";
+    }
+
+    public Application(String filesPath) {
+        this.filesPath = filesPath;
+    }
+
     private InputCommand getCommand(KeyStroke keyStroke) {
         var key = keyStroke.getKeyType();
         switch (key) {
@@ -50,7 +59,7 @@ public class Application {
             final TextGraphics textGraphics = terminal.newTextGraphics();
             var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
             var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesView, terminal);
+            InteractionManager interactionManager = new InteractionManager(filesPath, mainScreenView, gameRulesView, terminal);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
                 var command = getCommand(keyStroke);
@@ -65,7 +74,12 @@ public class Application {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        var application = new Application();
+        Application application;
+        if (args.length > 0) {
+            application = new Application(args[0]);
+        } else {
+            application = new Application();
+        }
         application.start();
     }
 }

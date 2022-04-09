@@ -16,6 +16,13 @@ public class Player extends GameCharacter {
         this.points = points;
     }
 
+    public Player(int lives, int points, Coordinates coordinates) {
+        super(CharacterType.PLAYER);
+        this.lives = lives;
+        this.points = points;
+        this.currentCoordinates = coordinates;
+    }
+
     public int getLives() {
         return lives;
     }

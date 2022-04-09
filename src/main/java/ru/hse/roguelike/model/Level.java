@@ -135,6 +135,10 @@ public class Level {
         gameView.showBackpack(player.getBackpack());
     }
 
+    public GameCharacter[][] getBoard() {
+        return board;
+    }
+
     public Result destroyObstacle() throws IOException {
         if (!player.canDestroy()) {
             return Result.IS_RUNNING;
