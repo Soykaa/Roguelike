@@ -49,7 +49,7 @@ public class Application {
         return InputCommand.UNKNOWN_COMMAND;
     }
 
-    public void start() throws IOException, InterruptedException {
+    public void start() throws IOException {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
@@ -73,7 +73,7 @@ public class Application {
         }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         Application application;
         if (args.length > 0) {
             application = new Application(args[0]);
