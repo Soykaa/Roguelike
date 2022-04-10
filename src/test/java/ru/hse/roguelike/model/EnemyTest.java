@@ -13,15 +13,15 @@ public class EnemyTest {
 
         Assertions.assertEquals(9, player.getLives());
         enemyWeak.attack(player);
-        Assertions.assertEquals(8, player.getLives());
-        enemyStrong.attack(player);
         Assertions.assertEquals(7, player.getLives());
+        enemyStrong.attack(player);
+        Assertions.assertEquals(5, player.getLives());
         player.getBackpack().putItem(new Inventory(InventoryItem.PROTECTION));
         player.getBackpack().setNextActiveItem();
         enemyStrong.attack(player);
-        Assertions.assertEquals(7, player.getLives());
+        Assertions.assertEquals(4, player.getLives());
         enemyWeak.attack(player);
-        Assertions.assertEquals(7, player.getLives());
+        Assertions.assertEquals(3, player.getLives());
     }
 
     @Test

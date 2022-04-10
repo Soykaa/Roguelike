@@ -12,6 +12,9 @@ public abstract class Enemy extends GameCharacter {
 
     public void attack(Player player) {
         if (player.getBackpack().getActiveItem().getType() != InventoryItem.PROTECTION) {
+            player.decreaseLives(2);
+        }
+        if (player.getBackpack().getActiveItem().getType() == InventoryItem.PROTECTION) {
             player.decreaseLives(1);
         }
     }
