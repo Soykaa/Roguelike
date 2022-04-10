@@ -10,8 +10,9 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 import ru.hse.roguelike.controller.input.InputCommand;
-import ru.hse.roguelike.view.MainScreenViewConsole;
-import ru.hse.roguelike.view.GameRulesScreenViewConsole;
+import ru.hse.roguelike.view.console_view.ConsoleViewFactory;
+import ru.hse.roguelike.view.console_view.MainScreenViewConsole;
+import ru.hse.roguelike.view.console_view.GameRulesScreenViewConsole;
 
 /**
  * Application entry point, game start.
@@ -73,10 +74,8 @@ public class Application {
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
             terminal.clearScreen();
             terminal.setCursorVisible(false);
-            final TextGraphics textGraphics = terminal.newTextGraphics();
-            var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
-            var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            var interactionManager = new InteractionManager(filesPath, mainScreenView, gameRulesView, terminal);
+            var factory = new ConsoleViewFactory(terminal);
+            var interactionManager = new InteractionManager(filesPath, factory);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
                 InputCommand command = getCommand(keyStroke);

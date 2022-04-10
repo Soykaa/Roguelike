@@ -1,4 +1,4 @@
-package ru.hse.roguelike.view;
+package ru.hse.roguelike.view.abstract_view;
 
 import java.io.IOException;
 

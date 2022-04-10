@@ -1,4 +1,4 @@
-package ru.hse.roguelike.view;
+package ru.hse.roguelike.view.console_view;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
@@ -15,6 +15,7 @@ import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;

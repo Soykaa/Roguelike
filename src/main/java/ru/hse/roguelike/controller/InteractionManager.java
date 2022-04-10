@@ -7,8 +7,9 @@ import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.model.Result;
-import ru.hse.roguelike.view.MainScreenView;
-import ru.hse.roguelike.view.GameRulesScreenView;
+import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
+import ru.hse.roguelike.view.abstract_view.MainScreenView;
+import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
 
 /**
  * Responsible for all user actions outside the gameplay itself,
@@ -22,22 +23,19 @@ public class InteractionManager {
     private final GameRulesScreenView gameRulesView;
     private final Game game;
     public boolean isRunning = true;
-    private final Terminal terminal;
+    private final AbstractViewFactory factory;
 
     /**
      * Creates new InteractionManager instance.
      *
      * @param filesPath           config files path
-     * @param mainScreenView      MainScreenView object
-     * @param gameRulesScreenView GameRulesScreenView object
-     * @param terminal            Terminal object
+     * @param factory             AbstractViewFactory Implementation
      **/
-    public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
-                              Terminal terminal) {
-        this.mainScreenView = mainScreenView;
-        this.gameRulesView = gameRulesScreenView;
+    public InteractionManager(String filesPath, AbstractViewFactory factory) throws IOException {
+        this.mainScreenView = factory.createMainScreenView();
+        this.gameRulesView = factory.createGameRulesScreenView();
         this.mainScreenView.showMainScreen();
-        this.terminal = terminal;
+        this.factory = factory;
         this.game = new Game(filesPath);
     }
 
@@ -45,18 +43,15 @@ public class InteractionManager {
      * Creates new InteractionManager instance.
      * Used only for tests to provide opportunity to mock class Game.
      *
-     * @param mainScreenView      mainScreenView object
-     * @param gameRulesScreenView GameRulesScreenView object
-     * @param terminal            Terminal object
+     * @param factory             AbstractViewFactory Implementation
      * @param game                Game object
      */
 
-    public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
-                              Terminal terminal, Game game) {
-        this.mainScreenView = mainScreenView;
-        this.gameRulesView = gameRulesScreenView;
+    public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {
+        this.mainScreenView = factory.createMainScreenView();
+        this.gameRulesView = factory.createGameRulesScreenView();
         this.mainScreenView.showMainScreen();
-        this.terminal = terminal;
+        this.factory = factory;
         this.game = game;
     }
 
@@ -139,11 +134,11 @@ public class InteractionManager {
                         break;
                     case START_GAME_FROM_FILE:
                         screen = Screen.GAME;
-                        game.startGame(true, terminal);
+                        game.startGame(true, factory);
                         break;
                     case START_GAME:
                         screen = Screen.GAME;
-                        game.startGame(false, terminal);
+                        game.startGame(false, factory);
                         break;
                 }
         }
