@@ -10,6 +10,11 @@ import ru.hse.roguelike.model.Result;
 import ru.hse.roguelike.view.MainScreenView;
 import ru.hse.roguelike.view.GameRulesScreenView;
 
+/**
+ * Responsible for all user actions outside the gameplay itself,
+ * such as actions on the initial screen (request to start the game / display the rules / exit the application),
+ * as well as on the screen with the rules of the game.
+ **/
 public class InteractionManager {
     private Screen screen = Screen.MAIN_MENU;
     private final MainScreenView mainScreenView;
@@ -19,6 +24,14 @@ public class InteractionManager {
     public boolean isRunning = true;
     private final Terminal terminal;
 
+    /**
+     * Creates new InteractionManager instance.
+     *
+     * @param filesPath           config files path
+     * @param mainScreenView      MainScreenView object
+     * @param gameRulesScreenView GameRulesScreenView object
+     * @param terminal            Terminal object
+     **/
     public InteractionManager(String filesPath, MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,
                               Terminal terminal) {
         this.mainScreenView = mainScreenView;
@@ -29,8 +42,8 @@ public class InteractionManager {
     }
 
     /**
-     * Create new InteractionManager instance.
-     * Used only for tests to provide opportunity to mock class Game
+     * Creates new InteractionManager instance.
+     * Used only for tests to provide opportunity to mock class Game.
      *
      * @param mainScreenView      mainScreenView object
      * @param gameRulesScreenView GameRulesScreenView object
@@ -47,10 +60,20 @@ public class InteractionManager {
         this.game = game;
     }
 
+    /**
+     * Returns current screen.
+     *
+     * @return screen
+     **/
     public Screen getScreen() {
         return screen;
     }
 
+    /**
+     * Handles a keystroke on initial / rules / game screen.
+     *
+     * @param command keystroke to handle
+     **/
     public void processCommand(InputCommand command) throws IOException {
         switch (screen) {
             case MAIN_MENU:

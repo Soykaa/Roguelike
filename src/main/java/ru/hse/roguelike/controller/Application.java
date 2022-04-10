@@ -3,6 +3,7 @@ package ru.hse.roguelike.controller;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -12,19 +13,30 @@ import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.view.MainScreenViewConsole;
 import ru.hse.roguelike.view.GameRulesScreenViewConsole;
 
+/**
+ * Application entry point, game start.
+ **/
 public class Application {
     private final String filesPath;
 
+    /**
+     * Initialises path to files for level generation with empty string.
+     **/
     public Application() {
         this.filesPath = "";
     }
 
+    /**
+     * Initialises path to files for level generation with the given value.
+     *
+     * @param filesPath config files path
+     **/
     public Application(String filesPath) {
         this.filesPath = filesPath;
     }
 
     private InputCommand getCommand(KeyStroke keyStroke) {
-        var key = keyStroke.getKeyType();
+        KeyType key = keyStroke.getKeyType();
         switch (key) {
             case ArrowDown:
                 return InputCommand.DOWN;
@@ -50,6 +62,11 @@ public class Application {
         return InputCommand.UNKNOWN_COMMAND;
     }
 
+    /**
+     * Starts the application, creates some necessary entities.
+     *
+     * @throws IOException in case of terminal creation error
+     **/
     public void start() throws IOException {
         var defaultTerminalFactory = new DefaultTerminalFactory();
         defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
@@ -73,6 +90,11 @@ public class Application {
         }
     }
 
+    /**
+     * Entry point.
+     *
+     * @param args arguments
+     **/
     public static void main(String[] args) {
         Application application;
         if (args.length > 0) {
