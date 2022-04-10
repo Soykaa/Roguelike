@@ -1,6 +1,5 @@
 package ru.hse.roguelike.model;
 
-import com.googlecode.lanterna.terminal.Terminal;
 import org.json.JSONObject;
 import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Characters.Empty;
@@ -19,10 +18,10 @@ import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
-import ru.hse.roguelike.view.GameScreenView;
+import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
+import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 import org.json.JSONArray;
-import ru.hse.roguelike.view.GameScreenViewConsole;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,25 +41,25 @@ public class LevelGenerator {
     private int levelNumber = -1;
     private final int maxLevelAmount;
     private final List<LevelCharacteristic> levelCharacteristics = new ArrayList<>();
-    private final Terminal terminal;
+    private final AbstractViewFactory factory;
     private Player player;
     Random rand = new Random();
 
-    public LevelGenerator(Terminal terminal, int maxLevelAmount) {
+    public LevelGenerator(AbstractViewFactory factory, int maxLevelAmount) {
         this.filesPath = Optional.empty();
         levelCharacteristics.add(new FirstLevelCharacteristic());
         levelCharacteristics.add(new SecondLevelCharacteristic());
         levelCharacteristics.add(new ThirdLevelCharacteristic());
         levelCharacteristics.add(new FourthLevelCharacteristic());
         levelCharacteristics.add(new FifthLevelCharacteristic());
-        this.terminal = terminal;
+        this.factory = factory;
         this.maxLevelAmount = maxLevelAmount;
         this.player = generateRandomPlayer();
     }
 
-    public LevelGenerator(String filePath, Terminal terminal) {
+    public LevelGenerator(String filePath, AbstractViewFactory factory) {
         this.filesPath = Optional.of(filePath);
-        this.terminal = terminal;
+        this.factory = factory;
         this.maxLevelAmount = Objects.requireNonNull(
                 new File(System.getProperty("user.dir") + "/" + filePath).listFiles()).length;
     }
@@ -165,7 +164,7 @@ public class LevelGenerator {
         }
         GameScreenView gameScreenView = null;
         try {
-            gameScreenView = new GameScreenViewConsole(terminal);
+            gameScreenView = factory.createGameScreenView();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -233,7 +232,7 @@ public class LevelGenerator {
 
         GameScreenView gameScreenView = null;
         try {
-            gameScreenView = new GameScreenViewConsole(terminal);
+            gameScreenView = factory.createGameScreenView();
         } catch (IOException e) {
             e.printStackTrace();
         }

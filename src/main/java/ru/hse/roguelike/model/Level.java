@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model;
 
 import ru.hse.roguelike.model.Characters.*;
-import ru.hse.roguelike.view.GameScreenView;
+import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 import java.io.IOException;
 import java.util.List;

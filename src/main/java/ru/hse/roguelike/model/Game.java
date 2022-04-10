@@ -3,6 +3,7 @@ package ru.hse.roguelike.model;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 
 public class Game {
     private LevelGenerator levelGenerator;
@@ -13,11 +14,11 @@ public class Game {
         this.levelFilesPath = levelFilesPath;
     }
 
-    public void startGame(boolean generateLevelsFromFile, Terminal terminal) {
+    public void startGame(boolean generateLevelsFromFile, AbstractViewFactory factory) {
         if (generateLevelsFromFile) {
-            levelGenerator = new LevelGenerator(levelFilesPath, terminal);
+            levelGenerator = new LevelGenerator(levelFilesPath, factory);
         } else {
-            levelGenerator = new LevelGenerator(terminal, 5);
+            levelGenerator = new LevelGenerator(factory, 5);
         }
         if (!levelGenerator.hasNextLevel()) {
             throw new RuntimeException("Wrong level generation");

@@ -1,4 +1,4 @@
-package ru.hse.roguelike.view;
+package ru.hse.roguelike.view.console_view;
 
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
@@ -6,14 +6,15 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
 
 public class GameRulesScreenViewConsole implements GameRulesScreenView {
     private final Terminal terminal;
     private final TextGraphics textGraphics;
 
-    public GameRulesScreenViewConsole(Terminal terminal, TextGraphics textGraphics) {
+    public GameRulesScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
-        this.textGraphics = textGraphics;
+        this.textGraphics = terminal.newTextGraphics();
     }
 
     @Override

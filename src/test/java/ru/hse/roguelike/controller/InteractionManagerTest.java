@@ -1,8 +1,6 @@
 package ru.hse.roguelike.controller;
 
-import com.googlecode.lanterna.terminal.Terminal;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,10 +8,11 @@ import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.model.Result;
-import ru.hse.roguelike.view.GameRulesScreenView;
-import ru.hse.roguelike.view.GameRulesScreenViewConsole;
-import ru.hse.roguelike.view.MainScreenView;
-import ru.hse.roguelike.view.MainScreenViewConsole;
+import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
+import ru.hse.roguelike.view.console_view.ConsoleViewFactory;
+import ru.hse.roguelike.view.console_view.GameRulesScreenViewConsole;
+import ru.hse.roguelike.view.abstract_view.MainScreenView;
+import ru.hse.roguelike.view.console_view.MainScreenViewConsole;
 
 import java.io.IOException;
 
@@ -21,20 +20,25 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class InteractionManagerTest {
     MainScreenView mainScreenView;
     GameRulesScreenView gameRulesScreenView;
+    ConsoleViewFactory factory;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
+        factory = Mockito.mock(ConsoleViewFactory.class);
         mainScreenView = Mockito.mock(MainScreenViewConsole.class);
         gameRulesScreenView = Mockito.mock(GameRulesScreenViewConsole.class);
+        when(factory.createGameRulesScreenView()).thenReturn(gameRulesScreenView);
+        when(factory.createMainScreenView()).thenReturn(mainScreenView);
     }
 
     @Test
     public void testMainMenuScreenDown() throws IOException {
-        InteractionManager interactionManager = new InteractionManager("", mainScreenView, null, null);
+        InteractionManager interactionManager = new InteractionManager("", factory);
         verify(mainScreenView, times(1)).showMainScreen();
         Assertions.assertSame(interactionManager.getScreen(), Screen.MAIN_MENU);
         interactionManager.processCommand(InputCommand.DOWN);
@@ -49,7 +53,7 @@ public class InteractionManagerTest {
 
     @Test
     public void testMainMenuScreenUp() throws IOException {
-        InteractionManager interactionManager = new InteractionManager("", mainScreenView, null, null);
+        InteractionManager interactionManager = new InteractionManager("", factory);
         verify(mainScreenView, times(1)).showMainScreen();
         Assertions.assertSame(interactionManager.getScreen(), Screen.MAIN_MENU);
         interactionManager.processCommand(InputCommand.UP);
@@ -64,7 +68,7 @@ public class InteractionManagerTest {
 
     @Test
     public void testMainMenuAndGameRulesMenu() throws IOException {
-        InteractionManager interactionManager = new InteractionManager("", mainScreenView, gameRulesScreenView, null);
+        InteractionManager interactionManager = new InteractionManager("", factory);
         interactionManager.processCommand(InputCommand.DOWN);
         interactionManager.processCommand(InputCommand.DOWN);
         interactionManager.processCommand(InputCommand.ENTER);
@@ -78,9 +82,9 @@ public class InteractionManagerTest {
     @Test
     public void testMainMenuAndGame() throws IOException {
         Game game = Mockito.mock(Game.class);
-        InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesScreenView, null, game);
+        InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
-        verify(game, times(1)).startGame(false, null);
+        verify(game, times(1)).startGame(false, factory);
         Assertions.assertSame(interactionManager.getScreen(), Screen.GAME);
     }
 
@@ -88,7 +92,7 @@ public class InteractionManagerTest {
     public void testEndGame() throws IOException {
         Game game = Mockito.mock(Game.class);
         doReturn(Result.VICTORY).when(game).manageGame(any(Action.class));
-        InteractionManager interactionManager = new InteractionManager(mainScreenView, gameRulesScreenView, null, game);
+        InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
         interactionManager.processCommand(InputCommand.UP);
         verify(mainScreenView, times(2)).showMainScreen();

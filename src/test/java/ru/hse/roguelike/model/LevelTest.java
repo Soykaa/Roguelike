@@ -4,7 +4,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.hse.roguelike.model.Characters.*;
-import ru.hse.roguelike.view.GameScreenViewConsole;
+import ru.hse.roguelike.view.console_view.GameScreenViewConsole;
 
 import java.io.IOException;
 import java.util.HashMap;
