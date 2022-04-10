@@ -6,7 +6,7 @@ import ru.hse.roguelike.model.Characters.*;
 
 public class EnemyTest {
     @Test
-    public void attackTest() {
+    public void simpleAttackTest() {
         var player = new Player(9);
         var enemyWeak = new EnemyWeak(5, new Coordinates(-1, 0));
         var enemyStrong = new EnemyStrong();
@@ -16,12 +16,21 @@ public class EnemyTest {
         Assertions.assertEquals(7, player.getLives());
         enemyStrong.attack(player);
         Assertions.assertEquals(5, player.getLives());
+    }
+
+    @Test
+    public void attackWithProtectionTest() {
+        var player = new Player(9);
+        var enemyWeak = new EnemyWeak(5, new Coordinates(1, 0));
+        var enemyStrong = new EnemyStrong();
+
+        Assertions.assertEquals(9, player.getLives());
         player.getBackpack().putItem(new Inventory(InventoryItem.PROTECTION));
         player.getBackpack().setNextActiveItem();
         enemyStrong.attack(player);
-        Assertions.assertEquals(4, player.getLives());
+        Assertions.assertEquals(8, player.getLives());
         enemyWeak.attack(player);
-        Assertions.assertEquals(3, player.getLives());
+        Assertions.assertEquals(7, player.getLives());
     }
 
     @Test
