@@ -1,19 +1,33 @@
 package ru.hse.roguelike.model;
 
-import com.googlecode.lanterna.terminal.Terminal;
-
-import java.io.IOException;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 
+import java.io.IOException;
+
+/**
+ * Represents game itself.
+ **/
 public class Game {
     private LevelGenerator levelGenerator;
     private Level currentLevel;
     private final String levelFilesPath;
 
+    /**
+     * Creates new Game instance.
+     *
+     * @param levelFilesPath path to config files
+     **/
     public Game(String levelFilesPath) {
         this.levelFilesPath = levelFilesPath;
     }
 
+    /**
+     * Starts game.
+     * While the player is alive, or it's not game end - runs new levels one by one.
+     *
+     * @param generateLevelsFromFile flag, determines if the level should be generated from file or not
+     * @param factory                view factory
+     **/
     public void startGame(boolean generateLevelsFromFile, AbstractViewFactory factory) {
         if (generateLevelsFromFile) {
             levelGenerator = new LevelGenerator(levelFilesPath, factory);
@@ -26,6 +40,13 @@ public class Game {
         currentLevel = levelGenerator.nextLevel();
     }
 
+    /**
+     * Determines current game state after some action.
+     *
+     * @param action action to make
+     * @return current game state
+     * @throws IOException in case of view error
+     **/
     public Result manageGame(Action action) throws IOException {
         Result result = makeAction(action);
         if (result == Result.VICTORY) {
@@ -39,6 +60,13 @@ public class Game {
         return result;
     }
 
+    /**
+     * Makes passed action.
+     *
+     * @param action action to make
+     * @return current game state
+     * @throws IOException in case of view error
+     **/
     public Result makeAction(Action action) throws IOException {
         Result result = Result.IS_RUNNING;
         switch (action) {

@@ -7,12 +7,25 @@ public class EnemyWeak extends Enemy {
     int maxSteps;
     Coordinates shift;
 
+    /**
+     * Creates new EnemyWeak instance.
+     * Calls parent constructor.
+     * Initialises fields with the given values.
+     *
+     * @param maxSteps maximum number of steps in the current direction
+     * @param shift    steps direction
+     **/
     public EnemyWeak(int maxSteps, Coordinates shift) {
         super(CharacterType.ENEMY_WEAK);
         this.maxSteps = maxSteps;
         this.shift = shift;
     }
 
+    /**
+     * Makes next move.
+     *
+     * @return new coordinates
+     **/
     @Override
     public Coordinates makeNextMove() {
         if (stepCount < maxSteps) {

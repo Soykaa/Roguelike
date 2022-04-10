@@ -25,7 +25,7 @@ public enum InputCommand {
      **/
     ENTER,
     /**
-     * Backslash key
+     * Backslash key.
      **/
     BACK_SLASH,
     /**

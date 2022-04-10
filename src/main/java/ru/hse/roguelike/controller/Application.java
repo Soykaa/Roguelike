@@ -21,6 +21,7 @@ public class Application {
     private final String filesPath;
 
     /**
+     * Creates new Application instance.
      * Initialises path to files for level generation with empty string.
      **/
     public Application() {

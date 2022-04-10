@@ -4,7 +4,14 @@ import ru.hse.roguelike.model.Characters.CharacterType;
 
 import java.util.Map;
 
+/**
+ * Represents characteristics of the second level.
+ **/
 public class SecondLevelCharacteristic extends LevelCharacteristic {
+    /**
+     * Creates new SecondLevelCharacteristic instance.
+     * Calls parent constructor.
+     **/
     public SecondLevelCharacteristic() {
         super(14, 12, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,

@@ -4,7 +4,14 @@ import ru.hse.roguelike.model.Characters.CharacterType;
 
 import java.util.Map;
 
+/**
+ * Represents characteristics of the first level.
+ **/
 public class FirstLevelCharacteristic extends LevelCharacteristic {
+    /**
+     * Creates new FirstLevelCharacteristic instance.
+     * Calls parent constructor.
+     **/
     public FirstLevelCharacteristic() {
         super(10, 10, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,

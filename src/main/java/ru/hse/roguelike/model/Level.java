@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents game level.
+ **/
 public class Level {
     private final GameCharacter[][] board;
     private final GameScreenView gameView;
@@ -16,6 +19,16 @@ public class Level {
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
+    /**
+     * Creates new Level instance.
+     *
+     * @param board           game board
+     * @param gameView        game view
+     * @param player          player
+     * @param enemies         enemies with their coordinates
+     * @param realShelterType shelter type
+     * @param victoryPoints   number of points to win
+     **/
     public Level(GameCharacter[][] board, GameScreenView gameView, Player player,
                  Map<Enemy, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
         this.board = board;
@@ -122,6 +135,14 @@ public class Level {
         return Result.IS_RUNNING;
     }
 
+    /**
+     * Moves game characters.
+     *
+     * @param dx delta to move on axis X
+     * @param dy delta to move on axis Y
+     * @return current game state
+     * @throws IOException in case of view error
+     **/
     public Result moveCharacters(int dx, int dy) throws IOException {
         Result movePlayerResult = movePlayer(dx, dy);
         if (movePlayerResult != Result.IS_RUNNING) {
@@ -130,11 +151,22 @@ public class Level {
         return moveEnemies();
     }
 
+    /**
+     * Changes player equiption.
+     *
+     * @throws IOException in case of view error
+     **/
     public void changeEquiption() throws IOException {
         player.getBackpack().setNextActiveItem();
         gameView.showBackpack(player.getBackpack());
     }
 
+    /**
+     * Destroys obstacle, if it's possible.
+     *
+     * @return current game state
+     * @throws IOException in case of view error
+     **/
     public Result destroyObstacle() throws IOException {
         if (!player.canDestroy()) {
             return Result.IS_RUNNING;

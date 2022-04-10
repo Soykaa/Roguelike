@@ -37,6 +37,6 @@ public class EnemyTest {
         var weakEnemy = new EnemyWeak(0, new Coordinates(1, 1));
         Coordinates coordinates = weakEnemy.makeNextMove();
         Assertions.assertEquals(-1, coordinates.getX());
-        Assertions.assertEquals(-1, coordinates.getY());
+        Assertions.assertEquals(-1  , coordinates.getY());
     }
 }

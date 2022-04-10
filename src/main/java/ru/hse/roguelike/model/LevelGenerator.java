@@ -35,7 +35,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-
+/**
+ * Level generator.
+ **/
 public class LevelGenerator {
     private final Optional<String> filesPath;
     private int levelNumber = -1;
@@ -45,6 +47,13 @@ public class LevelGenerator {
     private Player player;
     Random rand = new Random();
 
+    /**
+     * Creates new LevelGenerator with predefined levels characteristics, creates player.
+     * Initialises fields with the given values.
+     *
+     * @param factory        view factory
+     * @param maxLevelAmount amount of levels
+     **/
     public LevelGenerator(AbstractViewFactory factory, int maxLevelAmount) {
         this.filesPath = Optional.empty();
         levelCharacteristics.add(new FirstLevelCharacteristic());
@@ -57,6 +66,13 @@ public class LevelGenerator {
         this.player = generateRandomPlayer();
     }
 
+    /**
+     * Creates new LevelGenerator with levels characteristics, located in the given files.
+     * Initialises fields with the given values.
+     *
+     * @param filePath path to config file
+     * @param factory  view factory
+     **/
     public LevelGenerator(String filePath, AbstractViewFactory factory) {
         this.filesPath = Optional.of(filePath);
         this.factory = factory;
@@ -64,6 +80,11 @@ public class LevelGenerator {
                 new File(System.getProperty("user.dir") + "/" + filePath).listFiles()).length;
     }
 
+    /**
+     * Determines if there is any next level.
+     *
+     * @return true if there is, false otherwise
+     **/
     public boolean hasNextLevel() {
         return levelNumber + 1 < maxLevelAmount;
     }
@@ -88,6 +109,11 @@ public class LevelGenerator {
         return new Points(points);
     }
 
+    /**
+     * Runs next level.
+     *
+     * @return next level
+     **/
     public Level nextLevel() {
         levelNumber++;
         if (filesPath.isEmpty()) {
@@ -172,6 +198,11 @@ public class LevelGenerator {
     }
 
 
+    /**
+     * Creates next level randomly according to existing characteristics.
+     *
+     * @return next level
+     **/
     public Level nextLevelRandom() {
         player.setPoints(0);
         player.getBackpack().clear();

@@ -4,7 +4,14 @@ import ru.hse.roguelike.model.Characters.CharacterType;
 
 import java.util.Map;
 
+/**
+ * Represents characteristics of the third level.
+ **/
 public class ThirdLevelCharacteristic extends LevelCharacteristic {
+    /**
+     * Creates new ThirdLevelCharacteristic instance.
+     * Calls parent constructor.
+     **/
     public ThirdLevelCharacteristic() {
         super(18, 14, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,

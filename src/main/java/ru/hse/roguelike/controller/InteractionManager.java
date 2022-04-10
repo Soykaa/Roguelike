@@ -28,8 +28,8 @@ public class InteractionManager {
     /**
      * Creates new InteractionManager instance.
      *
-     * @param filesPath           config files path
-     * @param factory             AbstractViewFactory Implementation
+     * @param filesPath config files path
+     * @param factory   AbstractViewFactory Implementation
      **/
     public InteractionManager(String filesPath, AbstractViewFactory factory) throws IOException {
         this.mainScreenView = factory.createMainScreenView();
@@ -43,8 +43,8 @@ public class InteractionManager {
      * Creates new InteractionManager instance.
      * Used only for tests to provide opportunity to mock class Game.
      *
-     * @param factory             AbstractViewFactory Implementation
-     * @param game                Game object
+     * @param factory AbstractViewFactory Implementation
+     * @param game    Game object
      */
 
     public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {
@@ -68,6 +68,7 @@ public class InteractionManager {
      * Handles a keystroke on initial / rules / game screen.
      *
      * @param command keystroke to handle
+     * @throws IOException in case of terminal creation error
      **/
     public void processCommand(InputCommand command) throws IOException {
         switch (screen) {
@@ -117,7 +118,7 @@ public class InteractionManager {
         }
     }
 
-    private void processCommandMainMenu(InputCommand command) throws IOException {
+    private void processCommandMainMenu(InputCommand command) {
         switch (command) {
             case UP:
             case DOWN:
