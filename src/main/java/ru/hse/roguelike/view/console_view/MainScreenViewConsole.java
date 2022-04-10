@@ -8,8 +8,12 @@ import ru.hse.roguelike.controller.SelectedItem;
 
 import java.io.IOException;
 import java.util.Map;
+
 import ru.hse.roguelike.view.abstract_view.MainScreenView;
 
+/**
+ * Main screen view.
+ **/
 public class MainScreenViewConsole implements MainScreenView {
     private final Terminal terminal;
     private final TextGraphics textGraphics;
@@ -26,6 +30,12 @@ public class MainScreenViewConsole implements MainScreenView {
         }
     }
 
+    /**
+     * Creates new MainScreenViewConsole instance.
+     *
+     * @param terminal terminal
+     * @throws IOException in case of view error
+     **/
     public MainScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
         this.textGraphics = terminal.newTextGraphics();
@@ -36,6 +46,9 @@ public class MainScreenViewConsole implements MainScreenView {
         currentItem = SelectedItem.START_GAME;
     }
 
+    /**
+     * Shows main screen.
+     **/
     @Override
     public void showMainScreen() {
         try {
@@ -61,6 +74,11 @@ public class MainScreenViewConsole implements MainScreenView {
 
     }
 
+    /**
+     * Sets selected menu item.
+     *
+     * @param item selected item
+     **/
     @Override
     public void setSelectedItem(SelectedItem item) {
         try {

@@ -6,17 +6,30 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+
 import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
 
+/**
+ * Game rules screen view.
+ **/
 public class GameRulesScreenViewConsole implements GameRulesScreenView {
     private final Terminal terminal;
     private final TextGraphics textGraphics;
 
+    /**
+     * Creates new GameRulesScreenViewConsole instance.
+     *
+     * @param terminal terminal
+     * @throws IOException in case of view error
+     **/
     public GameRulesScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
         this.textGraphics = terminal.newTextGraphics();
     }
 
+    /**
+     * Shows game rules.
+     **/
     @Override
     public void showGameRules() {
         try {

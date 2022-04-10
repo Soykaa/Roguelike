@@ -17,6 +17,9 @@ import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
+/**
+ * Game screen view.
+ **/
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;
     private final Screen screen;
@@ -28,6 +31,12 @@ public class GameScreenViewConsole implements GameScreenView {
     private final RGB Lavender = new RGB(227, 211, 240);
     private final RGB White = new RGB(255, 255, 255);
 
+    /**
+     * Creates new GameScreenViewConsole instance.
+     *
+     * @param terminal terminal
+     * @throws IOException in case of view error
+     **/
     public GameScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
         this.screen = new TerminalScreen(terminal);
@@ -118,6 +127,12 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setCharacter(boardWidth - 1, 0, '\u2510');
     }
 
+    /**
+     * Shows game board.
+     *
+     * @param board board to show
+     * @throws IOException in case of view error
+     **/
     @Override
     public void showBoard(GameCharacter[][] board) throws IOException {
         this.board = board;
@@ -131,6 +146,15 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Moves game character.
+     *
+     * @param xFrom old coordinate on axis X
+     * @param yFrom old coordinate on axis Y
+     * @param xTo   new coordinate on axis X
+     * @param yTo   new coordinate on axis Y
+     * @throws IOException in case of view error
+     **/
     @Override
     public void moveCharacter(int xFrom, int yFrom, int xTo, int yTo) throws IOException {
         GameCharacter character = board[xFrom][yFrom];
@@ -138,6 +162,12 @@ public class GameScreenViewConsole implements GameScreenView {
         placeCharacter(character, xTo, yTo);
     }
 
+    /**
+     * Sets message to show.
+     *
+     * @param message message to show
+     * @throws IOException in case of view error
+     **/
     @Override
     public void setMessage(String message) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
@@ -147,6 +177,11 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Removes shown message.
+     *
+     * @throws IOException in case of view error
+     **/
     @Override
     public void removeMessage() throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
@@ -155,6 +190,13 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Removes character from cell with passed coordinates.
+     *
+     * @param x coordinate on axis X
+     * @param y coordinate on axis Y
+     * @throws IOException in case of view error
+     **/
     @Override
     public void removeCharacter(int x, int y) throws IOException {
         TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
@@ -162,6 +204,14 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Places character from cell with passed coordinates on the game board.
+     *
+     * @param character character to place
+     * @param x         coordinate on axis X
+     * @param y         coordinate on axis Y
+     * @throws IOException in case of view error
+     **/
     @Override
     public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
         TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
@@ -169,6 +219,13 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Shows points.
+     *
+     * @param currentPoints current number of points
+     * @param totalPoints   total number of points
+     * @throws IOException in case of view error
+     **/
     @Override
     public void showPoints(int currentPoints, int totalPoints) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
@@ -178,6 +235,12 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Shows lives.
+     *
+     * @param lives number of lives
+     * @throws IOException in case of view error
+     **/
     @Override
     public void showLives(int lives) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
@@ -187,6 +250,12 @@ public class GameScreenViewConsole implements GameScreenView {
         screen.refresh();
     }
 
+    /**
+     * Shows backpack with current active item.
+     *
+     * @param backpack backpack
+     * @throws IOException in case of view error
+     **/
     @Override
     public void showBackpack(Backpack backpack) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
