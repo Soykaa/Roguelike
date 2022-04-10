@@ -13,7 +13,7 @@ public class GameTest {
     @Test
     public void simpleGameTest() throws IOException {
         var game = new Game("");
-        game.startGame(false, new ConsoleViewFactory( new DefaultVirtualTerminal()));
+        game.startGame(false, new ConsoleViewFactory(new DefaultVirtualTerminal()));
         Result result = game.makeAction(Action.CHANGE_EQUIPTION);
         Assertions.assertEquals(result.toString(), "IS_RUNNING");
     }
