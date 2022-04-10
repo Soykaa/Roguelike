@@ -47,17 +47,17 @@ public class Game {
      * @return current game state
      * @throws IOException in case of view error
      **/
-    public Result manageGame(Action action) throws IOException {
-        Result result = makeAction(action);
-        if (result == Result.VICTORY) {
+    public GameState manageGame(Action action) throws IOException {
+        GameState gameState = makeAction(action);
+        if (gameState == GameState.VICTORY) {
             if (levelGenerator.hasNextLevel()) {
                 currentLevel = levelGenerator.nextLevel();
-                return Result.IS_RUNNING;
+                return GameState.IS_RUNNING;
             } else {
-                return result;
+                return gameState;
             }
         }
-        return result;
+        return gameState;
     }
 
     /**
@@ -67,28 +67,28 @@ public class Game {
      * @return current game state
      * @throws IOException in case of view error
      **/
-    public Result makeAction(Action action) throws IOException {
-        Result result = Result.IS_RUNNING;
+    public GameState makeAction(Action action) throws IOException {
+        GameState gameState = GameState.IS_RUNNING;
         switch (action) {
             case DESTROY:
-                result = currentLevel.destroyObstacle();
+                gameState = currentLevel.destroyObstacle();
                 break;
             case MOVE_DOWN:
-                result = currentLevel.moveCharacters(0, 1);
+                gameState = currentLevel.moveCharacters(0, 1);
                 break;
             case MOVE_LEFT:
-                result = currentLevel.moveCharacters(-1, 0);
+                gameState = currentLevel.moveCharacters(-1, 0);
                 break;
             case MOVE_RIGHT:
-                result = currentLevel.moveCharacters(1, 0);
+                gameState = currentLevel.moveCharacters(1, 0);
                 break;
             case MOVE_UP:
-                result = currentLevel.moveCharacters(0, -1);
+                gameState = currentLevel.moveCharacters(0, -1);
                 break;
             case CHANGE_EQUIPTION:
                 currentLevel.changeEquiption();
                 break;
         }
-        return result;
+        return gameState;
     }
 }

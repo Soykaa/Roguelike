@@ -1,6 +1,5 @@
 package ru.hse.roguelike.model;
 
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.virtual.DefaultVirtualTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ public class LevelTest {
         var level = new Level(board, new GameScreenViewConsole(new DefaultVirtualTerminal()), player, new HashMap<>(), CharacterType.SHELTER_LAVENDER, 5);
         level.moveCharacters(1, 0);
         Assertions.assertEquals(5, player.getPoints());
-        Assertions.assertEquals(Result.IS_RUNNING, level.destroyObstacle());
+        Assertions.assertEquals(GameState.IS_RUNNING, level.destroyObstacle());
         level.moveCharacters(-1, 1);
         Assertions.assertEquals(2, player.getBackpack().getAllItems().size());
         level.changeEquiption();

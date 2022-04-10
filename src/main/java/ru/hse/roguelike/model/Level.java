@@ -69,7 +69,7 @@ public class Level {
         return false;
     }
 
-    private Result movePlayer(int dx, int dy) throws IOException {
+    private GameState movePlayer(int dx, int dy) throws IOException {
         Coordinates currentCoordinates = player.getCurrentCoordinates();
         int newX = currentCoordinates.getX() + dx;
         int newY = currentCoordinates.getY() + dy;
@@ -100,17 +100,17 @@ public class Level {
                     playerShelter = CharacterType.SHELTER_YELLOW;
                     break;
                 default:
-                    return Result.IS_RUNNING;
+                    return GameState.IS_RUNNING;
             }
             moveCharacter(player, currentCoordinates, newX, newY);
             if (player.getPoints() >= victoryPoints) {
-                return Result.VICTORY;
+                return GameState.VICTORY;
             }
         }
-        return Result.IS_RUNNING;
+        return GameState.IS_RUNNING;
     }
 
-    private Result moveEnemies() throws IOException {
+    private GameState moveEnemies() throws IOException {
         for (var entry : enemies.entrySet()) {
             Enemy enemy = entry.getKey();
             Coordinates coordinates = entry.getValue();
@@ -129,10 +129,10 @@ public class Level {
             }
             gameView.showLives(player.getLives());
             if (player.getLives() <= 0) {
-                return Result.DEFEAT;
+                return GameState.DEFEAT;
             }
         }
-        return Result.IS_RUNNING;
+        return GameState.IS_RUNNING;
     }
 
     /**
@@ -143,10 +143,10 @@ public class Level {
      * @return current game state
      * @throws IOException in case of view error
      **/
-    public Result moveCharacters(int dx, int dy) throws IOException {
-        Result movePlayerResult = movePlayer(dx, dy);
-        if (movePlayerResult != Result.IS_RUNNING) {
-            return movePlayerResult;
+    public GameState moveCharacters(int dx, int dy) throws IOException {
+        GameState movePlayerGameState = movePlayer(dx, dy);
+        if (movePlayerGameState != GameState.IS_RUNNING) {
+            return movePlayerGameState;
         }
         return moveEnemies();
     }
@@ -167,9 +167,9 @@ public class Level {
      * @return current game state
      * @throws IOException in case of view error
      **/
-    public Result destroyObstacle() throws IOException {
+    public GameState destroyObstacle() throws IOException {
         if (!player.canDestroy()) {
-            return Result.IS_RUNNING;
+            return GameState.IS_RUNNING;
         }
         List<Coordinates> neighbours = List.of(new Coordinates(1, 0),
                 new Coordinates(-1, 0),
@@ -187,9 +187,9 @@ public class Level {
             gameView.showPoints(player.getPoints(), victoryPoints);
             gameView.removeCharacter(x, y);
             if (player.getPoints() >= victoryPoints) {
-                return Result.VICTORY;
+                return GameState.VICTORY;
             }
         }
-        return Result.IS_RUNNING;
+        return GameState.IS_RUNNING;
     }
 }

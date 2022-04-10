@@ -2,11 +2,10 @@ package ru.hse.roguelike.controller;
 
 import java.io.IOException;
 
-import com.googlecode.lanterna.terminal.Terminal;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
-import ru.hse.roguelike.model.Result;
+import ru.hse.roguelike.model.GameState;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 import ru.hse.roguelike.view.abstract_view.MainScreenView;
 import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
@@ -92,27 +91,27 @@ public class InteractionManager {
     }
 
     private void processCommandGame(InputCommand command) throws IOException {
-        Result result = Result.IS_RUNNING;
+        GameState gameState = GameState.IS_RUNNING;
         switch (command) {
             case UP:
-                result = game.manageGame(Action.MOVE_UP);
+                gameState = game.manageGame(Action.MOVE_UP);
                 break;
             case DOWN:
-                result = game.manageGame(Action.MOVE_DOWN);
+                gameState = game.manageGame(Action.MOVE_DOWN);
                 break;
             case LEFT:
-                result = game.manageGame(Action.MOVE_LEFT);
+                gameState = game.manageGame(Action.MOVE_LEFT);
                 break;
             case RIGHT:
-                result = game.manageGame(Action.MOVE_RIGHT);
+                gameState = game.manageGame(Action.MOVE_RIGHT);
                 break;
-            case BACK_SLASH:
+            case BACKSLASH:
                 game.manageGame(Action.CHANGE_EQUIPTION);
                 break;
             case SPACE:
                 game.manageGame(Action.DESTROY);
         }
-        if (result != Result.IS_RUNNING) {
+        if (gameState != GameState.IS_RUNNING) {
             screen = Screen.MAIN_MENU;
             mainScreenView.showMainScreen();
         }

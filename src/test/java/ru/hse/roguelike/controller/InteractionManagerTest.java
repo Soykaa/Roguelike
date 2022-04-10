@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
-import ru.hse.roguelike.model.Result;
+import ru.hse.roguelike.model.GameState;
 import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
 import ru.hse.roguelike.view.console_view.ConsoleViewFactory;
 import ru.hse.roguelike.view.console_view.GameRulesScreenViewConsole;
@@ -91,7 +91,7 @@ public class InteractionManagerTest {
     @Test
     public void testEndGame() throws IOException {
         Game game = Mockito.mock(Game.class);
-        doReturn(Result.VICTORY).when(game).manageGame(any(Action.class));
+        doReturn(GameState.VICTORY).when(game).manageGame(any(Action.class));
         InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
         interactionManager.processCommand(InputCommand.UP);

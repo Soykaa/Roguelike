@@ -3,7 +3,7 @@ package ru.hse.roguelike.model;
 /**
  * Enum class for possible game states.
  **/
-public enum Result {
+public enum GameState {
     /**
      * Player victory.
      **/

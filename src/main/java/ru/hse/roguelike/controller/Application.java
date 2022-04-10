@@ -1,18 +1,14 @@
 package ru.hse.roguelike.controller;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-
-import java.io.IOException;
-
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.view.console_view.ConsoleViewFactory;
-import ru.hse.roguelike.view.console_view.MainScreenViewConsole;
-import ru.hse.roguelike.view.console_view.GameRulesScreenViewConsole;
+
+import java.io.IOException;
 
 /**
  * Application entry point, game start.
@@ -57,7 +53,7 @@ public class Application {
                     return InputCommand.SPACE;
                 }
                 if (keyStroke.getCharacter().equals('/')) {
-                    return InputCommand.BACK_SLASH;
+                    return InputCommand.BACKSLASH;
                 }
                 break;
         }
