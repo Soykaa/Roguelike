@@ -39,6 +39,5 @@ public class GameRulesScreenViewConsole implements GameRulesScreenView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

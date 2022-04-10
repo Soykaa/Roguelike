@@ -2,7 +2,6 @@ package ru.hse.roguelike.model.LevelCharacteristics;
 
 import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Coordinates;
-import ru.hse.roguelike.model.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public abstract class LevelCharacteristic {
         this.ySize = ySize;
         this.charactersToPlace = charactersToPlace;
         this.shelterType = shelterType;
-        for (int i = 0; i < xSize; i++){
+        for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 emptyCells.add(new Coordinates(i, j));
             }

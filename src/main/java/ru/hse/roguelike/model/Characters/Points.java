@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model.Characters;
 
 public class Points extends GameCharacter {
-    private int numberOfPoints;
+    private final int numberOfPoints;
 
     public Points(int numberOfPoints) {
         super(CharacterType.POINTS);

@@ -10,7 +10,6 @@ public class ThirdLevelCharacteristic extends LevelCharacteristic {
                         CharacterType.POINTS, 10,
                         CharacterType.PLAYER, 1,
                         CharacterType.ENEMY_WEAK, 5,
-//                        CharacterType.ENEMY_STRONG, 2,
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 2,
                         CharacterType.SHELTER_PINK, 2,

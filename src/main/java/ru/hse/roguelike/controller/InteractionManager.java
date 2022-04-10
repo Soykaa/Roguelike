@@ -31,10 +31,11 @@ public class InteractionManager {
     /**
      * Create new InteractionManager instance.
      * Used only for tests to provide opportunity to mock class Game
-     * @param mainScreenView mainScreenView object
+     *
+     * @param mainScreenView      mainScreenView object
      * @param gameRulesScreenView GameRulesScreenView object
-     * @param terminal Terminal object
-     * @param game Game object
+     * @param terminal            Terminal object
+     * @param game                Game object
      */
 
     public InteractionManager(MainScreenView mainScreenView, GameRulesScreenView gameRulesScreenView,

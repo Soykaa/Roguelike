@@ -51,7 +51,7 @@ public class Application {
     }
 
     public void start() throws IOException {
-        DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+        var defaultTerminalFactory = new DefaultTerminalFactory();
         defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
         try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
             terminal.clearScreen();
@@ -59,10 +59,10 @@ public class Application {
             final TextGraphics textGraphics = terminal.newTextGraphics();
             var mainScreenView = new MainScreenViewConsole(terminal, textGraphics);
             var gameRulesView = new GameRulesScreenViewConsole(terminal, textGraphics);
-            InteractionManager interactionManager = new InteractionManager(filesPath, mainScreenView, gameRulesView, terminal);
+            var interactionManager = new InteractionManager(filesPath, mainScreenView, gameRulesView, terminal);
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
-                var command = getCommand(keyStroke);
+                InputCommand command = getCommand(keyStroke);
                 if (command != InputCommand.UNKNOWN_COMMAND)
                     interactionManager.processCommand(command);
                 if (!interactionManager.isRunning) {

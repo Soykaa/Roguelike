@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Level {
-    private GameCharacter[][] board;
-    private GameScreenView gameView;
-    private Player player;
+    private final GameCharacter[][] board;
+    private final GameScreenView gameView;
+    private final Player player;
     private final int victoryPoints;
-    private Map<Enemy, Coordinates> enemies;
+    private final Map<Enemy, Coordinates> enemies;
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
@@ -99,9 +99,9 @@ public class Level {
 
     private Result moveEnemies() throws IOException {
         for (var entry : enemies.entrySet()) {
-            var enemy = entry.getKey();
-            var coordinates = entry.getValue();
-            var shift = enemy.makeNextMove();
+            Enemy enemy = entry.getKey();
+            Coordinates coordinates = entry.getValue();
+            Coordinates shift = enemy.makeNextMove();
             int newX = coordinates.getX() + shift.getX();
             int newY = coordinates.getY() + shift.getY();
             if (isValidCoordinates(newX, newY)) {
@@ -123,7 +123,7 @@ public class Level {
     }
 
     public Result moveCharacters(int dx, int dy) throws IOException {
-        var movePlayerResult = movePlayer(dx, dy);
+        Result movePlayerResult = movePlayer(dx, dy);
         if (movePlayerResult != Result.IS_RUNNING) {
             return movePlayerResult;
         }

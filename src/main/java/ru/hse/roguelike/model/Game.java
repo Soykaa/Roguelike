@@ -3,18 +3,17 @@ package ru.hse.roguelike.model;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class Game {
     private LevelGenerator levelGenerator;
     private Level currentLevel;
-    private String levelFilesPath = "";
+    private final String levelFilesPath;
 
     public Game(String levelFilesPath) {
         this.levelFilesPath = levelFilesPath;
     }
 
-    public void startGame(boolean generateLevelsFromFile, Terminal terminal) throws IOException {
+    public void startGame(boolean generateLevelsFromFile, Terminal terminal) {
         if (generateLevelsFromFile) {
             levelGenerator = new LevelGenerator(levelFilesPath, terminal);
         } else {
@@ -28,17 +27,15 @@ public class Game {
 
     public Result manageGame(Action action) throws IOException {
         Result result = makeAction(action);
-        switch (result) {
-            case VICTORY:
-                if (levelGenerator.hasNextLevel()) {
-                    currentLevel = levelGenerator.nextLevel();
-                    return Result.IS_RUNNING;
-                } else {
-                    return result;
-                }
-            default:
+        if (result == Result.VICTORY) {
+            if (levelGenerator.hasNextLevel()) {
+                currentLevel = levelGenerator.nextLevel();
+                return Result.IS_RUNNING;
+            } else {
                 return result;
+            }
         }
+        return result;
     }
 
     public Result makeAction(Action action) throws IOException {

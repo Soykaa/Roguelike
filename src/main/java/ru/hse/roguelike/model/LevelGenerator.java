@@ -61,7 +61,8 @@ public class LevelGenerator {
     public LevelGenerator(String filePath, Terminal terminal) {
         this.filesPath = Optional.of(filePath);
         this.terminal = terminal;
-        this.maxLevelAmount = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/" + filePath).listFiles()).length;
+        this.maxLevelAmount = Objects.requireNonNull(
+                new File(System.getProperty("user.dir") + "/" + filePath).listFiles()).length;
     }
 
     public boolean hasNextLevel() {
@@ -70,7 +71,7 @@ public class LevelGenerator {
 
     private Player generateRandomPlayer() {
         int lives = rand.nextInt(10) + 1;
-        return new Player(lives, 0);
+        return new Player(lives);
     }
 
     private EnemyWeak generateRandomEnemy() {
@@ -111,18 +112,20 @@ public class LevelGenerator {
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
             case ENEMY_WEAK:
                 JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-                return new EnemyWeak(jsonCharacter.getInt("maxSteps"), new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
+                return new EnemyWeak(jsonCharacter.getInt("maxSteps"),
+                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case ENEMY_STRONG:
                 return new EnemyStrong();
             case PLAYER:
                 JSONObject jsonCoordinates = jsonCharacter.getJSONObject("currentCoordinates");
                 if (levelNumber == 0) {
-                    player =  new Player(jsonCharacter.getInt("lives"), jsonCharacter.getInt("points"),
-                                new Coordinates(jsonCoordinates.getInt("x"), jsonCoordinates.getInt("y")));
+                    player = new Player(jsonCharacter.getInt("lives"),
+                            new Coordinates(jsonCoordinates.getInt("x"), jsonCoordinates.getInt("y")));
                 } else {
                     player.setPoints(0);
                     player.getBackpack().clear();
-                    player.setCurrentCoordinates(new Coordinates(jsonCoordinates.getInt("x"), jsonCoordinates.getInt("y")));
+                    player.setCurrentCoordinates(new Coordinates(jsonCoordinates.getInt("x"),
+                            jsonCoordinates.getInt("y")));
                 }
                 return player;
             default:
@@ -133,7 +136,8 @@ public class LevelGenerator {
     private Level nextLevelFromFile() {
         String json = "";
         try {
-            json = Files.readString(Path.of(System.getProperty("user.dir")+ "/" + filesPath.get() + "/level" + levelNumber));
+            json = Files.readString(Path.of(
+                    System.getProperty("user.dir") + "/" + filesPath.get() + "/level" + levelNumber));
         } catch (IOException e) {
             e.printStackTrace();
         }

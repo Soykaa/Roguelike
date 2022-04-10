@@ -6,20 +6,18 @@ import ru.hse.roguelike.model.InventoryItem;
 
 public class Player extends GameCharacter {
     private int lives;
-    private int points;
+    private int points = 0;
     private Coordinates currentCoordinates = new Coordinates(0, 0);
     private final Backpack backpack = new Backpack();
 
-    public Player(int lives, int points) {
+    public Player(int lives) {
         super(CharacterType.PLAYER);
         this.lives = lives;
-        this.points = points;
     }
 
-    public Player(int lives, int points, Coordinates coordinates) {
+    public Player(int lives, Coordinates coordinates) {
         super(CharacterType.PLAYER);
         this.lives = lives;
-        this.points = points;
         this.currentCoordinates = coordinates;
     }
 
