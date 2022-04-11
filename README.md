@@ -2,7 +2,7 @@
 
 ### Документация
 
-Документация а также правила игры
+Документация,  а также правила игры
 находятся [по ссылке](https://github.com/Soykaa/Roguelike/blob/task-02-game-imlementation/architecture/ARCHITECTURE.md).
 
 ### Тестирование и запуск
@@ -27,6 +27,9 @@
 
    `java -jar build/libs/*.jar [directory_path]`, где `directory_path` - путь до директории, в которой лежат файлы для генерации уровней (параметр опциональный)
 
+### Скриншоты
+![img.png](screenshots/img.png)
+
 ### Формат файлов для генерации уровней:
 
 ````
@@ -45,7 +48,7 @@
 `chelter_type` - тип убежища, которое действует на данном уровне
 
 `board` - игровое поле, задается как двумерный массив json представлений класса `GameCharacter`. 
-Длины всех массивов, отвечающих за строчку поля, должны быть одинаковыми.
+Длины всех массивов, отвечающих за строчку поля, должны быть одинаковыми
 
 `character_ij` - объект, который стоит в клетке с координатами i, j. Ниже представлен формат задания данных объектов для всех типов:
 
@@ -77,7 +80,7 @@
   "characterType":"INVENTORY"
 }
 ````
-`inventory_type` - `PROTECTION` для уменьшения урона врагов или `DESTROY` для разрушения препятствий
+`inventory_type` - _PROTECTION_ для уменьшения урона врагов или _DESTROY_ для разрушения препятствий
  
 - `Shelter`:
 
@@ -86,7 +89,7 @@
   "characterType": <shelter_type>
 }
 ````
-`shelter_type` - тип убежища, `SHELTER_LAVENDER`, `SHELTER_YELLOW` или `SHELTER_PINK`
+`shelter_type` - тип убежища, _SHELTER_LAVENDER_, _SHELTER_YELLOW_ или _SHELTER_PINK_
 
 - `EnemyStrong`:
 
