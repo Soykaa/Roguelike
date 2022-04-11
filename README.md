@@ -29,7 +29,7 @@
 
 ### Формат файлов для генерации уровней:
 
-````json lines
+````
 {
   "victoryPoints": <victory_points>, 
   "realShelterType": <shelter_type>,
@@ -51,7 +51,7 @@
 
 - `Points`:
 
-````json lines
+````
 {
   "numberOfPoints": <number_of_points>,
   "characterType": "POINTS"
@@ -61,7 +61,7 @@
 
 - `Obstacle`:
 
-````json lines
+````
 {
   "destroyBonus": <destroy_bonus>,
   "characterType": "OBSTACLE"
@@ -71,7 +71,7 @@
 
 - `Inventory`:
 
-````json lines
+````
 {
   "type": <inventory_type>,
   "characterType":"INVENTORY"
@@ -81,7 +81,7 @@
  
 - `Shelter`:
 
-````json lines
+````
 {
   "characterType": <shelter_type>
 }
@@ -90,14 +90,14 @@
 
 - `EnemyStrong`:
 
-````json lines
+````
 {
   "characterType":"ENEMY_STRONG"
 }
 ````
 - `EnemyWeak`:
 
-````json lines
+````
 {
   "maxSteps": <max_step>,
   "shift": {
@@ -112,7 +112,7 @@
 `shift_x, shift_y` - сдвиг по осям за один шаг
 - `Player`:
 
-````json lines
+````
 {
   "lives": <lives>,
   "points": <points>,
@@ -130,7 +130,7 @@
 `player_x, player_y` - координаты игрока на поле
 - `Empty`:
 
-````json
+````
 {
   "characterType": "EMPTY"
 }
