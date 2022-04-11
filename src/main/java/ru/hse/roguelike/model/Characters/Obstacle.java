@@ -6,7 +6,7 @@ import java.util.Random;
  * Represents obstacle.
  **/
 public class Obstacle extends GameCharacter {
-    int destroyBonus = 1;
+    private final int destroyBonus;
 
     /**
      * Creates new Obstacle instance.

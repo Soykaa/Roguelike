@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model;
 
 /**
- * Enum class for game action types.
+ * Enum class for player action types.
  **/
 public enum Action {
     /**

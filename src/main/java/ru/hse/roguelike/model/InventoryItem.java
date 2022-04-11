@@ -5,11 +5,11 @@ package ru.hse.roguelike.model;
  **/
 public enum InventoryItem {
     /**
-     * Items to destroy something.
+     * Items, which give player an opportunity to destroy obstacles.
      **/
     DESTROY,
     /**
-     * Items to protect player.
+     * Items, which reduce damage from the enemy attack.
      **/
     PROTECTION,
     /**

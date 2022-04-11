@@ -13,7 +13,7 @@ public class EnemyStrong extends Enemy {
             new Coordinates(1, 0),
             new Coordinates(0, -1),
             new Coordinates(0, 1));
-    Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Creates new EnemyStrong instance.

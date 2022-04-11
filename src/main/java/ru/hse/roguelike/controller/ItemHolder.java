@@ -25,7 +25,7 @@ public class ItemHolder {
     }
 
     /**
-     * Returns an item according to current keystroke.
+     * Change current option according to keystroke and returns it.
      *
      * @param command pressed key
      * @return selected item

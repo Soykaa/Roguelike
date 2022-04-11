@@ -45,7 +45,7 @@ public class LevelGenerator {
     private final List<LevelCharacteristic> levelCharacteristics = new ArrayList<>();
     private final AbstractViewFactory factory;
     private Player player;
-    Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Creates new LevelGenerator with predefined levels characteristics, creates player.

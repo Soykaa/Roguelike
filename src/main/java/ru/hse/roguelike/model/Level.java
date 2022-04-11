@@ -26,7 +26,7 @@ public class Level {
      * @param gameView        game view
      * @param player          player
      * @param enemies         enemies with their coordinates
-     * @param realShelterType shelter type
+     * @param realShelterType valid shelter type
      * @param victoryPoints   number of points to win
      **/
     public Level(GameCharacter[][] board, GameScreenView gameView, Player player,

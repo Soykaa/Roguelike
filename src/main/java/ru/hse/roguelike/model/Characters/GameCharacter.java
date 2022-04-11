@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model.Characters;
 
 /**
- * Represents game different types of game objects(characters).
+ * Represents different types of game objects(characters).
  **/
 public abstract class GameCharacter {
     private CharacterType characterType;

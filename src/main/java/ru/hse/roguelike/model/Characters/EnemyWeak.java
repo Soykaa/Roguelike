@@ -3,9 +3,9 @@ package ru.hse.roguelike.model.Characters;
 import ru.hse.roguelike.model.Coordinates;
 
 public class EnemyWeak extends Enemy {
-    int stepCount = 0;
-    int maxSteps;
-    Coordinates shift;
+    private int stepCount = 0;
+    private final int maxSteps;
+    private final Coordinates shift;
 
     /**
      * Creates new EnemyWeak instance.

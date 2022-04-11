@@ -42,6 +42,7 @@ public class Game {
 
     /**
      * Determines current game state after some action.
+     * In case of victory, starts new level if it exists.
      *
      * @param action action to make
      * @return current game state

@@ -26,10 +26,10 @@ public class GameScreenViewConsole implements GameScreenView {
     private final TextGraphics textGraphics;
     private GameCharacter[][] board;
 
-    private final RGB ChineseWhite = new RGB(215, 231, 230);
-    private final RGB LightYellow = new RGB(246, 225, 207);
-    private final RGB Lavender = new RGB(227, 211, 240);
-    private final RGB White = new RGB(255, 255, 255);
+    private final RGB chineseWhite = new RGB(215, 231, 230);
+    private final RGB lightYellow = new RGB(246, 225, 207);
+    private final RGB lavender = new RGB(227, 211, 240);
+    private final RGB white = new RGB(255, 255, 255);
 
     /**
      * Creates new GameScreenViewConsole instance.
@@ -70,15 +70,15 @@ public class GameScreenViewConsole implements GameScreenView {
                 textGraphics.putString(position, "  ");
                 break;
             case SHELTER_LAVENDER:
-                textGraphics.setBackgroundColor(Lavender);
+                textGraphics.setBackgroundColor(lavender);
                 textGraphics.putString(position, "  ");
                 break;
             case SHELTER_PINK:
-                textGraphics.setBackgroundColor(ChineseWhite);
+                textGraphics.setBackgroundColor(chineseWhite);
                 textGraphics.putString(position, "  ");
                 break;
             case SHELTER_YELLOW:
-                textGraphics.setBackgroundColor(LightYellow);
+                textGraphics.setBackgroundColor(lightYellow);
                 textGraphics.putString(position, "  ");
                 break;
             case POINTS:
@@ -90,7 +90,7 @@ public class GameScreenViewConsole implements GameScreenView {
                 textGraphics.putString(position, "??");
                 break;
             case PLAYER:
-                textGraphics.setForegroundColor(White);
+                textGraphics.setForegroundColor(white);
                 textGraphics.putString(position, "\uC6C3");
                 break;
             default:
