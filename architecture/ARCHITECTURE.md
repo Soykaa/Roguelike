@@ -322,6 +322,7 @@ Confusion: игрок может вводить врага в состояние
 - `DESTROY` - дает игроку возможность ломать препятствия
 - `PROTECTION` - уменьшает урон от атаки врага
 - `DEFAULT` - дефолтный (нейтральный) вариант
+- `CONFUSION` - дает возможность вводить врага в состояние конфузии
 
 ##### class Backpack
 
@@ -368,19 +369,15 @@ Confusion: игрок может вводить врага в состояние
 
   **Конструкторы**:
 
-    - `Enemy(CharacterType characterType)`
+    - `Enemy(CharacterType characterType, int visibility, int maxSteps, Coordinates shift)`
+    - `Enemy(CharacterType characterType, MobStrategy strategy)`
 
   **Методы**:
 
-    - `Coordinates makeNextMove()` - возвращает координаты, на которые должен передвинуться враг
+    - `Coordinates makeNextMove()` - возвращает сдвиг координаты, на которые должен передвинуться враг
     - `void attack(Player player)` - атакует игрока
 
-  **Наследники**:
-
-    - **EnemyWeak**
-    - **EnemyStrong**
-
-  Различаются механикой движения.
+  Механика движения задается с помощью MobStrategy в зависимости от типа врага.
 
 
 - **class Player**: игрок, управляется пользователем.
@@ -391,10 +388,14 @@ Confusion: игрок может вводить врага в состояние
     - `int points` - собранное количество очков
     - `Coordinates currentCoordinates` - текущие координаты
     - `Backpack backpack` - рюкзак игрока
+    - `int experienceDecreaseForNextLevel` - количество очков опыта, необходимых для перехода на следующий уровень
+    - `int waitForConfusion` - число шагов прежде чем инвентарь confusion можно использовать снова
+    - `int currentWait` - сколько шагов с последнего confusion уже прошло
+    - `int experience` - число очков опыта
 
   **Конструкторы**:
 
-    - `Player(int lives)`
+    - `Player(int lives, int experience)`
     - `Player(int lives, Coordinates coordinates)`
 
   **Методы**:
@@ -475,8 +476,9 @@ Confusion: игрок может вводить врага в состояние
 
 **Элементы**:
 
-- `ENEMY_WEAK`
-- `ENEMY_STRONG`
+- `ENEMY_AGGRESSIVE`
+- `ENEMY_PASSIVE`,
+- `ENEMY_COWARD`,
 - `OBSTACLE`
 - `EMPTY`
 - `SHELTER_LAVENDER`
@@ -592,7 +594,49 @@ _Примечание_: на каждом уровне является вали
 - `int getX(), int getY()` - возвращают координаты по соответствующим осям
 - `void setX(int x), void setY(int y)` - изменяют координаты по соответствующим осям на переданные значения
 
-<img src="images/model_component.png">
+##### abstract class MobStrategy
+
+Абстрактный класс для предоставления алгоритма передвижения врага.
+
+**Поля**:
+
+- `int visibility` - определяет, в каких пределах игрок будет виден для врага.
+- `int maxSteps` - сколько шагов по вертикали или горизонтали максимум может сделать враг.
+- `int stepCount` - сколько шагов уже было сделано в текущем направлении.
+- `Coordinates shift` - в каком направлении ходит враг в обычном состоянии.
+
+**Конструкторы**:
+
+- `MobStrategy(int visibility, int maxSteps, Coordinates shift)`
+- `MobStrategy()`
+
+**Методы**:
+
+- `Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates)` - рассчитать сдвиг координата врага в зависимости от местоположения игрока
+
+**Наследники**:
+
+- **class AggressiveMobStrategy**
+- **class PassiveMobStrategy**
+- **class CowardMobStrategy**
+
+##### abstract class EnemyDecorator
+
+Абстрактный класc, позволяющий декорировать класс врага.
+
+**Поля**:
+
+- `Enemy enemy` - объект врага, запросы к которому будут переадресовываться при необходимости.
+
+**Конструкторы**:
+
+- `EnemyDecorator(Enemy enemy)`
+
+**Наследники**:
+
+- **class ConfusedEnemyDecorator**
+
+<img src="images/model_component_v2.png">
 
 #### View
 
