@@ -3,13 +3,13 @@
 ### Документация
 
 Документация,  а также правила игры
-находятся [по ссылке](https://github.com/Soykaa/Roguelike/blob/task-02-game-imlementation/architecture/ARCHITECTURE.md).
+находятся [по ссылке](https://github.com/Soykaa/Roguelike/blob/task-03-mobs/architecture/ARCHITECTURE.md).
 
 ### Тестирование и запуск
 
 1. Выкачать нужную ветку репозитория:
 
-   `git clone --single-branch --branch task-02-game-imlementation https://github.com/Soykaa/Roguelike`
+   `git clone --single-branch --branch task-03-mobs https://github.com/Soykaa/Roguelike`
 
 
 2. Зайти в папку: `Roguelike`
