@@ -29,6 +29,7 @@ public class InteractionManager {
      *
      * @param filesPath config files path
      * @param factory   AbstractViewFactory Implementation
+     * @throws IOException in case of view error
      **/
     public InteractionManager(String filesPath, AbstractViewFactory factory) throws IOException {
         this.mainScreenView = factory.createMainScreenView();
@@ -44,6 +45,7 @@ public class InteractionManager {
      *
      * @param factory AbstractViewFactory Implementation
      * @param game    Game object
+     * @throws IOException in case of view error
      */
 
     public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {

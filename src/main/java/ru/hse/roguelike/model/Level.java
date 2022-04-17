@@ -21,7 +21,7 @@ public class Level {
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
-     private final List<Enemy> confusedEnemies = new ArrayList<>();
+    private final List<Enemy> confusedEnemies = new ArrayList<>();
     private final List<Enemy> killedEnemies = new ArrayList<>();
 
 
@@ -149,7 +149,7 @@ public class Level {
     }
 
     private void changeConfusedEnemies() {
-        for (var enemy: confusedEnemies) {
+        for (var enemy : confusedEnemies) {
             var coordinates = enemies.get(enemy);
             if (coordinates == null) {
                 return;
@@ -162,7 +162,7 @@ public class Level {
     }
 
     private void deleteKilledEnemies() {
-        for (var enemy: killedEnemies) {
+        for (var enemy : killedEnemies) {
             var coordinates = enemies.get(enemy);
             if (coordinates == null) {
                 return;

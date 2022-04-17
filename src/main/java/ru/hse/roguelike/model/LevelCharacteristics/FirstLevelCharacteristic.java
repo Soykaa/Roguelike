@@ -25,14 +25,4 @@ public class FirstLevelCharacteristic extends LevelCharacteristic {
                 )
         );
     }
-
-//    public FirstLevelCharacteristic() {
-//        super(10, 10, CharacterType.SHELTER_LAVENDER, Map.of(
-//                        CharacterType.POINTS, 1,
-//                        CharacterType.PLAYER, 1,
-//                        CharacterType.ENEMY_PASSIVE, 1,
-//                        CharacterType.OBSTACLE, 3
-//                )
-//        );
-//    }
 }

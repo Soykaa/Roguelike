@@ -24,5 +24,4 @@ public class ConfusedMobTest {
         newEnemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
         Assertions.assertTrue(newEnemyCoordinates.getX() - enemyCoordinates.getX() == 1 && newEnemyCoordinates.getY() - enemyCoordinates.getY() == 0);
     }
-
 }
