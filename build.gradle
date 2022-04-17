@@ -37,17 +37,6 @@ jar {
     }
 }
 
-//test {
-//    testLogging {
-//        events "skipped", "failed", "standardOut", "standardError"
-//        afterSuite { desc, result ->
-//            if (!desc.parent) { // will match the outermost suite
-//                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-//            }
-//        }
-//    }
-//}
-
 tasks.withType(Test) {
     testLogging {
         // set options for log level LIFECYCLE
