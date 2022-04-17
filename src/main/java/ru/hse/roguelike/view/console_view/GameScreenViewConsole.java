@@ -15,6 +15,7 @@ import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 /**
@@ -261,6 +262,9 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
         for (var backpackItem : backpack.getAllItems()) {
+            if (backpackItem.getType() == InventoryItem.DEFAULT) {
+                continue;
+            }
             if (backpackItem.getType() == backpack.getActiveItem().getType()) {
                 textGraphics.setBackgroundColor(ANSI.CYAN);
             } else {

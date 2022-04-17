@@ -82,6 +82,7 @@ public class InteractionManagerTest {
     @Test
     public void testMainMenuAndGame() throws IOException {
         Game game = Mockito.mock(Game.class);
+        when(game.startGame(false, factory)).thenReturn(GameState.IS_RUNNING);
         InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
         verify(game, times(1)).startGame(false, factory);
@@ -91,6 +92,7 @@ public class InteractionManagerTest {
     @Test
     public void testEndGame() throws IOException {
         Game game = Mockito.mock(Game.class);
+        when(game.startGame(false, factory)).thenReturn(GameState.IS_RUNNING);
         doReturn(GameState.VICTORY).when(game).manageGame(any(Action.class));
         InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
