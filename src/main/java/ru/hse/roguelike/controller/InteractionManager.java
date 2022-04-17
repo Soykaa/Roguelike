@@ -29,6 +29,7 @@ public class InteractionManager {
      *
      * @param filesPath config files path
      * @param factory   AbstractViewFactory Implementation
+     * @throws IOException in case of view error
      **/
     public InteractionManager(String filesPath, AbstractViewFactory factory) throws IOException {
         this.mainScreenView = factory.createMainScreenView();
@@ -44,8 +45,8 @@ public class InteractionManager {
      *
      * @param factory AbstractViewFactory Implementation
      * @param game    Game object
+     * @throws IOException in case of view error
      */
-
     public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {
         this.mainScreenView = factory.createMainScreenView();
         this.gameRulesView = factory.createGameRulesScreenView();
@@ -133,12 +134,18 @@ public class InteractionManager {
                         gameRulesView.showGameRules();
                         break;
                     case START_GAME_FROM_FILE:
+                        GameState state1 = game.startGame(true, factory);
+                        if (state1 != GameState.IS_RUNNING) {
+                            return;
+                        }
                         screen = Screen.GAME;
-                        game.startGame(true, factory);
                         break;
                     case START_GAME:
+                        GameState state2 = game.startGame(false, factory);
+                        if (state2 != GameState.IS_RUNNING) {
+                            return;
+                        }
                         screen = Screen.GAME;
-                        game.startGame(false, factory);
                         break;
                 }
         }

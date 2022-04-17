@@ -8,21 +8,28 @@ import ru.hse.roguelike.model.InventoryItem;
  * Represents player.
  **/
 public class Player extends GameCharacter {
+    private int experienceIncreaseForNextLevel = 5;
+    private int waitForConfusion = 5;
     private int lives;
     private int points = 0;
+    private int currentWait = 0;
+    private int experience = 0;
+
     private Coordinates currentCoordinates = new Coordinates(0, 0);
     private final Backpack backpack = new Backpack();
 
     /**
      * Creates new Player instance.
      * Calls parent constructor.
-     * Initialises lives with the given value.
+     * Initialises lives and experience with the given value.
      *
-     * @param lives lives
+     * @param lives      lives
+     * @param experience experience
      **/
-    public Player(int lives) {
+    public Player(int lives, int experience) {
         super(CharacterType.PLAYER);
         this.lives = lives;
+        this.experience = experience;
     }
 
     /**
@@ -118,5 +125,66 @@ public class Player extends GameCharacter {
      **/
     public boolean canDestroy() {
         return backpack.getActiveItem().getType() == InventoryItem.DESTROY;
+    }
+
+    /**
+     * Determines if enemy be confused by player.
+     *
+     * @return true if enemy can be confused by player, false otherwise
+     **/
+    public boolean canConfuse() {
+        return currentWait == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
+    }
+
+    /**
+     * Confuses enemy.
+     */
+    public void confuse() {
+        currentWait = waitForConfusion;
+        backpack.makeUnusable(InventoryItem.CONFUSION);
+    }
+
+    /**
+     * Returns experience increase for next level (in terms of experience points number).
+     *
+     * @return experience increase
+     **/
+    public int getExperienceIncreaseForNextLevel() {
+        return experienceIncreaseForNextLevel;
+    }
+
+    /**
+     * Returns experience.
+     *
+     * @return experience
+     **/
+    public int getExperience() {
+        return experience;
+    }
+
+    /**
+     * Decreases wait for the next confusion.
+     **/
+    public void decreaseWaitForConfusion() {
+        if (currentWait > 0) {
+            currentWait--;
+            return;
+        }
+        backpack.makeUsable(InventoryItem.CONFUSION);
+    }
+
+    /**
+     * Increases player experience.
+     *
+     * @param delta delta of experience to increase current value.
+     **/
+    public void increaseExperience(int delta) {
+        experience += delta;
+        if (experience >= experienceIncreaseForNextLevel) {
+            lives += 6;
+            experience = 0;
+            experienceIncreaseForNextLevel += 5;
+            waitForConfusion--;
+        }
     }
 }

@@ -4,8 +4,6 @@ import org.json.JSONObject;
 import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.EnemyStrong;
-import ru.hse.roguelike.model.Characters.EnemyWeak;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Inventory;
 import ru.hse.roguelike.model.Characters.Obstacle;
@@ -91,17 +89,18 @@ public class LevelGenerator {
 
     private Player generateRandomPlayer() {
         int lives = rand.nextInt(10) + 1;
-        return new Player(lives);
+        return new Player(lives, 0);
     }
 
-    private EnemyWeak generateRandomEnemy() {
+    private Enemy generateRandomEnemy(CharacterType enemyType) {
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
+        int visibility = 3;
         List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
                 new Coordinates(1, 0),
                 new Coordinates(0, -1),
                 new Coordinates(0, 1));
-        return new EnemyWeak(maxStep, shifts.get(randomShift));
+        return new Enemy(enemyType, visibility, maxStep, shifts.get(randomShift));
     }
 
     private Points generatePoints() {
@@ -122,7 +121,7 @@ public class LevelGenerator {
         return nextLevelFromFile();
     }
 
-    private GameCharacter getGameCharacterFromJson(JSONObject jsonCharacter) {
+    private GameCharacter getGameCharacterFromJson(JSONObject jsonCharacter, Coordinates coordinates) {
         CharacterType characterType = jsonCharacter.getEnum(CharacterType.class, "characterType");
         switch (characterType) {
             case POINTS:
@@ -135,22 +134,20 @@ public class LevelGenerator {
                 return new Shelter(characterType);
             case INVENTORY:
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
-            case ENEMY_WEAK:
+            case ENEMY_AGGRESSIVE:
+            case ENEMY_PASSIVE:
+            case ENEMY_COWARD:
                 JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-                return new EnemyWeak(jsonCharacter.getInt("maxSteps"),
-                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
-            case ENEMY_STRONG:
-                return new EnemyStrong();
+                return new Enemy(characterType, jsonCharacter.getInt("visibility"),
+                                    jsonCharacter.getInt("maxSteps"),
+                                    new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case PLAYER:
-                JSONObject jsonCoordinates = jsonCharacter.getJSONObject("currentCoordinates");
                 if (levelNumber == 0) {
-                    player = new Player(jsonCharacter.getInt("lives"),
-                            new Coordinates(jsonCoordinates.getInt("x"), jsonCoordinates.getInt("y")));
+                    player = new Player(jsonCharacter.getInt("lives"), coordinates);
                 } else {
                     player.setPoints(0);
                     player.getBackpack().clear();
-                    player.setCurrentCoordinates(new Coordinates(jsonCoordinates.getInt("x"),
-                            jsonCoordinates.getInt("y")));
+                    player.setCurrentCoordinates(coordinates);
                 }
                 return player;
             default:
@@ -164,7 +161,9 @@ public class LevelGenerator {
             json = Files.readString(Path.of(
                     System.getProperty("user.dir") + "/" + filesPath.get() + "/level" + levelNumber));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Problem with opening file: " +
+                    System.getProperty("user.dir") + "/" + filesPath.get() + "/level" + levelNumber);
+            return null;
         }
         JSONObject jsonObject = new JSONObject(json);
         int victoryPoints = jsonObject.getInt("victoryPoints");
@@ -181,9 +180,9 @@ public class LevelGenerator {
             }
             for (int j = 0; j < boardY; j++) {
                 JSONObject jsonCharacter = jsonArrayBoardRow.getJSONObject(j);
-                board[i][j] = getGameCharacterFromJson(jsonCharacter);
-                if (board[i][j].getCharacterType() == CharacterType.ENEMY_WEAK
-                        || board[i][j].getCharacterType() == CharacterType.ENEMY_STRONG) {
+                board[i][j] = getGameCharacterFromJson(jsonCharacter, new Coordinates(i, j));
+                if (board[i][j].getCharacterType() == CharacterType.ENEMY_AGGRESSIVE
+                        || board[i][j].getCharacterType() == CharacterType.ENEMY_PASSIVE) {
                     enemies.put((Enemy) board[i][j], new Coordinates(i, j));
                 }
             }
@@ -224,15 +223,12 @@ public class LevelGenerator {
                         characterToPlace = generatePoints();
                         victoryPoints += ((Points) characterToPlace).getNumberOfPoints();
                         break;
-                    case ENEMY_STRONG:
-                        var enemyStrong = new EnemyStrong();
-                        characterToPlace = enemyStrong;
-                        enemies.put(enemyStrong, coordinates);
-                        break;
-                    case ENEMY_WEAK:
-                        var enemyWeak = generateRandomEnemy();
-                        characterToPlace = enemyWeak;
-                        enemies.put(enemyWeak, coordinates);
+                    case ENEMY_PASSIVE:
+                    case ENEMY_AGGRESSIVE:
+                    case ENEMY_COWARD:
+                        var enemy = generateRandomEnemy(entry.getKey());
+                        characterToPlace = enemy;
+                        enemies.put(enemy, coordinates);
                         break;
                     case OBSTACLE:
                         characterToPlace = new Obstacle();

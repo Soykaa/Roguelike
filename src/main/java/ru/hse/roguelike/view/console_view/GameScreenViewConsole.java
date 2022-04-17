@@ -5,8 +5,6 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.TextColor.RGB;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
@@ -15,6 +13,7 @@ import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 /**
@@ -53,8 +52,9 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         switch (character.getCharacterType()) {
-            case ENEMY_WEAK:
-            case ENEMY_STRONG:
+            case ENEMY_AGGRESSIVE:
+            case ENEMY_PASSIVE:
+            case ENEMY_COWARD:
                 textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
                 textGraphics.putString(position, "\uC6C3");
                 break;
@@ -261,15 +261,39 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
         for (var backpackItem : backpack.getAllItems()) {
-            if (backpackItem.getType() == backpack.getActiveItem().getType()) {
-                textGraphics.setBackgroundColor(ANSI.CYAN);
+            if (backpackItem.getType() == InventoryItem.DEFAULT) {
+                continue;
+            }
+            if (backpackItem.canUse()) {
+
+                if (backpackItem.getType() == backpack.getActiveItem().getType()) {
+                    textGraphics.setBackgroundColor(ANSI.CYAN);
+                } else {
+                    textGraphics.setBackgroundColor(ANSI.BLACK);
+                }
             } else {
-                textGraphics.setBackgroundColor(ANSI.BLACK);
+                textGraphics.setBackgroundColor(ANSI.YELLOW);
             }
             textGraphics.setForegroundColor(ANSI.WHITE);
             textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.getType().name());
             row += 1;
         }
+        terminal.flush();
+    }
+
+    /**
+     * Shows player experience.
+     *
+     * @param currentExperience current experience
+     * @param totalExperience   total experience
+     * @throws IOException in case of view error
+     **/
+    @Override
+    public void showExperience(int currentExperience, int totalExperience) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.setForegroundColor(ANSI.CYAN);
+        textGraphics.putString(boardSize.getColumns() + 3, 5, "Experience: " + currentExperience + " / " + totalExperience);
         terminal.flush();
     }
 }

@@ -17,6 +17,7 @@ public class Backpack {
      **/
     public Backpack() {
         allItems.add(new Inventory(InventoryItem.DEFAULT));
+        allItems.add(new Inventory(InventoryItem.CONFUSION));
     }
 
     /**
@@ -51,6 +52,9 @@ public class Backpack {
      **/
     public void setNextActiveItem() {
         activeItemNum = (activeItemNum + 1) % allItems.size();
+        while (!allItems.get(activeItemNum).canUse()) {
+            activeItemNum = (activeItemNum + 1) % allItems.size();
+        }
     }
 
     /**
@@ -60,5 +64,35 @@ public class Backpack {
         allItems.clear();
         activeItemNum = 0;
         allItems.add(new Inventory(InventoryItem.DEFAULT));
+        allItems.add(new Inventory(InventoryItem.CONFUSION));
+    }
+
+    /**
+     * Makes inventory item unusable.
+     *
+     * @param inventoryItem inventory item
+     **/
+    public void makeUnusable(InventoryItem inventoryItem) {
+        for (var inventory : allItems) {
+            if (inventory.getType() == inventoryItem) {
+                inventory.setCanUse(false);
+            }
+        }
+        if (!allItems.get(activeItemNum).canUse()) {
+            setNextActiveItem();
+        }
+    }
+
+    /**
+     * Makes inventory item usable.
+     *
+     * @param inventoryItem inventory item
+     **/
+    public void makeUsable(InventoryItem inventoryItem) {
+        for (var inventory : allItems) {
+            if (inventory.getType() == inventoryItem) {
+                inventory.setCanUse(true);
+            }
+        }
     }
 }

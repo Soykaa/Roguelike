@@ -1,9 +1,11 @@
 package ru.hse.roguelike.model;
 
 import ru.hse.roguelike.model.Characters.*;
+import ru.hse.roguelike.model.Characters.decorator.ConfusedEnemyDecorator;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,10 @@ public class Level {
     private final Map<Enemy, Coordinates> enemies;
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
+
+    private final List<Enemy> confusedEnemies = new ArrayList<>();
+    private final List<Enemy> killedEnemies = new ArrayList<>();
+
 
     /**
      * Creates new Level instance.
@@ -42,6 +48,7 @@ public class Level {
             gameView.showLives(player.getLives());
             gameView.showBackpack(player.getBackpack());
             gameView.showPoints(player.getPoints(), victoryPoints);
+            gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,6 +95,7 @@ public class Level {
                 case INVENTORY:
                     var inventory = (Inventory) nextCell;
                     player.getBackpack().putItem(inventory);
+                    playerShelter = null;
                     gameView.showBackpack(player.getBackpack());
                     break;
                 case SHELTER_LAVENDER:
@@ -107,6 +115,8 @@ public class Level {
                 return GameState.VICTORY;
             }
         }
+        player.decreaseWaitForConfusion();
+        gameView.showBackpack(player.getBackpack());
         return GameState.IS_RUNNING;
     }
 
@@ -114,7 +124,7 @@ public class Level {
         for (var entry : enemies.entrySet()) {
             Enemy enemy = entry.getKey();
             Coordinates coordinates = entry.getValue();
-            Coordinates shift = enemy.makeNextMove();
+            Coordinates shift = enemy.makeNextMove(coordinates, player.getCurrentCoordinates());
             int newX = coordinates.getX() + shift.getX();
             int newY = coordinates.getY() + shift.getY();
             if (isValidCoordinates(newX, newY)) {
@@ -123,16 +133,63 @@ public class Level {
                 }
             }
             if (charactersAreClose(player.getCurrentCoordinates(), coordinates)) {
-                if (playerShelter == null | playerShelter != realShelterType) {
-                    enemy.attack(player);
-                }
+                makeBattle(enemy, coordinates);
             }
             gameView.showLives(player.getLives());
             if (player.getLives() <= 0) {
                 return GameState.DEFEAT;
             }
         }
+        changeConfusedEnemies();
+        confusedEnemies.clear();
+        deleteKilledEnemies();
+        killedEnemies.clear();
         return GameState.IS_RUNNING;
+    }
+
+    private void changeConfusedEnemies() {
+        for (var enemy : confusedEnemies) {
+            var coordinates = enemies.get(enemy);
+            if (coordinates == null) {
+                return;
+            }
+            enemies.remove(enemy);
+            Enemy newEnemy = new ConfusedEnemyDecorator(enemy);
+            board[coordinates.getX()][coordinates.getY()] = newEnemy;
+            enemies.put(newEnemy, coordinates);
+        }
+    }
+
+    private void deleteKilledEnemies() {
+        for (var enemy : killedEnemies) {
+            var coordinates = enemies.get(enemy);
+            if (coordinates == null) {
+                return;
+            }
+            enemies.remove(enemy);
+        }
+    }
+
+    private void makeBattle(Enemy enemy, Coordinates coordinates) throws IOException {
+        if (player.canConfuse()) {
+            player.confuse();
+            confusedEnemies.add(enemy);
+            player.increaseExperience(5);
+            gameView.showBackpack(player.getBackpack());
+            return;
+        }
+
+        if (player.canDestroy()) {
+            killedEnemies.add(enemy);
+            player.increaseExperience(5);
+            board[coordinates.getX()][coordinates.getY()] = new Empty();
+            gameView.removeCharacter(coordinates.getX(), coordinates.getY());
+            gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
+        }
+
+        if (playerShelter == null | playerShelter != realShelterType) {
+            enemy.attack(player);
+        }
     }
 
     /**
