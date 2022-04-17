@@ -135,12 +135,18 @@ public class InteractionManager {
                         gameRulesView.showGameRules();
                         break;
                     case START_GAME_FROM_FILE:
+                        GameState state1 = game.startGame(true, factory);
+                        if (state1 != GameState.IS_RUNNING) {
+                            return;
+                        }
                         screen = Screen.GAME;
-                        game.startGame(true, factory);
                         break;
                     case START_GAME:
+                        GameState state2 = game.startGame(false, factory);
+                        if (state2 != GameState.IS_RUNNING) {
+                            return;
+                        }
                         screen = Screen.GAME;
-                        game.startGame(false, factory);
                         break;
                 }
         }

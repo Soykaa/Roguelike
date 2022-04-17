@@ -121,7 +121,7 @@ public class LevelGenerator {
         return nextLevelFromFile();
     }
 
-    private GameCharacter getGameCharacterFromJson(JSONObject jsonCharacter) {
+    private GameCharacter getGameCharacterFromJson(JSONObject jsonCharacter, Coordinates coordinates) {
         CharacterType characterType = jsonCharacter.getEnum(CharacterType.class, "characterType");
         switch (characterType) {
             case POINTS:
@@ -142,15 +142,12 @@ public class LevelGenerator {
                                     jsonCharacter.getInt("maxSteps"),
                                     new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case PLAYER:
-                JSONObject jsonCoordinates = jsonCharacter.getJSONObject("currentCoordinates");
                 if (levelNumber == 0) {
-                    player = new Player(jsonCharacter.getInt("lives"),
-                            new Coordinates(jsonCoordinates.getInt("x"), jsonCoordinates.getInt("y")));
+                    player = new Player(jsonCharacter.getInt("lives"), coordinates);
                 } else {
                     player.setPoints(0);
                     player.getBackpack().clear();
-                    player.setCurrentCoordinates(new Coordinates(jsonCoordinates.getInt("x"),
-                            jsonCoordinates.getInt("y")));
+                    player.setCurrentCoordinates(coordinates);
                 }
                 return player;
             default:
@@ -164,7 +161,9 @@ public class LevelGenerator {
             json = Files.readString(Path.of(
                     System.getProperty("user.dir") + "/" + filesPath.get() + "/level" + levelNumber));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Problem with opening file: " +
+                    System.getProperty("user.dir") + "/" + filesPath.get() + "/level" + levelNumber);
+            return null;
         }
         JSONObject jsonObject = new JSONObject(json);
         int victoryPoints = jsonObject.getInt("victoryPoints");
@@ -181,7 +180,7 @@ public class LevelGenerator {
             }
             for (int j = 0; j < boardY; j++) {
                 JSONObject jsonCharacter = jsonArrayBoardRow.getJSONObject(j);
-                board[i][j] = getGameCharacterFromJson(jsonCharacter);
+                board[i][j] = getGameCharacterFromJson(jsonCharacter, new Coordinates(i, j));
                 if (board[i][j].getCharacterType() == CharacterType.ENEMY_AGGRESSIVE
                         || board[i][j].getCharacterType() == CharacterType.ENEMY_PASSIVE) {
                     enemies.put((Enemy) board[i][j], new Coordinates(i, j));

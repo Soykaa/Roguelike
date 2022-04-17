@@ -48,7 +48,7 @@ public class Level {
             gameView.showLives(player.getLives());
             gameView.showBackpack(player.getBackpack());
             gameView.showPoints(player.getPoints(), victoryPoints);
-            gameView.showExperience(player.getExperience(), player.getExperienceDecreaseForNextLevel());
+            gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +77,6 @@ public class Level {
     }
 
     private GameState movePlayer(int dx, int dy) throws IOException {
-        System.out.println(player.getBackpack().getAllItems().size());
         Coordinates currentCoordinates = player.getCurrentCoordinates();
         int newX = currentCoordinates.getX() + dx;
         int newY = currentCoordinates.getY() + dy;
@@ -185,7 +184,7 @@ public class Level {
             player.increaseExperience(5);
             board[coordinates.getX()][coordinates.getY()] = new Empty();
             gameView.removeCharacter(coordinates.getX(), coordinates.getY());
-            gameView.showExperience(player.getExperience(), player.getExperienceDecreaseForNextLevel());
+            gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
         }
 
         if (playerShelter == null | playerShelter != realShelterType) {
