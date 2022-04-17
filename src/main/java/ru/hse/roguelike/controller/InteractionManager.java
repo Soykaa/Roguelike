@@ -47,7 +47,6 @@ public class InteractionManager {
      * @param game    Game object
      * @throws IOException in case of view error
      */
-
     public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {
         this.mainScreenView = factory.createMainScreenView();
         this.gameRulesView = factory.createGameRulesScreenView();
