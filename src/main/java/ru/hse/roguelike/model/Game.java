@@ -28,16 +28,22 @@ public class Game {
      * @param generateLevelsFromFile flag, determines if the level should be generated from file or not
      * @param factory                view factory
      **/
-    public void startGame(boolean generateLevelsFromFile, AbstractViewFactory factory) {
-        if (generateLevelsFromFile) {
-            levelGenerator = new LevelGenerator(levelFilesPath, factory);
-        } else {
-            levelGenerator = new LevelGenerator(factory, 5);
+    public GameState startGame(boolean generateLevelsFromFile, AbstractViewFactory factory) {
+        try {
+            if (generateLevelsFromFile) {
+                levelGenerator = new LevelGenerator(levelFilesPath, factory);
+            } else {
+                levelGenerator = new LevelGenerator(factory, 5);
+            }
+            if (!levelGenerator.hasNextLevel()) {
+                throw new RuntimeException("Wrong level generation");
+            }
+            currentLevel = levelGenerator.nextLevel();
+            return GameState.IS_RUNNING;
+        } catch (Exception e) {
+            System.out.println("Problem occurred while processing your action");
+            return GameState.PROBLEM_OCCURRED;
         }
-        if (!levelGenerator.hasNextLevel()) {
-            throw new RuntimeException("Wrong level generation");
-        }
-        currentLevel = levelGenerator.nextLevel();
     }
 
     /**
@@ -48,17 +54,22 @@ public class Game {
      * @return current game state
      * @throws IOException in case of view error
      **/
-    public GameState manageGame(Action action) throws IOException {
-        GameState gameState = makeAction(action);
-        if (gameState == GameState.VICTORY) {
-            if (levelGenerator.hasNextLevel()) {
-                currentLevel = levelGenerator.nextLevel();
-                return GameState.IS_RUNNING;
-            } else {
-                return gameState;
+    public GameState manageGame(Action action) {
+        try {
+            GameState gameState = makeAction(action);
+            if (gameState == GameState.VICTORY) {
+                if (levelGenerator.hasNextLevel()) {
+                    currentLevel = levelGenerator.nextLevel();
+                    return GameState.IS_RUNNING;
+                } else {
+                    return gameState;
+                }
             }
+            return gameState;
+        } catch (Exception e) {
+            System.out.println("Problem occurred while processing your action");
+            return GameState.PROBLEM_OCCURRED;
         }
-        return gameState;
     }
 
     /**

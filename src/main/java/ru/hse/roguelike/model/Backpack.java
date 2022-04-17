@@ -86,11 +86,4 @@ public class Backpack {
         }
     }
 
-    public static void main(String[] args) {
-        var b = new Backpack();
-        System.out.println(b.allItems.size());
-        b.makeUnusable(InventoryItem.DEFAULT);
-        System.out.println(b.allItems.size());
-
-    }
 }

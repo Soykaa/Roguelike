@@ -8,7 +8,7 @@ import ru.hse.roguelike.model.InventoryItem;
  * Represents player.
  **/
 public class Player extends GameCharacter {
-    private int experienceDecreaseForNextLevel = 5;
+    private int experienceIncreaseForNextLevel = 5;
     private int waitForConfusion = 5;
     private int lives;
     private int points = 0;
@@ -135,8 +135,8 @@ public class Player extends GameCharacter {
         backpack.makeUnusable(InventoryItem.CONFUSION);
     }
 
-    public int getExperienceDecreaseForNextLevel() {
-        return experienceDecreaseForNextLevel;
+    public int getExperienceIncreaseForNextLevel() {
+        return experienceIncreaseForNextLevel;
     }
 
     public int getExperience() {
@@ -157,10 +157,10 @@ public class Player extends GameCharacter {
 
     public void increaseExperience(int delta) {
         experience += delta;
-        if (experience >= experienceDecreaseForNextLevel) {
+        if (experience >= experienceIncreaseForNextLevel) {
             lives += 6;
             experience = 0;
-            experienceDecreaseForNextLevel += 5;
+            experienceIncreaseForNextLevel += 5;
             waitForConfusion--;
         }
     }

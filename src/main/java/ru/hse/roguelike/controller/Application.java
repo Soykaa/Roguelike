@@ -100,7 +100,7 @@ public class Application {
         }
         try {
             application.start();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Problem while running application: " + e.getMessage());
         }
     }
