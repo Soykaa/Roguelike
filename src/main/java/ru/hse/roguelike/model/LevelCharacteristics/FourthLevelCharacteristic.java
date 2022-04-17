@@ -16,8 +16,8 @@ public class FourthLevelCharacteristic extends LevelCharacteristic {
         super(22, 16, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,
                         CharacterType.PLAYER, 1,
-                        CharacterType.ENEMY_WEAK, 7,
-                        CharacterType.ENEMY_STRONG, 3,
+                        CharacterType.ENEMY_AGGRESSIVE, 7,
+                        CharacterType.ENEMY_PASSIVE, 3,
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 4,
                         CharacterType.SHELTER_PINK, 4,

@@ -13,6 +13,10 @@ public enum InventoryItem {
      **/
     PROTECTION,
     /**
+     * Item, which confuse enemy
+     **/
+    CONFUSION,
+    /**
      * Default item.
      **/
     DEFAULT

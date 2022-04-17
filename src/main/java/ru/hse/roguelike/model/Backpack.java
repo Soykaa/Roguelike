@@ -17,6 +17,7 @@ public class Backpack {
      **/
     public Backpack() {
         allItems.add(new Inventory(InventoryItem.DEFAULT));
+        allItems.add(new Inventory(InventoryItem.CONFUSION));
     }
 
     /**
@@ -60,5 +61,6 @@ public class Backpack {
         allItems.clear();
         activeItemNum = 0;
         allItems.add(new Inventory(InventoryItem.DEFAULT));
+        allItems.add(new Inventory(InventoryItem.CONFUSION));
     }
 }

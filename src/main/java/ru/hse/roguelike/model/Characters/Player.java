@@ -10,6 +10,7 @@ import ru.hse.roguelike.model.InventoryItem;
 public class Player extends GameCharacter {
     private int lives;
     private int points = 0;
+    private int waitForConfusion = 0;
     private Coordinates currentCoordinates = new Coordinates(0, 0);
     private final Backpack backpack = new Backpack();
 
@@ -118,5 +119,20 @@ public class Player extends GameCharacter {
      **/
     public boolean canDestroy() {
         return backpack.getActiveItem().getType() == InventoryItem.DESTROY;
+    }
+
+    public boolean canConfuse() {
+        return waitForConfusion == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
+    }
+
+    public void confuse() {
+        waitForConfusion = 5;
+//        backpack.setNextActiveItem();
+    }
+
+    public void decreaseWaitForConfusion() {
+        if (waitForConfusion > 0) {
+            waitForConfusion--;
+        }
     }
 }

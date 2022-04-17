@@ -5,13 +5,17 @@ package ru.hse.roguelike.model.Characters;
  **/
 public enum CharacterType {
     /**
-     * Weak enemy.
+     * Aggressive enemy.
      **/
-    ENEMY_WEAK,
+    ENEMY_AGGRESSIVE,
     /**
-     * Strong enemy.
+     * Passive enemy.
      **/
-    ENEMY_STRONG,
+    ENEMY_PASSIVE,
+    /**
+     * Coward enemy.
+     **/
+    ENEMY_COWARD,
     /**
      * Obstacle.
      **/

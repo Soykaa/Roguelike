@@ -12,15 +12,26 @@ public class FirstLevelCharacteristic extends LevelCharacteristic {
      * Creates new FirstLevelCharacteristic instance.
      * Calls parent constructor.
      **/
+//    public FirstLevelCharacteristic() {
+//        super(10, 10, CharacterType.SHELTER_LAVENDER, Map.of(
+//                        CharacterType.POINTS, 10,
+//                        CharacterType.PLAYER, 1,
+//                        CharacterType.ENEMY_AGGRESSIVE, 1,
+//                        CharacterType.OBSTACLE, 20,
+//                        CharacterType.SHELTER_LAVENDER, 1,
+//                        CharacterType.SHELTER_PINK, 1,
+//                        CharacterType.INVENTORY, 1
+//                )
+//        );
+//    }
+
     public FirstLevelCharacteristic() {
         super(10, 10, CharacterType.SHELTER_LAVENDER, Map.of(
-                        CharacterType.POINTS, 10,
+                        CharacterType.POINTS, 1,
                         CharacterType.PLAYER, 1,
-                        CharacterType.ENEMY_WEAK, 1,
-                        CharacterType.OBSTACLE, 20,
-                        CharacterType.SHELTER_LAVENDER, 1,
-                        CharacterType.SHELTER_PINK, 1,
-                        CharacterType.INVENTORY, 1
+                        CharacterType.ENEMY_AGGRESSIVE, 1,
+                        CharacterType.ENEMY_COWARD, 1,
+                        CharacterType.OBSTACLE, 3
                 )
         );
     }

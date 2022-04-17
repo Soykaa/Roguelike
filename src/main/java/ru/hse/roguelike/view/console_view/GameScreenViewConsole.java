@@ -5,8 +5,6 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.TextColor.RGB;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
@@ -53,8 +51,9 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         switch (character.getCharacterType()) {
-            case ENEMY_WEAK:
-            case ENEMY_STRONG:
+            case ENEMY_AGGRESSIVE:
+            case ENEMY_PASSIVE:
+            case ENEMY_COWARD:
                 textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
                 textGraphics.putString(position, "\uC6C3");
                 break;

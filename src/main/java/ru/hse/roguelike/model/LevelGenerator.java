@@ -4,8 +4,6 @@ import org.json.JSONObject;
 import ru.hse.roguelike.model.Characters.CharacterType;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.EnemyStrong;
-import ru.hse.roguelike.model.Characters.EnemyWeak;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Inventory;
 import ru.hse.roguelike.model.Characters.Obstacle;
@@ -94,14 +92,25 @@ public class LevelGenerator {
         return new Player(lives);
     }
 
-    private EnemyWeak generateRandomEnemy() {
+//    private EnemyWeak generateRandomEnemy() {
+//        int maxStep = rand.nextInt(4) + 1;
+//        int randomShift = rand.nextInt(4);
+//        List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
+//                new Coordinates(1, 0),
+//                new Coordinates(0, -1),
+//                new Coordinates(0, 1));
+//        return new EnemyWeak(maxStep, shifts.get(randomShift));
+//    }
+
+    private Enemy generateRandomEnemy(CharacterType enemyType) {
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
+        int visibility = 3;
         List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
                 new Coordinates(1, 0),
                 new Coordinates(0, -1),
                 new Coordinates(0, 1));
-        return new EnemyWeak(maxStep, shifts.get(randomShift));
+        return new Enemy(enemyType, visibility, maxStep, shifts.get(randomShift));
     }
 
     private Points generatePoints() {
@@ -135,12 +144,12 @@ public class LevelGenerator {
                 return new Shelter(characterType);
             case INVENTORY:
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
-            case ENEMY_WEAK:
-                JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-                return new EnemyWeak(jsonCharacter.getInt("maxSteps"),
-                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
-            case ENEMY_STRONG:
-                return new EnemyStrong();
+//            case ENEMY_AGGRESSIVE:
+//                JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
+//                return new EnemyWeak(jsonCharacter.getInt("maxSteps"),
+//                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
+//            case ENEMY_PASSIVE:
+//                return new EnemyStrong();
             case PLAYER:
                 JSONObject jsonCoordinates = jsonCharacter.getJSONObject("currentCoordinates");
                 if (levelNumber == 0) {
@@ -182,8 +191,8 @@ public class LevelGenerator {
             for (int j = 0; j < boardY; j++) {
                 JSONObject jsonCharacter = jsonArrayBoardRow.getJSONObject(j);
                 board[i][j] = getGameCharacterFromJson(jsonCharacter);
-                if (board[i][j].getCharacterType() == CharacterType.ENEMY_WEAK
-                        || board[i][j].getCharacterType() == CharacterType.ENEMY_STRONG) {
+                if (board[i][j].getCharacterType() == CharacterType.ENEMY_AGGRESSIVE
+                        || board[i][j].getCharacterType() == CharacterType.ENEMY_PASSIVE) {
                     enemies.put((Enemy) board[i][j], new Coordinates(i, j));
                 }
             }
@@ -224,15 +233,12 @@ public class LevelGenerator {
                         characterToPlace = generatePoints();
                         victoryPoints += ((Points) characterToPlace).getNumberOfPoints();
                         break;
-                    case ENEMY_STRONG:
-                        var enemyStrong = new EnemyStrong();
-                        characterToPlace = enemyStrong;
-                        enemies.put(enemyStrong, coordinates);
-                        break;
-                    case ENEMY_WEAK:
-                        var enemyWeak = generateRandomEnemy();
-                        characterToPlace = enemyWeak;
-                        enemies.put(enemyWeak, coordinates);
+                    case ENEMY_PASSIVE:
+                    case ENEMY_AGGRESSIVE:
+                    case ENEMY_COWARD:
+                        var enemy = generateRandomEnemy(entry.getKey());
+                        characterToPlace = enemy;
+                        enemies.put(enemy, coordinates);
                         break;
                     case OBSTACLE:
                         characterToPlace = new Obstacle();
