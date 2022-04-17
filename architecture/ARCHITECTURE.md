@@ -288,6 +288,7 @@ Confusion: игрок может вводить врага в состояние
 - `VICTORY`
 - `DEFEAT`
 - `IS_RUNNING`
+- `PROBLEM_OCCURRED`
 
 ##### class Game
 
@@ -345,6 +346,8 @@ Confusion: игрок может вводить врага в состояние
 - `void putItem(Inventory item)` - кладет предмет в рюкзак
 - `void setNextActiveItem()` - меняет используемый элемент на следующий из списка предметов в рюкзаке
 - `void clear()` - очищает рюкзак
+- `void makeUnusable(InventoryItem inventoryItem)` - делает предмет из рюкзака недоступным к использованию
+- `void makeUsable(InventoryItem inventoryItem)` - делает предмет из рюкзака доступным к использованию
 
 ##### abstract class GameCharacter
 
@@ -367,6 +370,10 @@ Confusion: игрок может вводить врага в состояние
 
 - **abstract class Enemy**: враг, двигается определенным образом и атакует игрока, если он рядом.
 
+  **Поля**:
+  
+  - `MobStrategy strategy` - механика движения, задается в зависимости от типа врага
+
   **Конструкторы**:
 
     - `Enemy(CharacterType characterType, int visibility, int maxSteps, Coordinates shift)`
@@ -376,9 +383,8 @@ Confusion: игрок может вводить врага в состояние
 
     - `Coordinates makeNextMove()` - возвращает сдвиг координаты, на которые должен передвинуться враг
     - `void attack(Player player)` - атакует игрока
-
-  Механика движения задается с помощью MobStrategy в зависимости от типа врага.
-
+    - `MobStrategy getStrategy()` - возвращает стратегию (механику передвижения)
+    
 
 - **class Player**: игрок, управляется пользователем.
 
@@ -388,9 +394,9 @@ Confusion: игрок может вводить врага в состояние
     - `int points` - собранное количество очков
     - `Coordinates currentCoordinates` - текущие координаты
     - `Backpack backpack` - рюкзак игрока
-    - `int experienceDecreaseForNextLevel` - количество очков опыта, необходимых для перехода на следующий уровень
-    - `int waitForConfusion` - число шагов прежде чем инвентарь confusion можно использовать снова
-    - `int currentWait` - сколько шагов с последнего confusion уже прошло
+    - `int experienceIncreaseForNextLevel` - количество очков опыта, необходимых для перехода на следующий уровень
+    - `int waitForConfusion` - число шагов прежде чем инвентарь _CONFUSION_ можно использовать снова
+    - `int currentWait` - сколько шагов с последнего использования _CONFUSION_ уже прошло
     - `int experience` - число очков опыта
 
   **Конструкторы**:
@@ -410,7 +416,12 @@ Confusion: игрок может вводить врага в состояние
     - `boolean canDestroy()` - если у игрока в рюкзаке есть инвентарь, увеличивающий силу удара, возвращает `true`,
       иначе `false`
     - `void decreaseLives(int delta)` - при атаке уменьшает количество жизней на переданное число
-
+    - `boolean canConfuse()` - если игрок может ввести врага в состояние конфузии, вернет _true_, иначе _false_
+    - `void confuse()` - вводит врага в состояние конфузии
+    - `int getExperienceIncreaseForNextLevel()` - возвращает число очков опыта, необходимое для перехода на следующую ступень (с т.з. опыта)
+    - `int getExperience()` - возвращает число очков опыта
+    - `void decreaseWaitForConfusion()` - уменьшает ожидание до следующего использования конфузии
+    - `void increaseExperience(int delta)` - увеличивает текущее количество очков опыта на _delta_
 
 - **class Obstacle**: препятствие на поле, может быть разрушено игроком при наличии нужного инвентаря в рюкзаке.
 
@@ -461,6 +472,7 @@ Confusion: игрок может вводить врага в состояние
   **Поля**:
 
     - `InventoryItem type` - тип инвентаря
+    - `boolean canUse` - может ли инвентарь использоваться
 
   **Конструкторы**:
 
@@ -469,6 +481,10 @@ Confusion: игрок может вводить врага в состояние
   **Методы**:
 
     - `InventoryItem getType()` - возвращает тип инвентаря
+    - `boolean canUse()` - _true_ если инвентарь может использоваться, _false_ иначе
+    - `void setCanUse(boolean canUse)` - меняет значение флага `canUse` на переданное
+    - `boolean equals(Object o)` - проверка двух объектов из инвентаря на равенство
+    - `int hashCode()` - подсчет хешей
 
 ##### enum CharacterType
 
@@ -563,6 +579,8 @@ Confusion: игрок может вводить врага в состояние
 - `int victoryPoints` - количество очков, необходимое для победы на текущем уровне
 - `CharacterType realShelterType` - тип убежища, валидный на данном уровне
 - `CharacterType playerShelter` - тип убежища, в котором прячестся игрок
+- `List<Enemy> confusedEnemies` - враги в состоянии конфузии
+- `List<Enemy> killedEnemies` - убитые враги
 
 _Примечание_: на каждом уровне является валидным ("работающим") только определенный тип убежища.
 
@@ -704,13 +722,13 @@ _Примечание_: на каждом уровне является вали
   то в отображении рюкзака будет только она. Предмет, используемый игроком, выделен.
 - `void setMessage(String message)` - вывод переданного сообщения на экран
 - `void removeMessage()` - удаление сообщения
+- `showExperience(int currentExperience, int totalExperience)` - вывод очков опыта на экран
 
 **Реализация - class GameScreenViewConsole**: отображает все в консоли.
 
 **Поля**:
 
 - `Terminal terminal` - терминал
-- `Screen screen` - экран
 - `TextGraphics textGraphics` - текст, который необходимо вывести
 - `GameCharacter[][] board` - игровое поле
 - `RGB ChineseWhite` - белый

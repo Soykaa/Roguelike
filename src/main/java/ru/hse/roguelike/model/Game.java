@@ -52,7 +52,6 @@ public class Game {
      *
      * @param action action to make
      * @return current game state
-     * @throws IOException in case of view error
      **/
     public GameState manageGame(Action action) {
         try {

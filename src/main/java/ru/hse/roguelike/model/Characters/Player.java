@@ -145,9 +145,9 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Returns experience decrease for next level (in terms of experience).
+     * Returns experience increase for next level (in terms of experience points number).
      *
-     * @return experience decrease
+     * @return experience increase
      **/
     public int getExperienceIncreaseForNextLevel() {
         return experienceIncreaseForNextLevel;
@@ -163,7 +163,7 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Decreases wait for confusion.
+     * Decreases wait for the next confusion.
      **/
     public void decreaseWaitForConfusion() {
         if (currentWait > 0) {
