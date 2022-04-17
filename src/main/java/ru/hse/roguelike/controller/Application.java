@@ -68,7 +68,7 @@ public class Application {
     public void start() throws IOException {
         var defaultTerminalFactory = new DefaultTerminalFactory();
         defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(200, 200));
-        try (Terminal terminal = defaultTerminalFactory.createTerminal()) {
+        try (Terminal terminal = defaultTerminalFactory.createTerminalEmulator()) {
             terminal.clearScreen();
             terminal.setCursorVisible(false);
             var factory = new ConsoleViewFactory(terminal);

@@ -22,7 +22,6 @@ import ru.hse.roguelike.view.abstract_view.GameScreenView;
  **/
 public class GameScreenViewConsole implements GameScreenView {
     private final Terminal terminal;
-    private final Screen screen;
     private final TextGraphics textGraphics;
     private GameCharacter[][] board;
 
@@ -39,8 +38,7 @@ public class GameScreenViewConsole implements GameScreenView {
      **/
     public GameScreenViewConsole(Terminal terminal) throws IOException {
         this.terminal = terminal;
-        this.screen = new TerminalScreen(terminal);
-        textGraphics = screen.newTextGraphics();
+        textGraphics = terminal.newTextGraphics();
     }
 
     private TerminalPosition getAbsolutePositionOfBoardCellLeftUpperCorner(int relativeX, int relativeY) {
@@ -140,10 +138,9 @@ public class GameScreenViewConsole implements GameScreenView {
         if (board.length == 0) {
             throw new RuntimeException("Board cannot be empty");
         }
-        screen.startScreen();
         drawBoardImage(board);
         drawBorders(getAbsoluteBoardSize(board.length, board[0].length));
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -174,7 +171,7 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.setForegroundColor(ANSI.CYAN);
         textGraphics.putString(1, boardSize.getRows() + 1, message);
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -187,7 +184,7 @@ public class GameScreenViewConsole implements GameScreenView {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.putString(1, boardSize.getRows() + 1, String.format("%-20s", " "));
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -201,7 +198,7 @@ public class GameScreenViewConsole implements GameScreenView {
     public void removeCharacter(int x, int y) throws IOException {
         TerminalPosition positionFrom = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
         drawCharacter(new Empty(), positionFrom);
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -216,7 +213,7 @@ public class GameScreenViewConsole implements GameScreenView {
     public void placeCharacter(GameCharacter character, int x, int y) throws IOException {
         TerminalPosition positionTo = getAbsolutePositionOfBoardCellLeftUpperCorner(x, y);
         drawCharacter(character, positionTo);
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -232,7 +229,7 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.setForegroundColor(ANSI.CYAN);
         textGraphics.putString(boardSize.getColumns() + 3, 1, "Points: " + currentPoints + " / " + totalPoints);
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -247,7 +244,7 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.setForegroundColor(ANSI.CYAN);
         textGraphics.putString(boardSize.getColumns() + 3, 3, "Lives: " + lives + " \u2665");
-        screen.refresh();
+        terminal.flush();
     }
 
     /**
@@ -273,6 +270,6 @@ public class GameScreenViewConsole implements GameScreenView {
             textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.getType().name());
             row += 1;
         }
-        screen.refresh();
+        terminal.flush();
     }
 }
