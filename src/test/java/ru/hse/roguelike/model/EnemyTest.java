@@ -10,7 +10,7 @@ public class EnemyTest {
     }
     @Test
     public void simpleAttackTest() {
-        var player = new Player(9);
+        var player = new Player(9, 0);
         var enemyAggressive = createEnemy(CharacterType.ENEMY_AGGRESSIVE);
         var enemyPassive = createEnemy(CharacterType.ENEMY_PASSIVE);
         var enemyCoward = createEnemy(CharacterType.ENEMY_COWARD);
@@ -26,7 +26,7 @@ public class EnemyTest {
 
     @Test
     public void attackWithProtectionTest() {
-        var player = new Player(9);
+        var player = new Player(9, 0);
         var enemyAggressive = createEnemy(CharacterType.ENEMY_AGGRESSIVE);
         var enemyPassive = createEnemy(CharacterType.ENEMY_PASSIVE);
         var enemyCoward = createEnemy(CharacterType.ENEMY_COWARD);

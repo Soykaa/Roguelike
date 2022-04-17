@@ -16,7 +16,9 @@ public class ThirdLevelCharacteristic extends LevelCharacteristic {
         super(18, 14, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,
                         CharacterType.PLAYER, 1,
-                        CharacterType.ENEMY_AGGRESSIVE, 5,
+                        CharacterType.ENEMY_AGGRESSIVE, 2,
+                        CharacterType.ENEMY_PASSIVE, 2,
+                        CharacterType.ENEMY_COWARD, 1,
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 2,
                         CharacterType.SHELTER_PINK, 2,

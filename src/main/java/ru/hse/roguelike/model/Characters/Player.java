@@ -8,9 +8,13 @@ import ru.hse.roguelike.model.InventoryItem;
  * Represents player.
  **/
 public class Player extends GameCharacter {
+    private int experienceDecreaseForNextLevel = 5;
+    private int waitForConfusion = 5;
     private int lives;
     private int points = 0;
-    private int waitForConfusion = 0;
+    private int currentWait = 0;
+    private int experience = 0;
+
     private Coordinates currentCoordinates = new Coordinates(0, 0);
     private final Backpack backpack = new Backpack();
 
@@ -21,9 +25,10 @@ public class Player extends GameCharacter {
      *
      * @param lives lives
      **/
-    public Player(int lives) {
+    public Player(int lives, int experience) {
         super(CharacterType.PLAYER);
         this.lives = lives;
+        this.experience = experience;
     }
 
     /**
@@ -122,16 +127,40 @@ public class Player extends GameCharacter {
     }
 
     public boolean canConfuse() {
-        return waitForConfusion == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
+        return currentWait == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
     }
 
     public void confuse() {
-        waitForConfusion = 5;
-//        backpack.setNextActiveItem();
+        currentWait = waitForConfusion;
+        backpack.makeUnusable(InventoryItem.CONFUSION);
+    }
+
+    public int getExperienceDecreaseForNextLevel() {
+        return experienceDecreaseForNextLevel;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public void decreaseWaitForConfusion() {
-        if (waitForConfusion > 0) {
+        if (currentWait > 0) {
+            currentWait--;
+            return;
+        }
+        backpack.makeUsable(InventoryItem.CONFUSION);
+    }
+
+    public void increaseExperience(int delta) {
+        experience += delta;
+        if (experience >= experienceDecreaseForNextLevel) {
+            lives += 6;
+            experience = 0;
+            experienceDecreaseForNextLevel += 5;
             waitForConfusion--;
         }
     }

@@ -18,6 +18,7 @@ public class SecondLevelCharacteristic extends LevelCharacteristic {
                         CharacterType.PLAYER, 1,
                         CharacterType.ENEMY_AGGRESSIVE, 2,
                         CharacterType.ENEMY_PASSIVE, 1,
+                        CharacterType.ENEMY_COWARD, 1,
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 4,
                         CharacterType.SHELTER_PINK, 8,

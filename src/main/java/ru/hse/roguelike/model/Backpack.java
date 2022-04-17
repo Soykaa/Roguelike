@@ -52,6 +52,9 @@ public class Backpack {
      **/
     public void setNextActiveItem() {
         activeItemNum = (activeItemNum + 1) % allItems.size();
+        while (!allItems.get(activeItemNum).canUse()) {
+            activeItemNum = (activeItemNum + 1) % allItems.size();
+        }
     }
 
     /**
@@ -62,5 +65,32 @@ public class Backpack {
         activeItemNum = 0;
         allItems.add(new Inventory(InventoryItem.DEFAULT));
         allItems.add(new Inventory(InventoryItem.CONFUSION));
+    }
+
+    public void makeUnusable(InventoryItem inventoryItem) {
+        for (var inventory: allItems) {
+            if (inventory.getType() == inventoryItem) {
+                inventory.setCanUse(false);
+            }
+        }
+        if (!allItems.get(activeItemNum).canUse()) {
+            setNextActiveItem();
+        }
+    }
+
+    public void makeUsable(InventoryItem inventoryItem) {
+        for (var inventory: allItems) {
+            if (inventory.getType() == inventoryItem) {
+                inventory.setCanUse(true);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        var b = new Backpack();
+        System.out.println(b.allItems.size());
+        b.makeUnusable(InventoryItem.DEFAULT);
+        System.out.println(b.allItems.size());
+
     }
 }

@@ -13,7 +13,7 @@ public class LevelTest {
     @Test
     public void simpleLevelTest() throws IOException {
         var board = new GameCharacter[2][2];
-        var player = new Player(9);
+        var player = new Player(9, 0);
         board[0][0] = player;
         board[1][0] = new Points(5);
         board[0][1] = new Inventory(InventoryItem.DESTROY);
@@ -23,7 +23,8 @@ public class LevelTest {
         Assertions.assertEquals(5, player.getPoints());
         Assertions.assertEquals(GameState.IS_RUNNING, level.destroyObstacle());
         level.moveCharacters(-1, 1);
-        Assertions.assertEquals(2, player.getBackpack().getAllItems().size());
+        Assertions.assertEquals(3, player.getBackpack().getAllItems().size());
+        level.changeEquiption();
         level.changeEquiption();
         Assertions.assertEquals("DESTROY", player.getBackpack().getActiveItem().getType().toString());
         level.moveCharacters(1, 0);

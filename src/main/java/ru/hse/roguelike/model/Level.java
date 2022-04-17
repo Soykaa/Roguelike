@@ -21,7 +21,9 @@ public class Level {
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
-     private List<Enemy> confusedEnemies = new ArrayList<>();
+     private final List<Enemy> confusedEnemies = new ArrayList<>();
+    private final List<Enemy> killedEnemies = new ArrayList<>();
+
 
     /**
      * Creates new Level instance.
@@ -46,6 +48,7 @@ public class Level {
             gameView.showLives(player.getLives());
             gameView.showBackpack(player.getBackpack());
             gameView.showPoints(player.getPoints(), victoryPoints);
+            gameView.showExperience(player.getExperience(), player.getExperienceDecreaseForNextLevel());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,7 +77,7 @@ public class Level {
     }
 
     private GameState movePlayer(int dx, int dy) throws IOException {
-        player.decreaseWaitForConfusion();
+        System.out.println(player.getBackpack().getAllItems().size());
         Coordinates currentCoordinates = player.getCurrentCoordinates();
         int newX = currentCoordinates.getX() + dx;
         int newY = currentCoordinates.getY() + dy;
@@ -113,6 +116,8 @@ public class Level {
                 return GameState.VICTORY;
             }
         }
+        player.decreaseWaitForConfusion();
+        gameView.showBackpack(player.getBackpack());
         return GameState.IS_RUNNING;
     }
 
@@ -130,9 +135,6 @@ public class Level {
             }
             if (charactersAreClose(player.getCurrentCoordinates(), coordinates)) {
                 makeBattle(enemy, coordinates);
-//                if (playerShelter == null | playerShelter != realShelterType) {
-//                    enemy.attack(player);
-//                }
             }
             gameView.showLives(player.getLives());
             if (player.getLives() <= 0) {
@@ -141,6 +143,8 @@ public class Level {
         }
         changeConfusedEnemies();
         confusedEnemies.clear();
+        deleteKilledEnemies();
+        killedEnemies.clear();
         return GameState.IS_RUNNING;
     }
 
@@ -157,20 +161,36 @@ public class Level {
         }
     }
 
-    private void makeBattle(Enemy enemy, Coordinates enemyCoordinates) {
+    private void deleteKilledEnemies() {
+        for (var enemy: killedEnemies) {
+            var coordinates = enemies.get(enemy);
+            if (coordinates == null) {
+                return;
+            }
+            enemies.remove(enemy);
+        }
+    }
+
+    private void makeBattle(Enemy enemy, Coordinates coordinates) throws IOException {
         if (player.canConfuse()) {
             player.confuse();
             confusedEnemies.add(enemy);
-//            var newEnemy = new ConfusedEnemyDecorator(enemy);
-//            board[enemyCoordinates.getX()][enemyCoordinates.getY()] = newEnemy;
-//            enemies.remove(enemy);
-//            enemies.put(newEnemy, enemyCoordinates);
+            player.increaseExperience(5);
+            gameView.showBackpack(player.getBackpack());
+            return;
         }
 
-//
-//        if (playerShelter == null | playerShelter != realShelterType) {
-//            enemy.attack(player);
-//        }
+        if (player.canDestroy()) {
+            killedEnemies.add(enemy);
+            player.increaseExperience(5);
+            board[coordinates.getX()][coordinates.getY()] = new Empty();
+            gameView.removeCharacter(coordinates.getX(), coordinates.getY());
+            gameView.showExperience(player.getExperience(), player.getExperienceDecreaseForNextLevel());
+        }
+
+        if (playerShelter == null | playerShelter != realShelterType) {
+            enemy.attack(player);
+        }
     }
 
     /**

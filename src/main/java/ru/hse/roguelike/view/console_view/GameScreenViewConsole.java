@@ -13,6 +13,7 @@ import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 /**
@@ -260,15 +261,32 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.putString(boardSize.getColumns() + 3, 7, "Backpack:");
         int row = 9;
         for (var backpackItem : backpack.getAllItems()) {
-            if (backpackItem.getType() == backpack.getActiveItem().getType()) {
-                textGraphics.setBackgroundColor(ANSI.CYAN);
+            if (backpackItem.getType() == InventoryItem.DEFAULT) {
+                continue;
+            }
+            if (backpackItem.canUse()) {
+
+                if (backpackItem.getType() == backpack.getActiveItem().getType()) {
+                    textGraphics.setBackgroundColor(ANSI.CYAN);
+                } else {
+                    textGraphics.setBackgroundColor(ANSI.BLACK);
+                }
             } else {
-                textGraphics.setBackgroundColor(ANSI.BLACK);
+                textGraphics.setBackgroundColor(ANSI.YELLOW);
             }
             textGraphics.setForegroundColor(ANSI.WHITE);
             textGraphics.putString(boardSize.getColumns() + 3, row, backpackItem.getType().name());
             row += 1;
         }
+        terminal.flush();
+    }
+
+    @Override
+    public void showExperience(int currentExperience, int totalExperience) throws IOException {
+        TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
+        textGraphics.setBackgroundColor(ANSI.BLACK);
+        textGraphics.setForegroundColor(ANSI.CYAN);
+        textGraphics.putString(boardSize.getColumns() + 3, 5, "Experience: " + currentExperience + " / " + totalExperience);
         terminal.flush();
     }
 }

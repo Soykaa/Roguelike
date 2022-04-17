@@ -89,18 +89,8 @@ public class LevelGenerator {
 
     private Player generateRandomPlayer() {
         int lives = rand.nextInt(10) + 1;
-        return new Player(lives);
+        return new Player(10, 0);
     }
-
-//    private EnemyWeak generateRandomEnemy() {
-//        int maxStep = rand.nextInt(4) + 1;
-//        int randomShift = rand.nextInt(4);
-//        List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
-//                new Coordinates(1, 0),
-//                new Coordinates(0, -1),
-//                new Coordinates(0, 1));
-//        return new EnemyWeak(maxStep, shifts.get(randomShift));
-//    }
 
     private Enemy generateRandomEnemy(CharacterType enemyType) {
         int maxStep = rand.nextInt(4) + 1;
@@ -144,12 +134,13 @@ public class LevelGenerator {
                 return new Shelter(characterType);
             case INVENTORY:
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
-//            case ENEMY_AGGRESSIVE:
-//                JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-//                return new EnemyWeak(jsonCharacter.getInt("maxSteps"),
-//                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
-//            case ENEMY_PASSIVE:
-//                return new EnemyStrong();
+            case ENEMY_AGGRESSIVE:
+            case ENEMY_PASSIVE:
+            case ENEMY_COWARD:
+                JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
+                return new Enemy(characterType, jsonCharacter.getInt("visibility"),
+                                    jsonCharacter.getInt("maxSteps"),
+                                    new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case PLAYER:
                 JSONObject jsonCoordinates = jsonCharacter.getJSONObject("currentCoordinates");
                 if (levelNumber == 0) {
