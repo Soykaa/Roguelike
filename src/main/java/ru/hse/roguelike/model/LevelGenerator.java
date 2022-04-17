@@ -89,7 +89,7 @@ public class LevelGenerator {
 
     private Player generateRandomPlayer() {
         int lives = rand.nextInt(10) + 1;
-        return new Player(10, 0);
+        return new Player(lives, 0);
     }
 
     private Enemy generateRandomEnemy(CharacterType enemyType) {

@@ -8,6 +8,7 @@ public class EnemyTest {
     private Enemy createEnemy(CharacterType type) {
         return new Enemy(type, 3, 10, new Coordinates(-1, 0));
     }
+
     @Test
     public void simpleAttackTest() {
         var player = new Player(9, 0);

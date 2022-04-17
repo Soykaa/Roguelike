@@ -67,8 +67,13 @@ public class Backpack {
         allItems.add(new Inventory(InventoryItem.CONFUSION));
     }
 
+    /**
+     * Makes inventory item unusable.
+     *
+     * @param inventoryItem inventory item
+     **/
     public void makeUnusable(InventoryItem inventoryItem) {
-        for (var inventory: allItems) {
+        for (var inventory : allItems) {
             if (inventory.getType() == inventoryItem) {
                 inventory.setCanUse(false);
             }
@@ -78,12 +83,16 @@ public class Backpack {
         }
     }
 
+    /**
+     * Makes inventory item usable.
+     *
+     * @param inventoryItem inventory item
+     **/
     public void makeUsable(InventoryItem inventoryItem) {
-        for (var inventory: allItems) {
+        for (var inventory : allItems) {
             if (inventory.getType() == inventoryItem) {
                 inventory.setCanUse(true);
             }
         }
     }
-
 }

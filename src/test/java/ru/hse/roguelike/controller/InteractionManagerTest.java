@@ -98,5 +98,4 @@ public class InteractionManagerTest {
         verify(mainScreenView, times(2)).showMainScreen();
         Assertions.assertSame(interactionManager.getScreen(), Screen.MAIN_MENU);
     }
-
 }

@@ -21,9 +21,10 @@ public class Player extends GameCharacter {
     /**
      * Creates new Player instance.
      * Calls parent constructor.
-     * Initialises lives with the given value.
+     * Initialises lives and experience with the given value.
      *
-     * @param lives lives
+     * @param lives      lives
+     * @param experience experience
      **/
     public Player(int lives, int experience) {
         super(CharacterType.PLAYER);
@@ -126,27 +127,44 @@ public class Player extends GameCharacter {
         return backpack.getActiveItem().getType() == InventoryItem.DESTROY;
     }
 
+    /**
+     * Determines if enemy be confused by player.
+     *
+     * @return true if enemy can be confused by player, false otherwise
+     **/
     public boolean canConfuse() {
         return currentWait == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
     }
 
+    /**
+     * Confuses enemy.
+     */
     public void confuse() {
         currentWait = waitForConfusion;
         backpack.makeUnusable(InventoryItem.CONFUSION);
     }
 
+    /**
+     * Returns experience decrease for next level (in terms of experience).
+     *
+     * @return experience decrease
+     **/
     public int getExperienceIncreaseForNextLevel() {
         return experienceIncreaseForNextLevel;
     }
 
+    /**
+     * Returns experience.
+     *
+     * @return experience
+     **/
     public int getExperience() {
         return experience;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
-
+    /**
+     * Decreases wait for confusion.
+     **/
     public void decreaseWaitForConfusion() {
         if (currentWait > 0) {
             currentWait--;
@@ -155,6 +173,11 @@ public class Player extends GameCharacter {
         backpack.makeUsable(InventoryItem.CONFUSION);
     }
 
+    /**
+     * Increases player experience.
+     *
+     * @param delta delta of experience to increase current value.
+     **/
     public void increaseExperience(int delta) {
         experience += delta;
         if (experience >= experienceIncreaseForNextLevel) {

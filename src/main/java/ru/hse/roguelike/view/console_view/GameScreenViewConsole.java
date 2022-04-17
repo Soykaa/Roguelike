@@ -281,6 +281,13 @@ public class GameScreenViewConsole implements GameScreenView {
         terminal.flush();
     }
 
+    /**
+     * Shows player experience.
+     *
+     * @param currentExperience current experience
+     * @param totalExperience   total experience
+     * @throws IOException in case of view error
+     **/
     @Override
     public void showExperience(int currentExperience, int totalExperience) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);

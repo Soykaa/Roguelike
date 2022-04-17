@@ -4,7 +4,6 @@ import ru.hse.roguelike.controller.input.InputCommand;
 
 import java.util.List;
 
-
 /**
  * Holds main menu items.
  **/

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
 import ru.hse.roguelike.view.console_view.ConsoleViewFactory;
 
 public class GameTest {
