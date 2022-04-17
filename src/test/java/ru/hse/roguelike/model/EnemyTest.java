@@ -5,47 +5,41 @@ import org.junit.jupiter.api.Test;
 import ru.hse.roguelike.model.Characters.*;
 
 public class EnemyTest {
+    private Enemy createEnemy(CharacterType type) {
+        return new Enemy(type, 3, 10, new Coordinates(-1, 0));
+    }
     @Test
     public void simpleAttackTest() {
         var player = new Player(9);
-        var enemyWeak = new EnemyWeak(5, new Coordinates(-1, 0));
-        var enemyStrong = new EnemyStrong();
+        var enemyAggressive = createEnemy(CharacterType.ENEMY_AGGRESSIVE);
+        var enemyPassive = createEnemy(CharacterType.ENEMY_PASSIVE);
+        var enemyCoward = createEnemy(CharacterType.ENEMY_COWARD);
 
         Assertions.assertEquals(9, player.getLives());
-        enemyWeak.attack(player);
+        enemyAggressive.attack(player);
         Assertions.assertEquals(7, player.getLives());
-        enemyStrong.attack(player);
+        enemyPassive.attack(player);
         Assertions.assertEquals(5, player.getLives());
+        enemyCoward.attack(player);
+        Assertions.assertEquals(3, player.getLives());
     }
 
     @Test
     public void attackWithProtectionTest() {
         var player = new Player(9);
-        var enemyWeak = new EnemyWeak(5, new Coordinates(1, 0));
-        var enemyStrong = new EnemyStrong();
+        var enemyAggressive = createEnemy(CharacterType.ENEMY_AGGRESSIVE);
+        var enemyPassive = createEnemy(CharacterType.ENEMY_PASSIVE);
+        var enemyCoward = createEnemy(CharacterType.ENEMY_COWARD);
 
         Assertions.assertEquals(9, player.getLives());
         player.getBackpack().putItem(new Inventory(InventoryItem.PROTECTION));
         player.getBackpack().setNextActiveItem();
-        enemyStrong.attack(player);
+        player.getBackpack().setNextActiveItem();
+        enemyAggressive.attack(player);
         Assertions.assertEquals(8, player.getLives());
-        enemyWeak.attack(player);
+        enemyPassive.attack(player);
         Assertions.assertEquals(7, player.getLives());
-    }
-
-    @Test
-    public void makeNextMoveStrongTest() {
-        var strongEnemy = new EnemyStrong();
-        Coordinates coordinates = strongEnemy.makeNextMove();
-        Assertions.assertTrue(coordinates.getX() == -1 || coordinates.getX() == 1 || coordinates.getX() == 0);
-        Assertions.assertTrue(coordinates.getY() == -1 || coordinates.getY() == 1 || coordinates.getY() == 0);
-    }
-
-    @Test
-    public void makeNextMoveWeak() {
-        var weakEnemy = new EnemyWeak(0, new Coordinates(1, 1));
-        Coordinates coordinates = weakEnemy.makeNextMove();
-        Assertions.assertEquals(-1, coordinates.getX());
-        Assertions.assertEquals(-1  , coordinates.getY());
+        enemyCoward.attack(player);
+        Assertions.assertEquals(6, player.getLives());
     }
 }

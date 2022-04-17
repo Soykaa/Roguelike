@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ConfusedEnemyDecorator extends EnemyDecorator {
-    private final int confusionTime = 5;
+    private final int confusionTime;
     private int currentTime = 0;
 
     private final List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
@@ -18,7 +18,12 @@ public class ConfusedEnemyDecorator extends EnemyDecorator {
 
 
     public ConfusedEnemyDecorator(Enemy enemy) {
+        this(enemy, 5);
+    }
+
+    public ConfusedEnemyDecorator(Enemy enemy, int confusionTime) {
         super(enemy);
+        this.confusionTime = confusionTime;
     }
 
     @Override
