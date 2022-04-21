@@ -1,5 +1,7 @@
 package ru.hse.roguelike.model;
 
+import java.util.HashMap;
+import java.util.Random;
 import ru.hse.roguelike.model.Characters.*;
 import ru.hse.roguelike.model.Characters.decorator.ConfusedEnemyDecorator;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
@@ -66,6 +68,22 @@ public class Level {
         return x >= 0 && x < board.length && y < board[0].length && y >= 0;
     }
 
+    private Coordinates findFreeCoordinatesNearby(int x, int y) {
+        if (isValidCoordinates(x + 1, y) && board[x + 1][y].getCharacterType() == CharacterType.EMPTY) {
+            return new Coordinates(x + 1, y);
+        }
+        if (isValidCoordinates(x - 1, y) && board[x - 1][y].getCharacterType() == CharacterType.EMPTY) {
+            return new Coordinates(x - 1, y);
+        }
+        if (isValidCoordinates(x, y + 1) && board[x][y + 1].getCharacterType() == CharacterType.EMPTY) {
+            return new Coordinates(x, y + 1);
+        }
+        if (isValidCoordinates(x, y - 1) && board[x][y - 1].getCharacterType() == CharacterType.EMPTY) {
+            return new Coordinates(x, y - 1);
+        }
+        return new Coordinates(-1, -1);
+    }
+
     private boolean charactersAreClose(Coordinates first, Coordinates second) {
         if (first.getX() == second.getX()) {
             return Math.abs(first.getY() - second.getY()) <= 1;
@@ -121,6 +139,7 @@ public class Level {
     }
 
     private GameState moveEnemies() throws IOException {
+        Map<Enemy, Coordinates> newEnemies = new HashMap<>();
         for (var entry : enemies.entrySet()) {
             Enemy enemy = entry.getKey();
             Coordinates coordinates = entry.getValue();
@@ -136,8 +155,33 @@ public class Level {
                 makeBattle(enemy, coordinates);
             }
             gameView.showLives(player.getLives());
+
+            System.out.println("Current coord " + newX + " " + newY);
+            if (new Random().nextFloat() < enemy.getReplicationProbability()
+                && isValidCoordinates(newX, newY)
+                && board[newX][newY].getCharacterType() == enemy.getCharacterType()
+            ) {
+                Coordinates newEnemyCoordinates = findFreeCoordinatesNearby(newX, newY);
+                int newEnemyX = newEnemyCoordinates.getX();
+                int newEnemyY = newEnemyCoordinates.getY();
+                if (newEnemyX != -1 && newEnemyY != -1) {
+                    Enemy newEnemy = enemy.cloneEnemy();
+                    newEnemies.put(newEnemy, newEnemyCoordinates);
+                }
+            }
             if (player.getLives() <= 0) {
                 return GameState.DEFEAT;
+            }
+        }
+        for (var enemy: newEnemies.entrySet()) {
+            Coordinates newEnemyCoordinates = enemy.getValue();
+            int newEnemyX = newEnemyCoordinates.getX();
+            int newEnemyY = newEnemyCoordinates.getY();
+            System.out.println("new ones " + newEnemyX + " " + newEnemyY);
+            if (board[newEnemyX][newEnemyY].getCharacterType() == CharacterType.EMPTY) {
+                board[newEnemyX][newEnemyY] = enemy.getKey();
+                gameView.placeCharacter(enemy.getKey(), newEnemyX, newEnemyY);
+                enemies.put(enemy.getKey(), enemy.getValue());
             }
         }
         changeConfusedEnemies();
