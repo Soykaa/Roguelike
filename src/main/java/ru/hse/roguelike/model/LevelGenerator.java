@@ -55,10 +55,8 @@ public class LevelGenerator {
 
     public Level getNextLevel() {
         if (rand.nextInt() % 2 == 0) {
-            System.out.println("aaa");
             levelBuilder.setEnemyFactory(new RedEnemyFactory());
         } else {
-            System.out.println("bbbb");
             levelBuilder.setEnemyFactory(new YellowEnemyFactory());
         }
         Level level = levelBuilder.build(player);

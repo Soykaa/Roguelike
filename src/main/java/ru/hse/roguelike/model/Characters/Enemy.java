@@ -105,9 +105,4 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     public float getReplicationProbability() {
         return replicationProbability;
     }
-
-    public static void main(String[] args) {
-        float a = 2;
-        System.out.println(a / 3);
-    }
 }
