@@ -9,8 +9,17 @@ import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
+import ru.hse.roguelike.model.levelbuilder.FromFileLevelBuilder;
 import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
 import ru.hse.roguelike.model.levelbuilder.RandomLevelBuilder;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 
 public class LevelBuilderTests {
     @Test
@@ -46,5 +55,41 @@ public class LevelBuilderTests {
         Assertions.assertNull(l6);
         var l7 = builder.build(player);
         Assertions.assertNull(l7);
+    }
+
+    @Test
+    public void testFromFileLevelBuilder() throws IOException {
+        String directory = System.getProperty("user.dir") + File.separator + "tmp";
+        Files.createDirectories(Paths.get(directory));
+        Files.createFile(Paths.get(directory + File.separator + "level0"));
+        Files.createFile(Paths.get(directory + File.separator + "level1"));
+        String level = "{\"victoryPoints\": 5, " +
+                "\"realShelterType\": \"SHELTER_LAVENDER\", " +
+                "\"board\":\n" +
+                    "[[{\"numberOfPoints\":8,\"characterType\":\"POINTS\"}, " +
+                "{\"characterType\":\"EMPTY\"}, " +
+                "{\"destroyBonus\":1,\"characterType\":\"OBSTACLE\"}, " +
+                "{\"lives\":4,\"points\":0,\"currentCoordinates\":{\"x\":0,\"y\":3},\"characterType\":\"PLAYER\"}, " +
+                "{\"characterType\":\"SHELTER_PINK\"}, " +
+                "{\"characterType\":\"SHELTER_YELLOW\"}, " +
+                "{\"characterType\":\"SHELTER_LAVENDER\"}, " +
+                "{\"type\":\"DESTROY\",\"characterType\":\"INVENTORY\"}, " +
+                "{\"type\":\"PROTECTION\",\"characterType\":\"INVENTORY\"}]]}";
+
+        Files.writeString(Paths.get(directory + File.separator + "level0"), level);
+        Files.writeString(Paths.get(directory + File.separator + "level1"), level);
+
+        LevelBuilder levelBuilder = new FromFileLevelBuilder(File.separator + "tmp");
+        Player player = new Player(10, 0);
+        var l1 = levelBuilder.build(player);
+        Assertions.assertNotNull(l1);
+        var l2 = levelBuilder.build(player);
+        Assertions.assertNotNull(l2);
+        var l3 = levelBuilder.build(player);
+        Assertions.assertNull(l3);
+        Files.walk(Paths.get(directory))
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
     }
 }
