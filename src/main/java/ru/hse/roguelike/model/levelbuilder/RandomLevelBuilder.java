@@ -13,6 +13,7 @@ import ru.hse.roguelike.model.Coordinates;
 import ru.hse.roguelike.model.EnemyFactory;
 import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.model.Level;
+import ru.hse.roguelike.model.LevelCharacteristics.FifthLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.FirstLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
@@ -35,7 +36,7 @@ public class RandomLevelBuilder implements LevelBuilder {
                                                                             new SecondLevelCharacteristic(),
                                                                             new ThirdLevelCharacteristic(),
                                                                             new FourthLevelCharacteristic(),
-                                                                            new FirstLevelCharacteristic());
+                                                                            new FifthLevelCharacteristic());
 
     private int currentLevelNumber = 0;
 

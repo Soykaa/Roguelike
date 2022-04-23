@@ -50,6 +50,10 @@ public class Level {
         return gameView;
     }
 
+    public GameCharacter[][] getBoard() {
+        return board;
+    }
+
     public void setGameView(GameScreenView gameView) {
         this.gameView = gameView;
         try {

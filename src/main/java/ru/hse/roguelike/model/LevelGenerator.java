@@ -1,37 +1,11 @@
 package ru.hse.roguelike.model;
 
-import org.json.JSONObject;
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Inventory;
-import ru.hse.roguelike.model.Characters.Obstacle;
 import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.model.Characters.Shelter;
-import ru.hse.roguelike.model.LevelCharacteristics.FifthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FirstLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
 import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
-import org.json.JSONArray;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 
 /**
