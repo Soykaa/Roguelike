@@ -68,9 +68,8 @@ public class InteractionManager {
      * Handles a keystroke on initial / rules / game screen.
      *
      * @param command keystroke to handle
-     * @throws IOException in case of terminal creation error
      **/
-    public void processCommand(InputCommand command) throws IOException {
+    public void processCommand(InputCommand command) {
         switch (screen) {
             case MAIN_MENU:
                 processCommandMainMenu(command);
@@ -91,7 +90,7 @@ public class InteractionManager {
         }
     }
 
-    private void processCommandGame(InputCommand command) throws IOException {
+    private void processCommandGame(InputCommand command) {
         GameState gameState = GameState.IS_RUNNING;
         switch (command) {
             case UP:
@@ -110,7 +109,11 @@ public class InteractionManager {
                 game.manageGame(Action.CHANGE_EQUIPTION);
                 break;
             case SPACE:
-                game.manageGame(Action.DESTROY);
+                gameState = game.manageGame(Action.DESTROY);
+                break;
+            case UNKNOWN_COMMAND:
+                gameState = game.manageGame(Action.UNKNOWN_ACTION);
+                break;
         }
         if (gameState != GameState.IS_RUNNING) {
             screen = Screen.MAIN_MENU;
@@ -136,6 +139,7 @@ public class InteractionManager {
                     case START_GAME_FROM_FILE:
                         GameState state1 = game.startGame(true, factory);
                         if (state1 != GameState.IS_RUNNING) {
+                            System.out.println("Problem with starting game");
                             return;
                         }
                         screen = Screen.GAME;
@@ -143,6 +147,7 @@ public class InteractionManager {
                     case START_GAME:
                         GameState state2 = game.startGame(false, factory);
                         if (state2 != GameState.IS_RUNNING) {
+                            System.out.println("Problem with starting game");
                             return;
                         }
                         screen = Screen.GAME;

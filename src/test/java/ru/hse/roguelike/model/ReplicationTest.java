@@ -10,6 +10,7 @@ import ru.hse.roguelike.model.Characters.Empty;
 import ru.hse.roguelike.model.Characters.Enemy;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Player;
+import ru.hse.roguelike.model.Characters.strategies.AggressiveMobStrategy;
 import ru.hse.roguelike.view.console_view.GameScreenViewConsole;
 
 public class ReplicationTest {
@@ -21,13 +22,16 @@ public class ReplicationTest {
                 board[i][j] = new Empty();
             }
         }
-        var enemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, 2, 2, new Coordinates(1, 0), 1);
+        var enemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, "color", 2,
+                new AggressiveMobStrategy(2, 2, new Coordinates(1, 0)), 1);
+//        var enemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, "color", 2, 2, new Coordinates(1, 0), 1);
         board[1][1] = enemy;
         var player = new Player(1, 0);
         board[6][1] = player;
         var enemyMap = new HashMap<Enemy, Coordinates>();
         enemyMap.put(enemy, new Coordinates(1, 1));
-        var level = new Level(board, new GameScreenViewConsole(new DefaultVirtualTerminal()), player, enemyMap, CharacterType.SHELTER_LAVENDER, 5);
+        var level = new Level(board, player, enemyMap, CharacterType.SHELTER_LAVENDER, 5);
+        level.setGameView(new GameScreenViewConsole(new DefaultVirtualTerminal()));
         level.moveCharacters(5, 1);
         Assertions.assertEquals(CharacterType.ENEMY_AGGRESSIVE, board[2][1].getCharacterType());
         Assertions.assertEquals(GameState.DEFEAT, level.moveCharacters(4, 1));

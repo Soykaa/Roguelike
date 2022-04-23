@@ -18,7 +18,8 @@ public class LevelTest {
         board[1][0] = new Points(5);
         board[0][1] = new Inventory(InventoryItem.DESTROY);
         board[1][1] = new Obstacle();
-        var level = new Level(board, new GameScreenViewConsole(new DefaultVirtualTerminal()), player, new HashMap<>(), CharacterType.SHELTER_LAVENDER, 5);
+        var level = new Level(board, player, new HashMap<>(), CharacterType.SHELTER_LAVENDER, 5);
+        level.setGameView(new GameScreenViewConsole(new DefaultVirtualTerminal()));
         level.moveCharacters(1, 0);
         Assertions.assertEquals(5, player.getPoints());
         Assertions.assertEquals(GameState.IS_RUNNING, level.destroyObstacle());

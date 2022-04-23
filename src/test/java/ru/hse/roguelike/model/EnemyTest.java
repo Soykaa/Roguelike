@@ -3,10 +3,22 @@ package ru.hse.roguelike.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.hse.roguelike.model.Characters.*;
+import ru.hse.roguelike.model.Characters.strategies.AggressiveMobStrategy;
+import ru.hse.roguelike.model.Characters.strategies.CowardMobStrategy;
+import ru.hse.roguelike.model.Characters.strategies.PassiveMobStrategy;
 
 public class EnemyTest {
     private Enemy createEnemy(CharacterType type) {
-        return new Enemy(type, 3, 10, new Coordinates(-1, 0));
+        switch (type) {
+            case ENEMY_AGGRESSIVE:
+                return new Enemy(type, "color", 2,
+                        new AggressiveMobStrategy(3, 10,  new Coordinates(-1, 0)));
+            case ENEMY_COWARD:
+                return new Enemy(type, "color", 2,
+                        new CowardMobStrategy(3, 10,  new Coordinates(-1, 0)));
+            default:
+                return new Enemy(type, "color", 2, new PassiveMobStrategy());
+        }
     }
 
     @Test

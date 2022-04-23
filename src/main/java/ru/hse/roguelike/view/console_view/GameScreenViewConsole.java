@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Characters.Empty;
+import ru.hse.roguelike.model.Characters.Enemy;
 import ru.hse.roguelike.model.Characters.GameCharacter;
 import ru.hse.roguelike.model.Characters.Points;
 import ru.hse.roguelike.model.InventoryItem;
@@ -28,6 +29,7 @@ public class GameScreenViewConsole implements GameScreenView {
     private final RGB lightYellow = new RGB(246, 225, 207);
     private final RGB lavender = new RGB(227, 211, 240);
     private final RGB white = new RGB(255, 255, 255);
+    private int messageSize = 0;
 
     /**
      * Creates new GameScreenViewConsole instance.
@@ -55,7 +57,12 @@ public class GameScreenViewConsole implements GameScreenView {
             case ENEMY_AGGRESSIVE:
             case ENEMY_PASSIVE:
             case ENEMY_COWARD:
-                textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
+                var enemy = (Enemy) character;
+                if (enemy.getColor().equals("red")) {
+                    textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
+                } else {
+                    textGraphics.setForegroundColor(ANSI.YELLOW_BRIGHT);
+                }
                 textGraphics.putString(position, "\uC6C3");
                 break;
             case OBSTACLE:
@@ -168,9 +175,15 @@ public class GameScreenViewConsole implements GameScreenView {
     @Override
     public void setMessage(String message) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
-        textGraphics.setBackgroundColor(ANSI.BLACK);
-        textGraphics.setForegroundColor(ANSI.CYAN);
-        textGraphics.putString(1, boardSize.getRows() + 1, message);
+        var messageLines = message.split("\n");
+        messageSize = messageLines.length;
+        int shift = 1;
+        for (var line: messageLines) {
+            textGraphics.setBackgroundColor(ANSI.BLACK);
+            textGraphics.setForegroundColor(ANSI.CYAN);
+            textGraphics.putString(1, boardSize.getRows() + shift, line);
+            shift += 2;
+        }
         terminal.flush();
     }
 
@@ -182,8 +195,10 @@ public class GameScreenViewConsole implements GameScreenView {
     @Override
     public void removeMessage() throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
-        textGraphics.setBackgroundColor(ANSI.BLACK);
-        textGraphics.putString(1, boardSize.getRows() + 1, String.format("%-20s", " "));
+        for (int i = 0; i < messageSize; i++) {
+            textGraphics.setBackgroundColor(ANSI.BLACK);
+            textGraphics.putString(1, boardSize.getRows() + 1 + 2 * i, String.format("%-20s", " "));
+        }
         terminal.flush();
     }
 
@@ -239,7 +254,7 @@ public class GameScreenViewConsole implements GameScreenView {
      * @throws IOException in case of view error
      **/
     @Override
-    public void showLives(int lives) throws IOException {
+    public void showLives(float lives) throws IOException {
         TerminalSize boardSize = getAbsoluteBoardSize(board.length, board[0].length);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         textGraphics.setForegroundColor(ANSI.CYAN);

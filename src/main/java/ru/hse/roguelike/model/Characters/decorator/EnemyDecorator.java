@@ -16,7 +16,7 @@ public abstract class EnemyDecorator extends Enemy {
      * @param enemy enemy
      **/
     public EnemyDecorator(Enemy enemy) {
-        super(enemy.getCharacterType(), enemy.getStrategy());
+        super(enemy.getCharacterType(), enemy.getColor(), enemy.getAttackStrength(), enemy.getStrategy());
         this.enemy = enemy;
     }
 }

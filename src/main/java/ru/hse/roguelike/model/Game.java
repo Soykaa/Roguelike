@@ -1,5 +1,7 @@
 package ru.hse.roguelike.model;
 
+import ru.hse.roguelike.model.levelbuilder.FromFileLevelBuilder;
+import ru.hse.roguelike.model.levelbuilder.RandomLevelBuilder;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 
 import java.io.IOException;
@@ -11,6 +13,8 @@ public class Game {
     private LevelGenerator levelGenerator;
     private Level currentLevel;
     private final String levelFilesPath;
+
+    private GameState previousGameState = GameState.IS_RUNNING;
 
     /**
      * Creates new Game instance.
@@ -29,21 +33,19 @@ public class Game {
      * @param factory                view factory
      **/
     public GameState startGame(boolean generateLevelsFromFile, AbstractViewFactory factory) {
-        try {
-            if (generateLevelsFromFile) {
-                levelGenerator = new LevelGenerator(levelFilesPath, factory);
-            } else {
-                levelGenerator = new LevelGenerator(factory, 5);
-            }
-            if (!levelGenerator.hasNextLevel()) {
-                throw new RuntimeException("Wrong level generation");
-            }
-            currentLevel = levelGenerator.nextLevel();
-            return GameState.IS_RUNNING;
-        } catch (Exception e) {
-            System.out.println("Problem occurred while processing your action");
+        levelGenerator = new LevelGenerator(factory);
+        previousGameState = GameState.IS_RUNNING;
+        if (generateLevelsFromFile) {
+            levelGenerator.setLevelBuilder(new FromFileLevelBuilder(levelFilesPath));
+        } else {
+            levelGenerator.setLevelBuilder(new RandomLevelBuilder());
+
+        }
+        currentLevel = levelGenerator.getNextLevel();
+        if (currentLevel == null) {
             return GameState.PROBLEM_OCCURRED;
         }
+        return GameState.IS_RUNNING;
     }
 
     /**
@@ -54,19 +56,30 @@ public class Game {
      * @return current game state
      **/
     public GameState manageGame(Action action) {
+        if (previousGameState != GameState.IS_RUNNING) {
+            return previousGameState;
+        }
+        if (action == Action.UNKNOWN_ACTION) {
+            return previousGameState;
+        }
         try {
             GameState gameState = makeAction(action);
+            var gameView = currentLevel.getGameView();
             if (gameState == GameState.VICTORY) {
-                if (levelGenerator.hasNextLevel()) {
-                    currentLevel = levelGenerator.nextLevel();
-                    return GameState.IS_RUNNING;
-                } else {
-                    return gameState;
+                currentLevel = levelGenerator.getNextLevel();
+                if (currentLevel == null) {
+                    gameView.setMessage("You WIN!!!\nPress any key to exit");
+                    previousGameState = GameState.VICTORY;
                 }
+                return GameState.IS_RUNNING;
+            } else if (gameState == GameState.DEFEAT) {
+                gameView.setMessage("You lose :(\nPress any key to exit");
+                previousGameState = GameState.DEFEAT;
+                return GameState.IS_RUNNING;
             }
             return gameState;
         } catch (Exception e) {
-            System.out.println("Problem occurred while processing your action");
+            System.out.println("Problem occurred while playing game: " + e.getMessage());
             return GameState.PROBLEM_OCCURRED;
         }
     }

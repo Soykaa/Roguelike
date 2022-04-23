@@ -55,7 +55,6 @@ public class Application {
                 if (keyStroke.getCharacter().equals('/')) {
                     return InputCommand.BACKSLASH;
                 }
-                break;
         }
         return InputCommand.UNKNOWN_COMMAND;
     }
@@ -76,8 +75,7 @@ public class Application {
             KeyStroke keyStroke = terminal.readInput();
             while (true) {
                 InputCommand command = getCommand(keyStroke);
-                if (command != InputCommand.UNKNOWN_COMMAND)
-                    interactionManager.processCommand(command);
+                interactionManager.processCommand(command);
                 if (!interactionManager.isRunning) {
                     break;
                 }

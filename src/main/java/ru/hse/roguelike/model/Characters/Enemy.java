@@ -1,10 +1,7 @@
 package ru.hse.roguelike.model.Characters;
 
 import java.util.Random;
-import ru.hse.roguelike.model.Characters.strategies.AggressiveMobStrategy;
-import ru.hse.roguelike.model.Characters.strategies.CowardMobStrategy;
 import ru.hse.roguelike.model.Characters.strategies.MobStrategy;
-import ru.hse.roguelike.model.Characters.strategies.PassiveMobStrategy;
 import ru.hse.roguelike.model.Coordinates;
 import ru.hse.roguelike.model.InventoryItem;
 
@@ -15,57 +12,9 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     private final MobStrategy strategy;
     private final float replicationProbability;
 
+    private final String color;
 
-    /**
-     * Creates new Enemy instance.
-     * Calls parent constructor.
-     * Creates strategy according to enemy type.
-     *
-     * @param characterType enemy type
-     * @param visibility    enemy visibility
-     * @param maxSteps      maximum number of steps in shift direction
-     * @param shift         shift direction
-     **/
-    public Enemy(CharacterType characterType, int visibility, int maxSteps, Coordinates shift) {
-        super(characterType);
-        switch (characterType) {
-            case ENEMY_AGGRESSIVE:
-                strategy = new AggressiveMobStrategy(visibility, maxSteps, shift);
-                break;
-            case ENEMY_COWARD:
-                strategy = new CowardMobStrategy(visibility, maxSteps, shift);
-                break;
-            default:
-                strategy = new PassiveMobStrategy();
-        }
-        this.replicationProbability = new Random().nextFloat() * 0.01f;
-    }
-
-    /**
-     * Creates new Enemy instance.
-     * Calls parent constructor.
-     * Creates strategy according to enemy type.
-     *
-     * @param characterType          enemy type
-     * @param visibility             enemy visibility
-     * @param maxSteps               maximum number of steps in shift direction
-     * @param shift                  shift direction
-     * @param replicationProbability probability that the enemy will replicate at each shift
-     **/
-    public Enemy(CharacterType characterType, int visibility, int maxSteps, Coordinates shift, float replicationProbability) {
-        super(characterType);
-        switch (characterType) {
-            case ENEMY_AGGRESSIVE:
-                strategy = new AggressiveMobStrategy(visibility, maxSteps, shift);
-                break;
-            case ENEMY_COWARD:
-                strategy = new CowardMobStrategy(visibility, maxSteps, shift);
-                break;
-            default:
-                strategy = new PassiveMobStrategy();
-        }
-        this.replicationProbability = replicationProbability;
-    }
+    private final int attackStrength;
 
     /**
      * Creates new Enemy instance.
@@ -75,10 +24,16 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      * @param characterType enemy type
      * @param strategy      enemy strategy
      **/
-    public Enemy(CharacterType characterType, MobStrategy strategy) {
+    public Enemy(CharacterType characterType, String color, int attackStrength, MobStrategy strategy) {
         super(characterType);
         this.strategy = strategy;
+        this.color = color;
+        this.attackStrength = attackStrength;
         this.replicationProbability = new Random().nextFloat() * 0.01f;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     /**
@@ -90,9 +45,11 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      * @param strategy               enemy strategy
      * @param replicationProbability probability that the enemy will replicate at each shift
      **/
-    public Enemy(CharacterType characterType, MobStrategy strategy, float replicationProbability) {
+    public Enemy(CharacterType characterType, String color, int attackStrength, MobStrategy strategy, float replicationProbability) {
         super(characterType);
         this.strategy = strategy;
+        this.color = color;
+        this.attackStrength = attackStrength;
         this.replicationProbability = replicationProbability;
     }
 
@@ -123,11 +80,15 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      **/
     public void attack(Player player) {
         if (player.getBackpack().getActiveItem().getType() != InventoryItem.PROTECTION) {
-            player.decreaseLives(2);
+            player.decreaseLives(attackStrength);
         }
         if (player.getBackpack().getActiveItem().getType() == InventoryItem.PROTECTION) {
-            player.decreaseLives(1);
+            player.decreaseLives((float) (attackStrength / 2.0));
         }
+    }
+
+    public int getAttackStrength() {
+        return attackStrength;
     }
 
     /**
@@ -135,7 +96,7 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      **/
     @Override
     public Enemy cloneEnemy() {
-        return new Enemy(this.getCharacterType(), strategy, replicationProbability);
+        return new Enemy(this.getCharacterType(), color, attackStrength, strategy, replicationProbability);
     }
 
     /**
@@ -143,5 +104,10 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      **/
     public float getReplicationProbability() {
         return replicationProbability;
+    }
+
+    public static void main(String[] args) {
+        float a = 2;
+        System.out.println(a / 3);
     }
 }

@@ -10,7 +10,7 @@ import ru.hse.roguelike.model.InventoryItem;
 public class Player extends GameCharacter {
     private int experienceIncreaseForNextLevel = 5;
     private int waitForConfusion = 5;
-    private int lives;
+    private float lives;
     private int points = 0;
     private int currentWait = 0;
     private int experience = 0;
@@ -51,7 +51,7 @@ public class Player extends GameCharacter {
      *
      * @return number of lives
      **/
-    public int getLives() {
+    public float getLives() {
         return lives;
     }
 
@@ -87,8 +87,9 @@ public class Player extends GameCharacter {
      *
      * @param delta delta of lives to increase current value
      **/
-    public void decreaseLives(int delta) {
-        this.lives -= delta;
+    public void decreaseLives(float delta) {
+        lives = (float) Math.max(lives - delta, 0.0);
+
     }
 
     /**

@@ -77,7 +77,7 @@ public interface GameScreenView {
      * @param lives number of lives
      * @throws IOException in case of view error
      **/
-    void showLives(int lives) throws IOException;
+    void showLives(float lives) throws IOException;
 
     /**
      * Shows backpack with current active item.

@@ -27,5 +27,7 @@ public enum Action {
     /**
      * Change equiption.
      **/
-    CHANGE_EQUIPTION
+    CHANGE_EQUIPTION,
+
+    UNKNOWN_ACTION
 }

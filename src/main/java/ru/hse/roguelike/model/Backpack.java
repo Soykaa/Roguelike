@@ -79,7 +79,7 @@ public class Backpack {
             }
         }
         if (!allItems.get(activeItemNum).canUse()) {
-            setNextActiveItem();
+            activeItemNum = 0;
         }
     }
 

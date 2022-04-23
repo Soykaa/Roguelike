@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 public class Level {
     private final GameCharacter[][] board;
-    private final GameScreenView gameView;
+    private GameScreenView gameView;
     private final Player player;
     private final int victoryPoints;
     private final Map<Enemy, Coordinates> enemies;
@@ -37,14 +37,21 @@ public class Level {
      * @param realShelterType valid shelter type
      * @param victoryPoints   number of points to win
      **/
-    public Level(GameCharacter[][] board, GameScreenView gameView, Player player,
+    public Level(GameCharacter[][] board, Player player,
                  Map<Enemy, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
         this.board = board;
-        this.gameView = gameView;
         this.player = player;
         this.enemies = enemies;
         this.realShelterType = realShelterType;
         this.victoryPoints = victoryPoints;
+    }
+
+    public GameScreenView getGameView() {
+        return gameView;
+    }
+
+    public void setGameView(GameScreenView gameView) {
+        this.gameView = gameView;
         try {
             gameView.showBoard(board);
             gameView.showLives(player.getLives());
@@ -156,7 +163,6 @@ public class Level {
             }
             gameView.showLives(player.getLives());
 
-            System.out.println("Current coord " + newX + " " + newY);
             if (new Random().nextFloat() < enemy.getReplicationProbability()
                 && isValidCoordinates(newX, newY)
                 && board[newX][newY].getCharacterType() == enemy.getCharacterType()
@@ -177,7 +183,6 @@ public class Level {
             Coordinates newEnemyCoordinates = enemy.getValue();
             int newEnemyX = newEnemyCoordinates.getX();
             int newEnemyY = newEnemyCoordinates.getY();
-            System.out.println("new ones " + newEnemyX + " " + newEnemyY);
             if (board[newEnemyX][newEnemyY].getCharacterType() == CharacterType.EMPTY) {
                 board[newEnemyX][newEnemyY] = enemy.getKey();
                 gameView.placeCharacter(enemy.getKey(), newEnemyX, newEnemyY);
