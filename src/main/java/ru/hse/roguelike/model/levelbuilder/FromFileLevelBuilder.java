@@ -17,6 +17,7 @@ import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.model.Level;
 import ru.hse.roguelike.model.RedEnemyFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -85,7 +86,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
         this.player = player;
         String json = "";
         var path = Path.of(
-                System.getProperty("user.dir") + "/" + fileDirectory + "/level" + currentLevelNumber);
+                System.getProperty("user.dir") + File.separator + fileDirectory + File.separator + "level" + currentLevelNumber);
         if (!Files.exists(path)) {
             return null;
         }
