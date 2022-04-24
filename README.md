@@ -102,23 +102,44 @@
 
 - `Enemy`:
 
+агрессивный враг, начинает движение к игроку когда его видит
 ````
 {
-  "visibility": <visibility>
   "maxSteps": <max_step>,
   "shift": {
     "x": <shift_x>,
     "y": <shift_y>
   },
-  "characterType": "ENEMY_WEAK"
+  "characterType": "ENEMY_AGGRESSIVE"
 }
 ````
+
+трусливый враг, начинает убегать от игрока когда его видит
+````
+{
+  "maxSteps": <max_step>,
+  "shift": {
+    "x": <shift_x>,
+    "y": <shift_y>
+  },
+  "characterType": "ENEMY_COWARD"
+}
+````
+
 `visibility` - расстояние, на котором враг видит игрока. Для видимости нужно, чтобы по каждой из осей расстойние 
 между врагом и игроком было не больше `visibility`
 
 `max_step` - максимальное количество шагов в одну сторону, которое может сделать враг
 
 `shift_x, shift_y` - сдвиг по осям за один шаг
+
+пассивный враг, стоит на месте, начинает перемещаться только под действием кофузии
+````
+{
+  "characterType": "ENEMY_AGGRESSIVE"
+}
+````
+
 - `Player`:
 
 ````

@@ -16,11 +16,8 @@ public interface EnemyFactory {
 
     /**
      * Creates passive enemy.
-     *
-     * @param shift    shift direction
-     * @param maxSteps maximum number of steps in current direction
      **/
-    Enemy createPassiveEnemy(int maxSteps, Coordinates shift);
+    Enemy createPassiveEnemy();
 
     /**
      * Creates coward enemy.

@@ -71,9 +71,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
                 return enemyFactory.createAggressiveEnemy(jsonCharacter.getInt("maxSteps"),
                         new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case ENEMY_PASSIVE:
-                jsonShift = jsonCharacter.getJSONObject("shift");
-                return enemyFactory.createPassiveEnemy(jsonCharacter.getInt("maxSteps"),
-                        new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
+                return enemyFactory.createPassiveEnemy();
             case ENEMY_COWARD:
                 jsonShift = jsonCharacter.getJSONObject("shift");
                 return enemyFactory.createCowardEnemy(jsonCharacter.getInt("maxSteps"),

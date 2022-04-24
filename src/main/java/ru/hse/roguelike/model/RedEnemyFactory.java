@@ -28,12 +28,9 @@ public class RedEnemyFactory implements EnemyFactory {
 
     /**
      * Creates passive enemy.
-     *
-     * @param shift    shift direction
-     * @param maxSteps maximum number of steps in current direction
      **/
     @Override
-    public Enemy createPassiveEnemy(int maxSteps, Coordinates shift) {
+    public Enemy createPassiveEnemy() {
         return new Enemy(CharacterType.ENEMY_PASSIVE, color, attackStrength,
                 new PassiveMobStrategy());
     }

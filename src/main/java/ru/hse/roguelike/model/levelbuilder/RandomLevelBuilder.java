@@ -64,7 +64,7 @@ public class RandomLevelBuilder implements LevelBuilder {
             case ENEMY_COWARD:
                 return enemyFactory.createCowardEnemy(maxStep, shifts.get(randomShift));
             default:
-                return enemyFactory.createPassiveEnemy(maxStep, shifts.get(randomShift));
+                return enemyFactory.createPassiveEnemy();
         }
     }
 
