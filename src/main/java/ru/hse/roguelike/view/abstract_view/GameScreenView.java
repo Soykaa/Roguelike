@@ -87,5 +87,12 @@ public interface GameScreenView {
      **/
     void showBackpack(Backpack backpack) throws IOException;
 
+    /**
+     * Shows player experience.
+     *
+     * @param currentExperience current experience
+     * @param totalExperience   total experience
+     * @throws IOException in case of view error
+     **/
     void showExperience(int currentExperience, int totalExperience) throws IOException;
 }

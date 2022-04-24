@@ -13,7 +13,6 @@ public class Game {
     private LevelGenerator levelGenerator;
     private Level currentLevel;
     private final String levelFilesPath;
-
     private GameState previousGameState = GameState.IS_RUNNING;
 
     /**
