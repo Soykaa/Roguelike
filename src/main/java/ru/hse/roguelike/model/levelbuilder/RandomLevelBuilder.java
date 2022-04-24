@@ -19,30 +19,33 @@ import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
 import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
-import ru.hse.roguelike.model.RedEnemyFactory;
 import ru.hse.roguelike.model.YellowEnemyFactory;
-import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Represents level builder for random level generation.
+ **/
 public class RandomLevelBuilder implements LevelBuilder {
-
     private final List<LevelCharacteristic> levelCharacteristics = List.of(new FirstLevelCharacteristic(),
-                                                                            new SecondLevelCharacteristic(),
-                                                                            new ThirdLevelCharacteristic(),
-                                                                            new FourthLevelCharacteristic(),
-                                                                            new FifthLevelCharacteristic());
+            new SecondLevelCharacteristic(),
+            new ThirdLevelCharacteristic(),
+            new FourthLevelCharacteristic(),
+            new FifthLevelCharacteristic());
 
     private int currentLevelNumber = 0;
 
     private EnemyFactory enemyFactory = new YellowEnemyFactory();
     private final Random rand = new Random();
 
+    /**
+     * Sets enemy factory.
+     *
+     * @param enemyFactory enemy factory
+     **/
     @Override
     public void setEnemyFactory(EnemyFactory enemyFactory) {
         this.enemyFactory = enemyFactory;
@@ -70,6 +73,12 @@ public class RandomLevelBuilder implements LevelBuilder {
         return new Points(points);
     }
 
+    /**
+     * Creates level with the given player.
+     *
+     * @param player player
+     * @return new level
+     **/
     @Override
     public Level build(Player player) {
         if (currentLevelNumber >= levelCharacteristics.size()) {

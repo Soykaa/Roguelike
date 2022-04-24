@@ -1,6 +1,7 @@
 package ru.hse.roguelike.model.Characters;
 
 import java.util.Random;
+
 import ru.hse.roguelike.model.Characters.strategies.MobStrategy;
 import ru.hse.roguelike.model.Coordinates;
 import ru.hse.roguelike.model.InventoryItem;
@@ -11,9 +12,7 @@ import ru.hse.roguelike.model.InventoryItem;
 public class Enemy extends GameCharacter implements EnemyPrototype {
     private final MobStrategy strategy;
     private final float replicationProbability;
-
     private final String color;
-
     private final int attackStrength;
 
     /**
@@ -21,8 +20,10 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
      * Calls parent constructor.
      * Initialises strategy with the given value.
      *
-     * @param characterType enemy type
-     * @param strategy      enemy strategy
+     * @param characterType  enemy type
+     * @param color          enemy color
+     * @param attackStrength attack strength
+     * @param strategy       enemy strategy
      **/
     public Enemy(CharacterType characterType, String color, int attackStrength, MobStrategy strategy) {
         super(characterType);
@@ -32,16 +33,14 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
         this.replicationProbability = new Random().nextFloat() * 0.01f;
     }
 
-    public String getColor() {
-        return color;
-    }
-
     /**
      * Creates new Enemy instance.
      * Calls parent constructor.
      * Initialises strategy with the given value.
      *
      * @param characterType          enemy type
+     * @param color                  enemy color
+     * @param attackStrength         attack strength
      * @param strategy               enemy strategy
      * @param replicationProbability probability that the enemy will replicate at each shift
      **/
@@ -51,6 +50,15 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
         this.color = color;
         this.attackStrength = attackStrength;
         this.replicationProbability = replicationProbability;
+    }
+
+    /**
+     * Returns enemy color.
+     *
+     * @return enemy color
+     **/
+    public String getColor() {
+        return color;
     }
 
     /**
@@ -87,12 +95,19 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
         }
     }
 
+    /**
+     * Returns attack strength.
+     *
+     * @return attack strength
+     **/
     public int getAttackStrength() {
         return attackStrength;
     }
 
     /**
      * Creates a copy of enemy object.
+     *
+     * @return enemy copy
      **/
     @Override
     public Enemy cloneEnemy() {
@@ -100,6 +115,8 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     }
 
     /**
+     * Returns probability of replication.
+     *
      * @return probability that enemy will replicate at each shift
      **/
     public float getReplicationProbability() {

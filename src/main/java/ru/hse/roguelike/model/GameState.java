@@ -17,7 +17,7 @@ public enum GameState {
      **/
     IS_RUNNING,
     /**
-     * Problem occurred while level generation or playing
+     * Problem occurred while level generation or playing.
      **/
     PROBLEM_OCCURRED
 }
