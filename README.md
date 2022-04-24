@@ -145,13 +145,10 @@
 ````
 {
   "lives": <lives>,
-  "points": <points>,
   "characterType": "PLAYER"
 }
 ````
 `lives` - жизни игрока
-
-`points` - изначальное количество очков игрока
 
 - `Empty`:
 
