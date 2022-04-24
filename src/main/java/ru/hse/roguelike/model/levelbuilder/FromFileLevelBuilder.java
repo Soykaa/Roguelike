@@ -24,19 +24,30 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents level builder, which works with files.
+ **/
 public class FromFileLevelBuilder implements LevelBuilder {
-
     private final String fileDirectory;
     private int currentLevelNumber = 0;
-
     private Player player;
-
     private EnemyFactory enemyFactory = new RedEnemyFactory();
 
+    /**
+     * Creates new FromFileLevelBuilder instance.
+     * Initialises config file directory with the given value.
+     *
+     * @param fileDirectory file directory
+     **/
     public FromFileLevelBuilder(String fileDirectory) {
         this.fileDirectory = fileDirectory;
     }
 
+    /**
+     * Sets enemy factory.
+     *
+     * @param enemyFactory enemy factory
+     **/
     @Override
     public void setEnemyFactory(EnemyFactory enemyFactory) {
         this.enemyFactory = enemyFactory;
@@ -81,6 +92,12 @@ public class FromFileLevelBuilder implements LevelBuilder {
         }
     }
 
+    /**
+     * Creates level with the given player.
+     *
+     * @param player player
+     * @return new level
+     **/
     @Override
     public Level build(Player player) {
         this.player = player;

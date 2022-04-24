@@ -28,6 +28,8 @@ public enum Action {
      * Change equiption.
      **/
     CHANGE_EQUIPTION,
-
+    /**
+     * Unknown action.
+     **/
     UNKNOWN_ACTION
 }

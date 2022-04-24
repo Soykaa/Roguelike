@@ -2,6 +2,7 @@ package ru.hse.roguelike.model;
 
 import java.util.HashMap;
 import java.util.Random;
+
 import ru.hse.roguelike.model.Characters.*;
 import ru.hse.roguelike.model.Characters.decorator.ConfusedEnemyDecorator;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
@@ -31,7 +32,6 @@ public class Level {
      * Creates new Level instance.
      *
      * @param board           game board
-     * @param gameView        game view
      * @param player          player
      * @param enemies         enemies with their coordinates
      * @param realShelterType valid shelter type
@@ -46,14 +46,29 @@ public class Level {
         this.victoryPoints = victoryPoints;
     }
 
+    /**
+     * Returns game screen view.
+     *
+     * @return game view
+     **/
     public GameScreenView getGameView() {
         return gameView;
     }
 
+    /**
+     * Returns game board.
+     *
+     * @return board
+     **/
     public GameCharacter[][] getBoard() {
         return board;
     }
 
+    /**
+     * Sets game screen view.
+     *
+     * @param gameView game view
+     **/
     public void setGameView(GameScreenView gameView) {
         this.gameView = gameView;
         try {
@@ -168,8 +183,8 @@ public class Level {
             gameView.showLives(player.getLives());
 
             if (new Random().nextFloat() < enemy.getReplicationProbability()
-                && isValidCoordinates(newX, newY)
-                && board[newX][newY].getCharacterType() == enemy.getCharacterType()
+                    && isValidCoordinates(newX, newY)
+                    && board[newX][newY].getCharacterType() == enemy.getCharacterType()
             ) {
                 Coordinates newEnemyCoordinates = findFreeCoordinatesNearby(newX, newY);
                 int newEnemyX = newEnemyCoordinates.getX();
@@ -183,7 +198,7 @@ public class Level {
                 return GameState.DEFEAT;
             }
         }
-        for (var enemy: newEnemies.entrySet()) {
+        for (var enemy : newEnemies.entrySet()) {
             Coordinates newEnemyCoordinates = enemy.getValue();
             int newEnemyX = newEnemyCoordinates.getX();
             int newEnemyY = newEnemyCoordinates.getY();
