@@ -291,6 +291,7 @@ Confusion: игрок может вводить врага в состояние
 - `MOVE_UP`
 - `MOVE_DOWN`
 - `CHANGE_EQUIPTION`
+- `UNKNOWN_ACTION`
 
 ##### enum GameState
 
@@ -312,6 +313,7 @@ Confusion: игрок может вводить врага в состояние
 - `LevelGenerator levelGenerator` - используется для генерации нового уровня
 - `Level currentLevel` - текущий уровень, на котором находится игрок
 - `String levelFilesPath` - путь до конфигурационных файлов
+- `GameState previousGameState` - последнее запомненное состояние игры
 
 **Конструкторы**:
 
@@ -381,11 +383,15 @@ Confusion: игрок может вводить врага в состояние
 
 **Реализации**:
 
-- **abstract class Enemy**: враг, двигается определенным образом и атакует игрока, если он рядом.
+- **class Enemy**: враг, двигается определенным образом и атакует игрока, если он рядом. Реализует интерфейс _
+  EnemyPrototype_.
 
   **Поля**:
 
     - `MobStrategy strategy` - механика движения, задается в зависимости от типа врага
+    - `float replicationProbability` - вероятность репликации новых врагов
+    - `String color` - цвет врага
+    - `int attackStrength` - сила атаки
 
   **Конструкторы**:
 
@@ -397,7 +403,10 @@ Confusion: игрок может вводить врага в состояние
     - `Coordinates makeNextMove()` - возвращает сдвиг координаты, на которые должен передвинуться враг
     - `void attack(Player player)` - атакует игрока
     - `MobStrategy getStrategy()` - возвращает стратегию (механику передвижения)
-
+    - `String getColor()` - возвращает цвет врага
+    - `int getAttackStrength()` - возвращает силу атаки
+    - `float getReplicationProbability()` - возвращает вероятность репликации новых врагов
+    - `Enemy cloneEnemy()` - клонирует врага (текущего)
 
 - **class Player**: игрок, управляется пользователем.
 
@@ -500,6 +509,14 @@ Confusion: игрок может вводить врага в состояние
     - `boolean equals(Object o)` - проверка двух объектов из инвентаря на равенство
     - `int hashCode()` - подсчет хешей
 
+##### interface EnemyPrototype
+
+Прототип для персонажа-врага.
+
+**Методы**:
+
+- `Enemy cloneEnemy()` - клонирует врага (текущего)
+
 ##### enum CharacterType
 
 Описывает типы игровых объектов на поле.
@@ -552,33 +569,64 @@ Confusion: игрок может вводить врага в состояние
 
 Классы выше содержат характеристики каждого уровня соответственно.
 
-##### class LevelGenerator
+##### interface LevelBuilder
 
-Генерирует уровни рандомно или из файла.
-
-**Поля**:
-
-- `Optional<String> filesPath` - директория в которой лежат файлы для генерации уровней
-- `int levelNumber` - номер уровня, который надо сгенерировать
-- `List<LevelCharacteristic> levelCharacteristics` - список заданных параметров для уровней, если генерация будет
-  происходить рандомно
-- `int maxLevelAmount` - количество уровней
-- `AbstractViewFactory factory` - фабрика для _view_
-- `Player player` - игрок
-- `Random rand` - рандом :)
-
-**Конструкторы**:
-
-- `LevelGenerator(AbstractViewFactory factory, int maxLevelAmount)`
-- `LevelGenerator(String filePath, AbstractViewFactory factory)`
+Интерфейс для "построения" уровней.
 
 **Методы**:
 
-- `boolean hasNextLevel()` - если уровни генерируются рандомно, то проверяет, сгенерировано ли на данный момент
-  меньше `maxLevelAmount` уровней, если да, то возвращает `true`, иначе `false`. Если уровни генерируются из файлов
-  пользователей, то проверяет, что есть еще не использованные файлы
-- `Level nextLevel()` - генерирует следующий уровень
-- `Level nextLevelRandom()` - генерирует следующий уровень рандомно, опираясь на характеристики уровня
+- `void setEnemyFactory(EnemyFactory enemyFactory)` - меняет значение `enemyFactory` на переданное
+- `Level build(Player player)` - "строит" новый уровень с переданным игроком
+
+##### FromFileLevelBuilder
+
+"Строит" уровень, используя информацию из конфига.
+
+**Поля**:
+
+- `String fileDirectory` - директория с конфигом
+- `int currentLevelNumber` - номер текущего уровня
+- `Player player` - игрок
+- `EnemyFactory enemyFactory` - фабрика врагов, генерящихся на данном уровне
+
+**Конструкторы**:
+
+- `FromFileLevelBuilder(String fileDirectory)`
+
+**Методы** - такие же, как в _LevelBuilder_
+
+##### RandomLevelBuilder
+
+"Строит" уровень, генерируя объекты рандомно.
+
+**Поля**:
+
+- `List<LevelCharacteristic> levelCharacteristics` - список характеристик уровней
+- `int currentLevelNumber` - номер текущего уровня
+- `EnemyFactory enemyFactory` - фабрика врагов, генерящихся на данном уровне
+- `Random rand` - рандом :)
+
+**Методы** - такие же, как в _LevelBuilder_
+
+##### class LevelGenerator
+
+Генерирует уровни рандомно или из файла, дёргая методы у _levelBuilder_.
+
+**Поля**:
+
+- `AbstractViewFactory factory` - фабрика для _view_
+- `Player player` - игрок
+- `Random rand` - рандом :)
+- `LevelBuilder levelBuilder` - "строитель" уровня
+
+**Конструкторы**:
+
+- `LevelGenerator(AbstractViewFactory factory)`
+
+**Методы**:
+
+- `Level getNextLevel()` - генерирует следующий уровень
+- `void setLevelBuilder(LevelBuilder levelBuilder)` - меняет "строитель" уровней на переданный
 
 ##### class Level
 
@@ -604,6 +652,9 @@ _Примечание_: на каждом уровне является вали
 
 **Методы**:
 
+- `GameScreenView getGameView()` - возвращает _gameView_
+- `GameCharacter[][] getBoard()` - возвращает игровую доску
+- `void setGameView(GameScreenView gameView)` - меняет _gameView_ на переданную
 - `GameState moveCharacters(int dx, int dy)` - передвижение игрока на поле и врагов (враги делают шаг на каждый ход
   игрока) на переданную дельту. Возвращает текущее состояние игры
 - `void changeEquiption()` - изменение элемента инвентаря, который использует игрок
@@ -669,7 +720,41 @@ _Примечание_: на каждом уровне является вали
 
 - **class ConfusedEnemyDecorator**
 
-<img src="images/model_component_v2.png">
+##### interface EnemyFactory
+
+Интерфейс фабрики для создания врагов с разными стратегиями поведения.
+
+**Методы**:
+
+- `Enemy createAggressiveEnemy(int maxSteps, Coordinates shift)` - создает агрессивного врага
+- `Enemy createPassiveEnemy(int maxSteps, Coordinates shift)` - создает пассивного врага
+- `Enemy createCowardEnemy(int maxSteps, Coordinates shift)` - создает трусливого врага
+
+##### class RedEnemyFactory
+
+Фабрика для создания красных врагов с разными стратегиями поведения.
+
+**Поля**:
+
+- `int visibility` - видимость
+- `String color` - цвет
+- `int attackStrength` - сила атаки
+
+**Методы** - такие же, как в _EnemyFactory_
+
+##### class YellowEnemyFactory
+
+Фабрика для создания красных врагов с разными стратегиями поведения.
+
+**Поля**:
+
+- `int visibility` - видимость
+- `String color` - цвет
+- `int attackStrength` - сила атаки
+
+**Методы** - такие же, как в _EnemyFactory_
+
+<img src="images/model_component_v3.png">
 
 #### View
 
@@ -809,5 +894,4 @@ _Примечание_: на каждом уровне является вали
 сложные для игры с консольной графикой.
 
 Во-вторых, с помощью средств данной библиотеки оказалось возможным разделить логику ввода и отрисовки.
-
 
