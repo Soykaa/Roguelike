@@ -3,7 +3,7 @@ package ru.hse.roguelike.view.abstract_view;
 import java.io.IOException;
 
 import ru.hse.roguelike.model.Backpack;
-import ru.hse.roguelike.model.Characters.GameCharacter;
+import ru.hse.roguelike.model.characters.GameCharacter;
 
 /**
  * Interface for game screen view.

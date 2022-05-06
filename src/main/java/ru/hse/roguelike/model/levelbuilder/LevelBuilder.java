@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model.levelbuilder;
 
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.mob.factory.MobFactory;
+import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.mob.factory.MobFactory;
 import ru.hse.roguelike.model.Level;
 
 /**

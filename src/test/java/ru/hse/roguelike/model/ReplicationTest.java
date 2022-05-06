@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.mob.Mob;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.mob.strategy.AggressiveMobStrategy;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.Empty;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.GameCharacter;
+import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
 import ru.hse.roguelike.view.console_view.GameScreenViewConsole;
 
 public class ReplicationTest {

@@ -1,4 +1,4 @@
-package ru.hse.roguelike.model.Characters.mob;
+package ru.hse.roguelike.model.characters.mob;
 
 /**
  * Prototype for mobs.

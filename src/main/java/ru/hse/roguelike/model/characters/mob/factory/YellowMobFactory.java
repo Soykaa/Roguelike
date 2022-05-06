@@ -1,19 +1,19 @@
-package ru.hse.roguelike.model.Characters.mob.factory;
+package ru.hse.roguelike.model.characters.mob.factory;
 
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.mob.Mob;
-import ru.hse.roguelike.model.Characters.mob.strategy.AggressiveMobStrategy;
-import ru.hse.roguelike.model.Characters.mob.strategy.CowardMobStrategy;
-import ru.hse.roguelike.model.Characters.mob.strategy.PassiveMobStrategy;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
+import ru.hse.roguelike.model.characters.mob.strategy.CowardMobStrategy;
+import ru.hse.roguelike.model.characters.mob.strategy.PassiveMobStrategy;
 import ru.hse.roguelike.model.Coordinates;
 
 /**
- * Red mob factory.
+ * Yellow mob factory.
  **/
-public class RedMobFactory implements MobFactory {
-    private final int visibility = 4;
-    private final String color = "red";
-    private final int attackStrength = 1;
+public class YellowMobFactory implements MobFactory {
+    private final int visibility = 3;
+    private final String color = "yellow";
+    private final int attackStrength = 2;
 
     /**
      * Creates aggressive mob.

@@ -1,4 +1,4 @@
-package ru.hse.roguelike.model.Characters;
+package ru.hse.roguelike.model.characters;
 
 import ru.hse.roguelike.model.Backpack;
 import ru.hse.roguelike.model.Coordinates;

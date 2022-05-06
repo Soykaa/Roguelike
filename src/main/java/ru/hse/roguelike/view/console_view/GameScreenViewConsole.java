@@ -10,10 +10,10 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 import ru.hse.roguelike.model.Backpack;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.mob.Mob;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.model.characters.Empty;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.GameCharacter;
+import ru.hse.roguelike.model.characters.Points;
 import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 

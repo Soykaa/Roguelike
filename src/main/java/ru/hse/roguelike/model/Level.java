@@ -3,9 +3,9 @@ package ru.hse.roguelike.model;
 import java.util.HashMap;
 import java.util.Random;
 
-import ru.hse.roguelike.model.Characters.*;
-import ru.hse.roguelike.model.Characters.mob.Mob;
-import ru.hse.roguelike.model.Characters.mob.decorator.ConfusedMobDecorator;
+import ru.hse.roguelike.model.characters.*;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.decorator.ConfusedMobDecorator;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 import java.io.IOException;

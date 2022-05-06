@@ -2,11 +2,11 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.mob.Mob;
-import ru.hse.roguelike.model.Characters.mob.strategy.AggressiveMobStrategy;
-import ru.hse.roguelike.model.Characters.mob.strategy.CowardMobStrategy;
-import ru.hse.roguelike.model.Characters.mob.strategy.PassiveMobStrategy;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
+import ru.hse.roguelike.model.characters.mob.strategy.CowardMobStrategy;
+import ru.hse.roguelike.model.characters.mob.strategy.PassiveMobStrategy;
 
 public class MobStrategyTest {
     private Coordinates addCoordinates(Coordinates coordinates, Coordinates shift) {

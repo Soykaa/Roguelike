@@ -1,6 +1,6 @@
-package ru.hse.roguelike.model.LevelCharacteristics;
+package ru.hse.roguelike.model.levelCharacteristics;
 
-import ru.hse.roguelike.model.Characters.CharacterType;
+import ru.hse.roguelike.model.characters.CharacterType;
 
 import java.util.Map;
 

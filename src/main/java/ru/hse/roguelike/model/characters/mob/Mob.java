@@ -1,11 +1,11 @@
-package ru.hse.roguelike.model.Characters.mob;
+package ru.hse.roguelike.model.characters.mob;
 
 import java.util.Random;
 
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.mob.strategy.MobStrategy;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.GameCharacter;
+import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.mob.strategy.MobStrategy;
 import ru.hse.roguelike.model.Coordinates;
 import ru.hse.roguelike.model.InventoryItem;
 

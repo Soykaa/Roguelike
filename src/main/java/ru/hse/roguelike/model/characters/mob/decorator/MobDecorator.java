@@ -1,6 +1,6 @@
-package ru.hse.roguelike.model.Characters.mob.decorator;
+package ru.hse.roguelike.model.characters.mob.decorator;
 
-import ru.hse.roguelike.model.Characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.Mob;
 
 /**
  * Mob decorator.

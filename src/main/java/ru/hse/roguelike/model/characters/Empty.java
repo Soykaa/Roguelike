@@ -1,4 +1,4 @@
-package ru.hse.roguelike.model.Characters;
+package ru.hse.roguelike.model.characters;
 
 /**
  * Represents empty cell of the game field.

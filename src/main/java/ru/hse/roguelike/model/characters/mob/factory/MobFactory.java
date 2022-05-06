@@ -1,6 +1,6 @@
-package ru.hse.roguelike.model.Characters.mob.factory;
+package ru.hse.roguelike.model.characters.mob.factory;
 
-import ru.hse.roguelike.model.Characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.Mob;
 import ru.hse.roguelike.model.Coordinates;
 
 /**
