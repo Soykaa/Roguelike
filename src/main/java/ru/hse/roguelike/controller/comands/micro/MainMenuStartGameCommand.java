@@ -5,7 +5,7 @@ import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.model.GameState;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 
-public class MainMenuStartGameCommand extends MicroCommand {
+public class MainMenuStartGameCommand implements MicroCommand {
     private final Game game;
 
     private final AbstractViewFactory factory;

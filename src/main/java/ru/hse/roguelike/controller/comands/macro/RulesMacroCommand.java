@@ -4,7 +4,7 @@ import ru.hse.roguelike.controller.Screen;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.view.abstract_view.MainScreenView;
 
-public class RulesMacroCommand extends MacroCommand {
+public class RulesMacroCommand implements MacroCommand {
     private final MainScreenView mainScreenView;
 
     public RulesMacroCommand(MainScreenView mainScreenView) {

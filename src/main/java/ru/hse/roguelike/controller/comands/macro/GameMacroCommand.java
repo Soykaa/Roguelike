@@ -7,7 +7,7 @@ import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.model.GameState;
 import ru.hse.roguelike.view.abstract_view.MainScreenView;
 
-public class GameMacroCommand extends MacroCommand {
+public class GameMacroCommand implements MacroCommand {
     private final Game game;
     private final MainScreenView mainScreenView;
 

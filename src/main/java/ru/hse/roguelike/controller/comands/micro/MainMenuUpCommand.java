@@ -4,7 +4,7 @@ import ru.hse.roguelike.controller.ItemHolder;
 import ru.hse.roguelike.controller.Screen;
 import ru.hse.roguelike.view.abstract_view.MainScreenView;
 
-public class MainMenuUpCommand extends MicroCommand {
+public class MainMenuUpCommand implements MicroCommand {
     private final ItemHolder itemHolder;
     private final MainScreenView mainScreenView;
 
