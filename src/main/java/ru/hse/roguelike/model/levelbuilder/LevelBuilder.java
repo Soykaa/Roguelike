@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model.levelbuilder;
 
 import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.EnemyFactory;
+import ru.hse.roguelike.model.Characters.mob.factory.MobFactory;
 import ru.hse.roguelike.model.Level;
 
 /**
@@ -21,5 +21,5 @@ public interface LevelBuilder {
      *
      * @param enemyFactory enemy factory
      **/
-    void setEnemyFactory(EnemyFactory enemyFactory);
+    void setEnemyFactory(MobFactory enemyFactory);
 }

@@ -1,31 +1,34 @@
-package ru.hse.roguelike.model.Characters;
+package ru.hse.roguelike.model.Characters.mob;
 
 import java.util.Random;
 
-import ru.hse.roguelike.model.Characters.strategies.MobStrategy;
+import ru.hse.roguelike.model.Characters.CharacterType;
+import ru.hse.roguelike.model.Characters.GameCharacter;
+import ru.hse.roguelike.model.Characters.Player;
+import ru.hse.roguelike.model.Characters.mob.strategy.MobStrategy;
 import ru.hse.roguelike.model.Coordinates;
 import ru.hse.roguelike.model.InventoryItem;
 
 /**
- * Represents enemies.
+ * Represents mobs.
  **/
-public class Enemy extends GameCharacter implements EnemyPrototype {
+public class Mob extends GameCharacter implements MobPrototype {
     private final MobStrategy strategy;
     private final float replicationProbability;
     private final String color;
     private final int attackStrength;
 
     /**
-     * Creates new Enemy instance.
+     * Creates new Mob instance.
      * Calls parent constructor.
      * Initialises strategy with the given value.
      *
-     * @param characterType  enemy type
-     * @param color          enemy color
+     * @param characterType  mob type
+     * @param color          mob color
      * @param attackStrength attack strength
-     * @param strategy       enemy strategy
+     * @param strategy       mob strategy
      **/
-    public Enemy(CharacterType characterType, String color, int attackStrength, MobStrategy strategy) {
+    public Mob(CharacterType characterType, String color, int attackStrength, MobStrategy strategy) {
         super(characterType);
         this.strategy = strategy;
         this.color = color;
@@ -34,17 +37,17 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     }
 
     /**
-     * Creates new Enemy instance.
+     * Creates new Mob instance.
      * Calls parent constructor.
      * Initialises strategy with the given value.
      *
-     * @param characterType          enemy type
-     * @param color                  enemy color
+     * @param characterType          mob type
+     * @param color                  mob color
      * @param attackStrength         attack strength
-     * @param strategy               enemy strategy
+     * @param strategy               mob strategy
      * @param replicationProbability probability that the enemy will replicate at each shift
      **/
-    public Enemy(CharacterType characterType, String color, int attackStrength, MobStrategy strategy, float replicationProbability) {
+    public Mob(CharacterType characterType, String color, int attackStrength, MobStrategy strategy, float replicationProbability) {
         super(characterType);
         this.strategy = strategy;
         this.color = color;
@@ -53,18 +56,18 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     }
 
     /**
-     * Returns enemy color.
+     * Returns mob color.
      *
-     * @return enemy color
+     * @return mob color
      **/
     public String getColor() {
         return color;
     }
 
     /**
-     * Returns enemy strategy.
+     * Returns mob strategy.
      *
-     * @return enemy strategy
+     * @return mob strategy
      **/
     public MobStrategy getStrategy() {
         return strategy;
@@ -73,7 +76,7 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     /**
      * Makes next move.
      *
-     * @param mobCoordinates    enemy coordinates
+     * @param mobCoordinates    mob coordinates
      * @param playerCoordinates player coordinates
      * @return new coordinates
      **/
@@ -105,19 +108,19 @@ public class Enemy extends GameCharacter implements EnemyPrototype {
     }
 
     /**
-     * Creates a copy of enemy object.
+     * Creates a copy of mob object.
      *
-     * @return enemy copy
+     * @return enemy mob
      **/
     @Override
-    public Enemy cloneEnemy() {
-        return new Enemy(this.getCharacterType(), color, attackStrength, strategy, replicationProbability);
+    public Mob cloneMob() {
+        return new Mob(this.getCharacterType(), color, attackStrength, strategy, replicationProbability);
     }
 
     /**
      * Returns probability of replication.
      *
-     * @return probability that enemy will replicate at each shift
+     * @return probability that mob will replicate at each shift
      **/
     public float getReplicationProbability() {
         return replicationProbability;

@@ -1,6 +1,8 @@
 package ru.hse.roguelike.model;
 
 import ru.hse.roguelike.model.Characters.Player;
+import ru.hse.roguelike.model.Characters.mob.factory.RedMobFactory;
+import ru.hse.roguelike.model.Characters.mob.factory.YellowMobFactory;
 import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
@@ -45,9 +47,9 @@ public class LevelGenerator {
      **/
     public Level getNextLevel() {
         if (rand.nextInt() % 2 == 0) {
-            levelBuilder.setEnemyFactory(new RedEnemyFactory());
+            levelBuilder.setEnemyFactory(new RedMobFactory());
         } else {
-            levelBuilder.setEnemyFactory(new YellowEnemyFactory());
+            levelBuilder.setEnemyFactory(new YellowMobFactory());
         }
         Level level = levelBuilder.build(player);
         if (level == null) {

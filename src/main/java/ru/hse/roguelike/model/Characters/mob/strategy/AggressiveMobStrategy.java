@@ -1,16 +1,13 @@
-package ru.hse.roguelike.model.Characters.strategies;
+package ru.hse.roguelike.model.Characters.mob.strategy;
 
 import ru.hse.roguelike.model.Coordinates;
 
-import java.util.List;
-import java.util.Random;
-
 /**
- * Represents coward mob strategy.
+ * Represents aggressive mob strategy.
  **/
-public class CowardMobStrategy extends MobStrategy {
+public class AggressiveMobStrategy extends MobStrategy {
     /**
-     * Creates new CowardMobStrategy instance.
+     * Creates new AggressiveMobStrategy instance.
      * Calls parent constructor.
      * Initialises visibility, maxSteps and shift with the given values.
      *
@@ -18,7 +15,7 @@ public class CowardMobStrategy extends MobStrategy {
      * @param maxSteps   maximum number of steps in shift direction
      * @param shift      shift direction
      **/
-    public CowardMobStrategy(int visibility, int maxSteps, Coordinates shift) {
+    public AggressiveMobStrategy(int visibility, int maxSteps, Coordinates shift) {
         super(visibility, maxSteps, shift);
     }
 
@@ -34,26 +31,20 @@ public class CowardMobStrategy extends MobStrategy {
         if (canNotSeePlayer(mobCoordinates, playerCoordinates)) {
             return makeNextMoveUsual();
         }
-        return makeMoveFromPlayer(mobCoordinates, playerCoordinates);
+        var coordinates = makeMoveToPlayer(mobCoordinates, playerCoordinates);
+        return new Coordinates(-coordinates.getX(), -coordinates.getY());
     }
 
-    protected Coordinates makeMoveFromPlayer(Coordinates mobCoordinates, Coordinates playerCoordinates) {
+    protected Coordinates makeMoveToPlayer(Coordinates mobCoordinates, Coordinates playerCoordinates) {
         int deltaX = mobCoordinates.getX() - playerCoordinates.getX();
         int deltaY = mobCoordinates.getY() - playerCoordinates.getY();
-        Random rand = new Random();
 
         if (deltaX == 0) {
-            List<Coordinates> shifts = List.of(new Coordinates(0, (int) Math.signum(deltaY)),
-                    new Coordinates(1, 0),
-                    new Coordinates(-1, 0));
-            return shifts.get(rand.nextInt(3));
+            return new Coordinates(0, (int) Math.signum(deltaY));
         }
 
         if (deltaY == 0) {
-            List<Coordinates> shifts = List.of(new Coordinates((int) Math.signum(deltaX), 0),
-                    new Coordinates(0, -1),
-                    new Coordinates(0, 1));
-            return shifts.get(rand.nextInt(3));
+            return new Coordinates((int) Math.signum(deltaX), 0);
         }
 
         if (Math.abs(deltaX) < Math.abs(deltaY)) {

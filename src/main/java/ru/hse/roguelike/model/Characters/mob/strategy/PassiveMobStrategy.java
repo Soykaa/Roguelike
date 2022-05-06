@@ -1,4 +1,4 @@
-package ru.hse.roguelike.model.Characters.strategies;
+package ru.hse.roguelike.model.Characters.mob.strategy;
 
 import ru.hse.roguelike.model.Coordinates;
 

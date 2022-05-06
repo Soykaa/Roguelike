@@ -1,15 +1,15 @@
-package ru.hse.roguelike.model.Characters.decorator;
+package ru.hse.roguelike.model.Characters.mob.decorator;
 
-import ru.hse.roguelike.model.Characters.Enemy;
+import ru.hse.roguelike.model.Characters.mob.Mob;
 import ru.hse.roguelike.model.Coordinates;
 
 import java.util.List;
 import java.util.Random;
 
 /**
- * Confused enemy decorator.
+ * Confused mob decorator.
  **/
-public class ConfusedEnemyDecorator extends EnemyDecorator {
+public class ConfusedMobDecorator extends MobDecorator {
     private final int confusionTime;
     private int currentTime = 0;
 
@@ -20,39 +20,39 @@ public class ConfusedEnemyDecorator extends EnemyDecorator {
     private final Random rand = new Random();
 
     /**
-     * Creates new ConfusedEnemyDecorator instance.
-     * Initialises enemy with the given value.
+     * Creates new ConfusedMobDecorator instance.
+     * Initialises mob with the given value.
      *
-     * @param enemy enemy
+     * @param mob mob
      **/
-    public ConfusedEnemyDecorator(Enemy enemy) {
-        this(enemy, 5);
+    public ConfusedMobDecorator(Mob mob) {
+        this(mob, 5);
     }
 
     /**
-     * Creates new ConfusedEnemyDecorator instance.
+     * Creates new ConfusedMobDecorator instance.
      * Calls parent constructor.
-     * Initialises enemy and confusionTime with the given values.
+     * Initialises mob and confusionTime with the given values.
      *
-     * @param enemy         enemy
+     * @param mob           mob
      * @param confusionTime time of confusion
      **/
-    public ConfusedEnemyDecorator(Enemy enemy, int confusionTime) {
-        super(enemy);
+    public ConfusedMobDecorator(Mob mob, int confusionTime) {
+        super(mob);
         this.confusionTime = confusionTime;
     }
 
     /**
      * Makes next move.
      *
-     * @param mobCoordinates    enemy coordinates
+     * @param mobCoordinates    mob coordinates
      * @param playerCoordinates player coordinates
      * @return new coordinates
      **/
     @Override
     public Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates) {
         if (currentTime == confusionTime) {
-            return enemy.makeNextMove(mobCoordinates, playerCoordinates);
+            return mob.makeNextMove(mobCoordinates, playerCoordinates);
         }
         currentTime++;
         return shifts.get(rand.nextInt(4));

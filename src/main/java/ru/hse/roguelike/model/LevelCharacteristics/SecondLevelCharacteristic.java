@@ -16,9 +16,9 @@ public class SecondLevelCharacteristic extends LevelCharacteristic {
         super(14, 12, CharacterType.SHELTER_LAVENDER, Map.of(
                         CharacterType.POINTS, 10,
                         CharacterType.PLAYER, 1,
-                        CharacterType.ENEMY_AGGRESSIVE, 2,
-                        CharacterType.ENEMY_PASSIVE, 1,
-                        CharacterType.ENEMY_COWARD, 1,
+                        CharacterType.MOB_AGGRESSIVE, 2,
+                        CharacterType.MOB_PASSIVE, 1,
+                        CharacterType.MOB_COWARD, 1,
                         CharacterType.OBSTACLE, 20,
                         CharacterType.SHELTER_LAVENDER, 4,
                         CharacterType.SHELTER_PINK, 8,
