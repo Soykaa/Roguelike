@@ -129,16 +129,16 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Determines if enemy be confused by player.
+     * Determines if mob be confused by player.
      *
-     * @return true if enemy can be confused by player, false otherwise
+     * @return true if mob can be confused by player, false otherwise
      **/
     public boolean canConfuse() {
         return currentWait == 0 && backpack.getActiveItem().getType() == InventoryItem.CONFUSION;
     }
 
     /**
-     * Confuses enemy.
+     * Confuses mob.
      */
     public void confuse() {
         currentWait = waitForConfusion;
