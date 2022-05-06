@@ -3,8 +3,9 @@ package ru.hse.roguelike.model;
 import java.util.HashMap;
 import java.util.Random;
 
-import ru.hse.roguelike.model.Characters.*;
-import ru.hse.roguelike.model.Characters.decorator.ConfusedEnemyDecorator;
+import ru.hse.roguelike.model.characters.*;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.decorator.ConfusedMobDecorator;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
 import java.io.IOException;
@@ -20,12 +21,12 @@ public class Level {
     private GameScreenView gameView;
     private final Player player;
     private final int victoryPoints;
-    private final Map<Enemy, Coordinates> enemies;
+    private final Map<Mob, Coordinates> enemies;
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
-    private final List<Enemy> confusedEnemies = new ArrayList<>();
-    private final List<Enemy> killedEnemies = new ArrayList<>();
+    private final List<Mob> confusedEnemies = new ArrayList<>();
+    private final List<Mob> killedEnemies = new ArrayList<>();
 
 
     /**
@@ -38,7 +39,7 @@ public class Level {
      * @param victoryPoints   number of points to win
      **/
     public Level(GameCharacter[][] board, Player player,
-                 Map<Enemy, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
+                 Map<Mob, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
         this.board = board;
         this.player = player;
         this.enemies = enemies;
@@ -165,9 +166,9 @@ public class Level {
     }
 
     private GameState moveEnemies() throws IOException {
-        Map<Enemy, Coordinates> newEnemies = new HashMap<>();
+        Map<Mob, Coordinates> newEnemies = new HashMap<>();
         for (var entry : enemies.entrySet()) {
-            Enemy enemy = entry.getKey();
+            Mob enemy = entry.getKey();
             Coordinates coordinates = entry.getValue();
             Coordinates shift = enemy.makeNextMove(coordinates, player.getCurrentCoordinates());
             int newX = coordinates.getX() + shift.getX();
@@ -190,7 +191,7 @@ public class Level {
                 int newEnemyX = newEnemyCoordinates.getX();
                 int newEnemyY = newEnemyCoordinates.getY();
                 if (newEnemyX != -1 && newEnemyY != -1) {
-                    Enemy newEnemy = enemy.cloneEnemy();
+                    Mob newEnemy = enemy.cloneMob();
                     newEnemies.put(newEnemy, newEnemyCoordinates);
                 }
             }
@@ -222,7 +223,7 @@ public class Level {
                 return;
             }
             enemies.remove(enemy);
-            Enemy newEnemy = new ConfusedEnemyDecorator(enemy);
+            Mob newEnemy = new ConfusedMobDecorator(enemy);
             board[coordinates.getX()][coordinates.getY()] = newEnemy;
             enemies.put(newEnemy, coordinates);
         }
@@ -238,7 +239,7 @@ public class Level {
         }
     }
 
-    private void makeBattle(Enemy enemy, Coordinates coordinates) throws IOException {
+    private void makeBattle(Mob enemy, Coordinates coordinates) throws IOException {
         if (player.canConfuse()) {
             player.confuse();
             confusedEnemies.add(enemy);

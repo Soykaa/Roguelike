@@ -1,25 +1,25 @@
 package ru.hse.roguelike.model.levelbuilder;
 
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Inventory;
-import ru.hse.roguelike.model.Characters.Obstacle;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.model.Characters.Shelter;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.Empty;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.GameCharacter;
+import ru.hse.roguelike.model.characters.Inventory;
+import ru.hse.roguelike.model.characters.Obstacle;
+import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.Points;
+import ru.hse.roguelike.model.characters.Shelter;
 import ru.hse.roguelike.model.Coordinates;
-import ru.hse.roguelike.model.EnemyFactory;
+import ru.hse.roguelike.model.characters.mob.factory.MobFactory;
 import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.model.Level;
-import ru.hse.roguelike.model.LevelCharacteristics.FifthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FirstLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
-import ru.hse.roguelike.model.YellowEnemyFactory;
+import ru.hse.roguelike.model.levelCharacteristics.FifthLevelCharacteristic;
+import ru.hse.roguelike.model.levelCharacteristics.FirstLevelCharacteristic;
+import ru.hse.roguelike.model.levelCharacteristics.FourthLevelCharacteristic;
+import ru.hse.roguelike.model.levelCharacteristics.LevelCharacteristic;
+import ru.hse.roguelike.model.levelCharacteristics.SecondLevelCharacteristic;
+import ru.hse.roguelike.model.levelCharacteristics.ThirdLevelCharacteristic;
+import ru.hse.roguelike.model.characters.mob.factory.YellowMobFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public class RandomLevelBuilder implements LevelBuilder {
 
     private int currentLevelNumber = 0;
 
-    private EnemyFactory enemyFactory = new YellowEnemyFactory();
+    private MobFactory enemyFactory = new YellowMobFactory();
     private final Random rand = new Random();
 
     /**
@@ -47,11 +47,11 @@ public class RandomLevelBuilder implements LevelBuilder {
      * @param enemyFactory enemy factory
      **/
     @Override
-    public void setEnemyFactory(EnemyFactory enemyFactory) {
+    public void setEnemyFactory(MobFactory enemyFactory) {
         this.enemyFactory = enemyFactory;
     }
 
-    private Enemy generateRandomEnemy(CharacterType enemyType) {
+    private Mob generateRandomEnemy(CharacterType enemyType) {
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
         List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
@@ -59,12 +59,12 @@ public class RandomLevelBuilder implements LevelBuilder {
                 new Coordinates(0, -1),
                 new Coordinates(0, 1));
         switch (enemyType) {
-            case ENEMY_AGGRESSIVE:
-                return enemyFactory.createAggressiveEnemy(maxStep, shifts.get(randomShift));
-            case ENEMY_COWARD:
-                return enemyFactory.createCowardEnemy(maxStep, shifts.get(randomShift));
+            case MOB_AGGRESSIVE:
+                return enemyFactory.createAggressiveMob(maxStep, shifts.get(randomShift));
+            case MOB_COWARD:
+                return enemyFactory.createCowardMob(maxStep, shifts.get(randomShift));
             default:
-                return enemyFactory.createPassiveEnemy();
+                return enemyFactory.createPassiveMob();
         }
     }
 
@@ -88,7 +88,7 @@ public class RandomLevelBuilder implements LevelBuilder {
         player.getBackpack().clear();
         LevelCharacteristic levelCharacteristic = levelCharacteristics.get(currentLevelNumber);
         GameCharacter[][] board = new GameCharacter[levelCharacteristic.getX()][levelCharacteristic.getY()];
-        Map<Enemy, Coordinates> enemies = new HashMap<>();
+        Map<Mob, Coordinates> enemies = new HashMap<>();
         int victoryPoints = 0;
         for (var entry : levelCharacteristic.getCharactersToPlace().entrySet()) {
             int characterNumber = entry.getValue();
@@ -104,9 +104,9 @@ public class RandomLevelBuilder implements LevelBuilder {
                         characterToPlace = generatePoints();
                         victoryPoints += ((Points) characterToPlace).getNumberOfPoints();
                         break;
-                    case ENEMY_PASSIVE:
-                    case ENEMY_AGGRESSIVE:
-                    case ENEMY_COWARD:
+                    case MOB_PASSIVE:
+                    case MOB_AGGRESSIVE:
+                    case MOB_COWARD:
                         var enemy = generateRandomEnemy(entry.getKey());
                         characterToPlace = enemy;
                         enemies.put(enemy, coordinates);

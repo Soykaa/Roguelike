@@ -3,7 +3,7 @@ package ru.hse.roguelike.model;
 import com.googlecode.lanterna.terminal.virtual.DefaultVirtualTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.Characters.*;
+import ru.hse.roguelike.model.characters.*;
 import ru.hse.roguelike.view.console_view.GameScreenViewConsole;
 
 import java.io.IOException;

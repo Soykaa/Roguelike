@@ -1,6 +1,6 @@
 package ru.hse.roguelike.model;
 
-import ru.hse.roguelike.model.Characters.Inventory;
+import ru.hse.roguelike.model.characters.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;

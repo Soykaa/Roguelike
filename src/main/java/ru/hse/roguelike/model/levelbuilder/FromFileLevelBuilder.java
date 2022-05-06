@@ -2,20 +2,20 @@ package ru.hse.roguelike.model.levelbuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Inventory;
-import ru.hse.roguelike.model.Characters.Obstacle;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.Characters.Points;
-import ru.hse.roguelike.model.Characters.Shelter;
+import ru.hse.roguelike.model.characters.CharacterType;
+import ru.hse.roguelike.model.characters.Empty;
+import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.GameCharacter;
+import ru.hse.roguelike.model.characters.Inventory;
+import ru.hse.roguelike.model.characters.Obstacle;
+import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.Points;
+import ru.hse.roguelike.model.characters.Shelter;
 import ru.hse.roguelike.model.Coordinates;
-import ru.hse.roguelike.model.EnemyFactory;
+import ru.hse.roguelike.model.characters.mob.factory.MobFactory;
 import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.model.Level;
-import ru.hse.roguelike.model.RedEnemyFactory;
+import ru.hse.roguelike.model.characters.mob.factory.RedMobFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
     private final String fileDirectory;
     private int currentLevelNumber = 0;
     private Player player;
-    private EnemyFactory enemyFactory = new RedEnemyFactory();
+    private MobFactory enemyFactory = new RedMobFactory();
 
     /**
      * Creates new FromFileLevelBuilder instance.
@@ -49,7 +49,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
      * @param enemyFactory enemy factory
      **/
     @Override
-    public void setEnemyFactory(EnemyFactory enemyFactory) {
+    public void setEnemyFactory(MobFactory enemyFactory) {
         this.enemyFactory = enemyFactory;
     }
 
@@ -66,15 +66,15 @@ public class FromFileLevelBuilder implements LevelBuilder {
                 return new Shelter(characterType);
             case INVENTORY:
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
-            case ENEMY_AGGRESSIVE:
+            case MOB_AGGRESSIVE:
                 JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-                return enemyFactory.createAggressiveEnemy(jsonCharacter.getInt("maxSteps"),
+                return enemyFactory.createAggressiveMob(jsonCharacter.getInt("maxSteps"),
                         new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
-            case ENEMY_PASSIVE:
-                return enemyFactory.createPassiveEnemy();
-            case ENEMY_COWARD:
+            case MOB_PASSIVE:
+                return enemyFactory.createPassiveMob();
+            case MOB_COWARD:
                 jsonShift = jsonCharacter.getJSONObject("shift");
-                return enemyFactory.createCowardEnemy(jsonCharacter.getInt("maxSteps"),
+                return enemyFactory.createCowardMob(jsonCharacter.getInt("maxSteps"),
                         new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case PLAYER:
                 if (currentLevelNumber == 0) {
@@ -119,7 +119,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
             int boardX = jsonArrayBoard.length();
             int boardY = jsonArrayBoard.getJSONArray(0).length();
             GameCharacter[][] board = new GameCharacter[boardX][boardY];
-            Map<Enemy, Coordinates> enemies = new HashMap<>();
+            Map<Mob, Coordinates> enemies = new HashMap<>();
             for (int i = 0; i < boardX; i++) {
                 JSONArray jsonArrayBoardRow = jsonArrayBoard.getJSONArray(i);
                 if (jsonArrayBoardRow.length() != boardY) {
@@ -128,9 +128,9 @@ public class FromFileLevelBuilder implements LevelBuilder {
                 for (int j = 0; j < boardY; j++) {
                     JSONObject jsonCharacter = jsonArrayBoardRow.getJSONObject(j);
                     board[i][j] = getGameCharacterFromJson(jsonCharacter, new Coordinates(i, j));
-                    if (board[i][j].getCharacterType() == CharacterType.ENEMY_AGGRESSIVE
-                            || board[i][j].getCharacterType() == CharacterType.ENEMY_PASSIVE) {
-                        enemies.put((Enemy) board[i][j], new Coordinates(i, j));
+                    if (board[i][j].getCharacterType() == CharacterType.MOB_AGGRESSIVE
+                            || board[i][j].getCharacterType() == CharacterType.MOB_PASSIVE) {
+                        enemies.put((Mob) board[i][j], new Coordinates(i, j));
                     }
                 }
             }
