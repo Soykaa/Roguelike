@@ -97,7 +97,7 @@ public class InteractionManagerTest {
         InteractionManager interactionManager = new InteractionManager(factory, game);
         interactionManager.processCommand(InputCommand.ENTER);
         interactionManager.processCommand(InputCommand.UP);
-        verify(mainScreenView, times(2)).showMainScreen();
+        verify(mainScreenView, times(3)).showMainScreen();
         Assertions.assertSame(interactionManager.getScreen(), Screen.MAIN_MENU);
     }
 }

@@ -2,20 +2,14 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.Characters.Player;
-import ru.hse.roguelike.model.LevelCharacteristics.FifthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FirstLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.FourthLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.LevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.SecondLevelCharacteristic;
-import ru.hse.roguelike.model.LevelCharacteristics.ThirdLevelCharacteristic;
-import ru.hse.roguelike.model.levelbuilder.FromFileLevelBuilder;
-import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
-import ru.hse.roguelike.model.levelbuilder.RandomLevelBuilder;
+import ru.hse.roguelike.model.character.Player;
+import ru.hse.roguelike.model.level_characteristic.*;
+import ru.hse.roguelike.model.level_builder.FromFileLevelBuilder;
+import ru.hse.roguelike.model.level_builder.LevelBuilder;
+import ru.hse.roguelike.model.level_builder.RandomLevelBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,15 +60,15 @@ public class LevelBuilderTests {
         String level = "{\"victoryPoints\": 5, " +
                 "\"realShelterType\": \"SHELTER_LAVENDER\", " +
                 "\"board\":\n" +
-                    "[[{\"numberOfPoints\":8,\"characterType\":\"POINTS\"}, " +
-                        "{\"characterType\":\"EMPTY\"}, " +
-                        "{\"destroyBonus\":1,\"characterType\":\"OBSTACLE\"}, " +
-                        "{\"lives\":4,\"currentCoordinates\":{\"x\":0,\"y\":3},\"characterType\":\"PLAYER\"}, " +
-                        "{\"characterType\":\"SHELTER_PINK\"}, " +
-                        "{\"characterType\":\"SHELTER_YELLOW\"}, " +
-                        "{\"characterType\":\"SHELTER_LAVENDER\"}, " +
-                        "{\"type\":\"DESTROY\",\"characterType\":\"INVENTORY\"}, " +
-                        "{\"type\":\"PROTECTION\",\"characterType\":\"INVENTORY\"}]]}";
+                "[[{\"numberOfPoints\":8,\"characterType\":\"POINTS\"}, " +
+                "{\"characterType\":\"EMPTY\"}, " +
+                "{\"destroyBonus\":1,\"characterType\":\"OBSTACLE\"}, " +
+                "{\"lives\":4,\"currentCoordinates\":{\"x\":0,\"y\":3},\"characterType\":\"PLAYER\"}, " +
+                "{\"characterType\":\"SHELTER_PINK\"}, " +
+                "{\"characterType\":\"SHELTER_YELLOW\"}, " +
+                "{\"characterType\":\"SHELTER_LAVENDER\"}, " +
+                "{\"type\":\"DESTROY\",\"characterType\":\"INVENTORY\"}, " +
+                "{\"type\":\"PROTECTION\",\"characterType\":\"INVENTORY\"}]]}";
 
         Files.writeString(Paths.get(directory + File.separator + "level0"), level);
         Files.writeString(Paths.get(directory + File.separator + "level1"), level);

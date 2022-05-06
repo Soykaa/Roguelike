@@ -2,13 +2,13 @@ package ru.hse.roguelike.controller;
 
 import java.io.IOException;
 
+import ru.hse.roguelike.controller.command.macro.MacroCommand;
+import ru.hse.roguelike.controller.command.macro.GameMacroCommand;
+import ru.hse.roguelike.controller.command.macro.MainMenuMacroCommand;
+import ru.hse.roguelike.controller.command.macro.RulesMacroCommand;
 import ru.hse.roguelike.controller.input.InputCommand;
-import ru.hse.roguelike.model.Action;
 import ru.hse.roguelike.model.Game;
-import ru.hse.roguelike.model.GameState;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
-import ru.hse.roguelike.view.abstract_view.MainScreenView;
-import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
 
 /**
  * Responsible for all user actions outside the gameplay itself,
@@ -17,12 +17,10 @@ import ru.hse.roguelike.view.abstract_view.GameRulesScreenView;
  **/
 public class InteractionManager {
     private Screen screen = Screen.MAIN_MENU;
-    private final MainScreenView mainScreenView;
-    private final ItemHolder itemHolder = new ItemHolder();
-    private final GameRulesScreenView gameRulesView;
-    private final Game game;
-    public boolean isRunning = true;
-    private final AbstractViewFactory factory;
+
+    private final MacroCommand mainMenuCommand;
+    private final MacroCommand gameRulesCommand;
+    private final MacroCommand gameCommand;
 
     /**
      * Creates new InteractionManager instance.
@@ -32,11 +30,15 @@ public class InteractionManager {
      * @throws IOException in case of view error
      **/
     public InteractionManager(String filesPath, AbstractViewFactory factory) throws IOException {
-        this.mainScreenView = factory.createMainScreenView();
-        this.gameRulesView = factory.createGameRulesScreenView();
-        this.mainScreenView.showMainScreen();
-        this.factory = factory;
-        this.game = new Game(filesPath);
+        var game = new Game(filesPath);
+        var mainScreenView = factory.createMainScreenView();
+
+        gameCommand = new GameMacroCommand(game, mainScreenView);
+
+        gameRulesCommand = new RulesMacroCommand(mainScreenView);
+
+        mainMenuCommand = new MainMenuMacroCommand(mainScreenView, game, factory, factory.createGameRulesScreenView());
+
     }
 
     /**
@@ -48,11 +50,14 @@ public class InteractionManager {
      * @throws IOException in case of view error
      */
     public InteractionManager(AbstractViewFactory factory, Game game) throws IOException {
-        this.mainScreenView = factory.createMainScreenView();
-        this.gameRulesView = factory.createGameRulesScreenView();
-        this.mainScreenView.showMainScreen();
-        this.factory = factory;
-        this.game = game;
+        var mainScreenView = factory.createMainScreenView();
+
+        gameCommand = new GameMacroCommand(game, mainScreenView);
+        mainScreenView.showMainScreen();
+
+        gameRulesCommand = new RulesMacroCommand(mainScreenView);
+
+        mainMenuCommand = new MainMenuMacroCommand(mainScreenView, game, factory, factory.createGameRulesScreenView());
     }
 
     /**
@@ -72,87 +77,14 @@ public class InteractionManager {
     public void processCommand(InputCommand command) {
         switch (screen) {
             case MAIN_MENU:
-                processCommandMainMenu(command);
+                screen = mainMenuCommand.execute(command);
                 break;
             case GAME_RULES:
-                processCommandRules(command);
+                screen = gameRulesCommand.execute(command);
                 break;
             case GAME:
-                processCommandGame(command);
+                screen = gameCommand.execute(command);
                 break;
-        }
-    }
-
-    private void processCommandRules(InputCommand command) {
-        if (command == InputCommand.ESCAPE) {
-            mainScreenView.showMainScreen();
-            screen = Screen.MAIN_MENU;
-        }
-    }
-
-    private void processCommandGame(InputCommand command) {
-        GameState gameState = GameState.IS_RUNNING;
-        switch (command) {
-            case UP:
-                gameState = game.manageGame(Action.MOVE_UP);
-                break;
-            case DOWN:
-                gameState = game.manageGame(Action.MOVE_DOWN);
-                break;
-            case LEFT:
-                gameState = game.manageGame(Action.MOVE_LEFT);
-                break;
-            case RIGHT:
-                gameState = game.manageGame(Action.MOVE_RIGHT);
-                break;
-            case BACKSLASH:
-                game.manageGame(Action.CHANGE_EQUIPTION);
-                break;
-            case SPACE:
-                gameState = game.manageGame(Action.DESTROY);
-                break;
-            case UNKNOWN_COMMAND:
-                gameState = game.manageGame(Action.UNKNOWN_ACTION);
-                break;
-        }
-        if (gameState != GameState.IS_RUNNING) {
-            screen = Screen.MAIN_MENU;
-            mainScreenView.showMainScreen();
-        }
-    }
-
-    private void processCommandMainMenu(InputCommand command) {
-        switch (command) {
-            case UP:
-            case DOWN:
-                mainScreenView.setSelectedItem(itemHolder.setSelectedItem(command));
-                break;
-            case ENTER:
-                switch (itemHolder.getCurrentItem()) {
-                    case EXIT:
-                        isRunning = false;
-                        break;
-                    case SHOW_RULES:
-                        screen = Screen.GAME_RULES;
-                        gameRulesView.showGameRules();
-                        break;
-                    case START_GAME_FROM_FILE:
-                        GameState state1 = game.startGame(true, factory);
-                        if (state1 != GameState.IS_RUNNING) {
-                            System.out.println("Problem with starting game");
-                            return;
-                        }
-                        screen = Screen.GAME;
-                        break;
-                    case START_GAME:
-                        GameState state2 = game.startGame(false, factory);
-                        if (state2 != GameState.IS_RUNNING) {
-                            System.out.println("Problem with starting game");
-                            return;
-                        }
-                        screen = Screen.GAME;
-                        break;
-                }
         }
     }
 }

@@ -1,7 +1,7 @@
 package ru.hse.roguelike.model;
 
-import ru.hse.roguelike.model.levelbuilder.FromFileLevelBuilder;
-import ru.hse.roguelike.model.levelbuilder.RandomLevelBuilder;
+import ru.hse.roguelike.model.level_builder.FromFileLevelBuilder;
+import ru.hse.roguelike.model.level_builder.RandomLevelBuilder;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 
 import java.io.IOException;
