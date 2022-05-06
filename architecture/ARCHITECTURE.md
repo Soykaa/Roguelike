@@ -946,7 +946,7 @@ _Примечание_: на каждом уровне является вали
 
 **Поля**:
 
-- `MobStrategy prevStrategy` - предыдущая стратегия моба
+- `MobStrategy previousStrategy` - предыдущая стратегия моба
 - `MobStrategy currentStrategy` - нынешняя стратегия
 - `int panicTime` - время паники
 - `Mob mob` - моб
@@ -957,7 +957,7 @@ _Примечание_: на каждом уровне является вали
 
 **Методы** - такие же, как в _MobState_
 
-<img src="images/model_component_v3.png">
+<img src="images/model_component_v4.png">
 
 #### View
 

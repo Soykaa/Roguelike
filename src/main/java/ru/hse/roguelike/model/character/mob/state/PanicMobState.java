@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class PanicMobState implements MobState {
-    private final MobStrategy prevStrategy;
+    private final MobStrategy previousStrategy;
     private final MobStrategy currentStrategy;
     private int panicTime = 5;
     private final Mob mob;
@@ -22,7 +22,7 @@ public class PanicMobState implements MobState {
      **/
     public PanicMobState(Mob mob) {
         this.mob = mob;
-        this.prevStrategy = mob.getState().getStrategy();
+        this.previousStrategy = mob.getState().getStrategy();
         Random rand = new Random();
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
@@ -39,7 +39,7 @@ public class PanicMobState implements MobState {
     }
 
     private void switchState(Mob mob) {
-        mob.changeMobState(new OkMobState(prevStrategy));
+        mob.changeMobState(new OkMobState(previousStrategy));
     }
 
     /**
