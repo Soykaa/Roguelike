@@ -10,6 +10,7 @@ import ru.hse.roguelike.model.characters.Empty;
 import ru.hse.roguelike.model.characters.mob.Mob;
 import ru.hse.roguelike.model.characters.GameCharacter;
 import ru.hse.roguelike.model.characters.Player;
+import ru.hse.roguelike.model.characters.mob.state.OkMobState;
 import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
 import ru.hse.roguelike.view.console_view.GameScreenViewConsole;
 
@@ -23,7 +24,7 @@ public class ReplicationTest {
             }
         }
         var mob = new Mob(CharacterType.MOB_AGGRESSIVE, "color", 2,
-                new AggressiveMobStrategy(2, 2, new Coordinates(1, 0)), 1);
+                new OkMobState(new AggressiveMobStrategy(2, 2, new Coordinates(1, 0))), 1);
         board[1][1] = mob;
         var player = new Player(1, 0);
         board[6][1] = player;

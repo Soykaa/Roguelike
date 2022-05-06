@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.hse.roguelike.model.characters.CharacterType;
 import ru.hse.roguelike.model.characters.mob.Mob;
 import ru.hse.roguelike.model.characters.mob.decorator.ConfusedMobDecorator;
+import ru.hse.roguelike.model.characters.mob.state.OkMobState;
 import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
 
 public class ConfusedMobTest {
@@ -15,7 +16,7 @@ public class ConfusedMobTest {
     @Test
     public void testConfusedMobPlayerReturnsToStrategyAfterConfusionIsOver() {
         Mob aggressiveMob = new Mob(CharacterType.MOB_AGGRESSIVE, "color", 2,
-                new AggressiveMobStrategy(3, 10, new Coordinates(1, 0)));
+                new OkMobState(new AggressiveMobStrategy(3, 10, new Coordinates(1, 0))));
         ConfusedMobDecorator confusedAggressiveMob = new ConfusedMobDecorator(aggressiveMob, 1);
         Coordinates mobCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(5, 5);

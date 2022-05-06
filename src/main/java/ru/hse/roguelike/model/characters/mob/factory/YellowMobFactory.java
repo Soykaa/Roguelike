@@ -2,6 +2,7 @@ package ru.hse.roguelike.model.characters.mob.factory;
 
 import ru.hse.roguelike.model.characters.CharacterType;
 import ru.hse.roguelike.model.characters.mob.Mob;
+import ru.hse.roguelike.model.characters.mob.state.OkMobState;
 import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
 import ru.hse.roguelike.model.characters.mob.strategy.CowardMobStrategy;
 import ru.hse.roguelike.model.characters.mob.strategy.PassiveMobStrategy;
@@ -24,7 +25,7 @@ public class YellowMobFactory implements MobFactory {
     @Override
     public Mob createAggressiveMob(int maxSteps, Coordinates shift) {
         return new Mob(CharacterType.MOB_AGGRESSIVE, color, attackStrength,
-                new AggressiveMobStrategy(visibility, maxSteps, shift));
+                new OkMobState(new AggressiveMobStrategy(visibility, maxSteps, shift)));
     }
 
     /**
@@ -33,7 +34,7 @@ public class YellowMobFactory implements MobFactory {
     @Override
     public Mob createPassiveMob() {
         return new Mob(CharacterType.MOB_PASSIVE, color, attackStrength,
-                new PassiveMobStrategy());
+                new OkMobState(new PassiveMobStrategy()));
     }
 
     /**
@@ -45,6 +46,6 @@ public class YellowMobFactory implements MobFactory {
     @Override
     public Mob createCowardMob(int maxSteps, Coordinates shift) {
         return new Mob(CharacterType.MOB_COWARD, color, attackStrength,
-                new CowardMobStrategy(visibility, maxSteps, shift));
+                new OkMobState(new CowardMobStrategy(visibility, maxSteps, shift)));
     }
 }
