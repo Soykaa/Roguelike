@@ -2,7 +2,7 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.characters.Inventory;
+import ru.hse.roguelike.model.character.Inventory;
 
 public class BackpackTest {
     @Test

@@ -2,10 +2,10 @@ package ru.hse.roguelike.controller;
 
 import java.io.IOException;
 
-import ru.hse.roguelike.controller.comands.macro.MacroCommand;
-import ru.hse.roguelike.controller.comands.macro.GameMacroCommand;
-import ru.hse.roguelike.controller.comands.macro.MainMenuMacroCommand;
-import ru.hse.roguelike.controller.comands.macro.RulesMacroCommand;
+import ru.hse.roguelike.controller.command.macro.MacroCommand;
+import ru.hse.roguelike.controller.command.macro.GameMacroCommand;
+import ru.hse.roguelike.controller.command.macro.MainMenuMacroCommand;
+import ru.hse.roguelike.controller.command.macro.RulesMacroCommand;
 import ru.hse.roguelike.controller.input.InputCommand;
 import ru.hse.roguelike.model.Game;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;

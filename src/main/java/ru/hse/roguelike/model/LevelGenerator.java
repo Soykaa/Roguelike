@@ -1,9 +1,9 @@
 package ru.hse.roguelike.model;
 
-import ru.hse.roguelike.model.characters.Player;
-import ru.hse.roguelike.model.characters.mob.factory.RedMobFactory;
-import ru.hse.roguelike.model.characters.mob.factory.YellowMobFactory;
-import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
+import ru.hse.roguelike.model.character.Player;
+import ru.hse.roguelike.model.character.mob.factory.RedMobFactory;
+import ru.hse.roguelike.model.character.mob.factory.YellowMobFactory;
+import ru.hse.roguelike.model.level_builder.LevelBuilder;
 import ru.hse.roguelike.view.abstract_view.AbstractViewFactory;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 

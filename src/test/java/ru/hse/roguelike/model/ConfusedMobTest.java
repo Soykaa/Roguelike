@@ -2,10 +2,10 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.characters.CharacterType;
-import ru.hse.roguelike.model.characters.mob.Mob;
-import ru.hse.roguelike.model.characters.mob.decorator.ConfusedMobDecorator;
-import ru.hse.roguelike.model.characters.mob.strategy.AggressiveMobStrategy;
+import ru.hse.roguelike.model.character.CharacterType;
+import ru.hse.roguelike.model.character.mob.Mob;
+import ru.hse.roguelike.model.character.mob.decorator.ConfusedMobDecorator;
+import ru.hse.roguelike.model.character.mob.strategy.AggressiveMobStrategy;
 
 public class ConfusedMobTest {
     private Coordinates addCoordinates(Coordinates coordinates, Coordinates shift) {

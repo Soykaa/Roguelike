@@ -2,11 +2,11 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.characters.Player;
-import ru.hse.roguelike.model.levelCharacteristics.*;
-import ru.hse.roguelike.model.levelbuilder.FromFileLevelBuilder;
-import ru.hse.roguelike.model.levelbuilder.LevelBuilder;
-import ru.hse.roguelike.model.levelbuilder.RandomLevelBuilder;
+import ru.hse.roguelike.model.character.Player;
+import ru.hse.roguelike.model.level_characteristic.*;
+import ru.hse.roguelike.model.level_builder.FromFileLevelBuilder;
+import ru.hse.roguelike.model.level_builder.LevelBuilder;
+import ru.hse.roguelike.model.level_builder.RandomLevelBuilder;
 
 import java.io.File;
 import java.io.IOException;
