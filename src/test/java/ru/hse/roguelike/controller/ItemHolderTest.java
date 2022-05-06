@@ -16,9 +16,9 @@ public class ItemHolderTest {
     @Test
     public void testItemHolder() {
         Assertions.assertSame(itemHolder.getCurrentItem(), SelectedItem.START_GAME);
-        itemHolder.setSelectedItem(InputCommand.UP);
+        itemHolder.moveUp();
         Assertions.assertSame(itemHolder.getCurrentItem(), SelectedItem.EXIT);
-        itemHolder.setSelectedItem(InputCommand.DOWN);
+        itemHolder.moveDown();
         Assertions.assertSame(itemHolder.getCurrentItem(), SelectedItem.START_GAME);
     }
 }
