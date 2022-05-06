@@ -1,15 +1,13 @@
 package ru.hse.roguelike.model.character.mob.state;
 
-import ru.hse.roguelike.model.character.mob.Mob;
+import ru.hse.roguelike.model.Coordinates;
+import ru.hse.roguelike.model.character.mob.strategy.MobStrategy;
 
 /**
  * Represents mob state, which defines its behaviour.
  **/
 public interface MobState {
-    /**
-     * Changes mob state if it's necessary.
-     *
-     * @param mob mob
-     **/
-    void switchState(Mob mob);
+    MobStrategy getStrategy();
+
+    Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates);
 }

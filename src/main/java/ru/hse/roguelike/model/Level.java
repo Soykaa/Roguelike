@@ -249,11 +249,14 @@ public class Level {
         }
 
         if (player.canDestroy()) {
-            killedEnemies.add(enemy);
-            player.increaseExperience(5);
-            board[coordinates.getX()][coordinates.getY()] = new Empty();
-            gameView.removeCharacter(coordinates.getX(), coordinates.getY());
-            gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
+            enemy.decreaseLives();
+            if (enemy.getLives() == 0) {
+                killedEnemies.add(enemy);
+                player.increaseExperience(5);
+                board[coordinates.getX()][coordinates.getY()] = new Empty();
+                gameView.removeCharacter(coordinates.getX(), coordinates.getY());
+                gameView.showExperience(player.getExperience(), player.getExperienceIncreaseForNextLevel());
+            }
         }
 
         if (playerShelter == null | playerShelter != realShelterType) {

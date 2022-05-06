@@ -16,7 +16,7 @@ public abstract class MobDecorator extends Mob {
      * @param mob mob
      **/
     public MobDecorator(Mob mob) {
-        super(mob.getCharacterType(), mob.getColor(), mob.getAttackStrength(), mob.getStrategy());
+        super(mob.getCharacterType(), mob.getColor(), mob.getAttackStrength(), mob.getState());
         this.mob = mob;
     }
 }

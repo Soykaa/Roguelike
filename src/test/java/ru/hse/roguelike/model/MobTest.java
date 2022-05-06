@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.hse.roguelike.model.character.*;
 import ru.hse.roguelike.model.character.mob.Mob;
+import ru.hse.roguelike.model.character.mob.state.OkMobState;
 import ru.hse.roguelike.model.character.mob.strategy.AggressiveMobStrategy;
 import ru.hse.roguelike.model.character.mob.strategy.CowardMobStrategy;
 import ru.hse.roguelike.model.character.mob.strategy.PassiveMobStrategy;
@@ -13,12 +14,12 @@ public class MobTest {
         switch (type) {
             case MOB_AGGRESSIVE:
                 return new Mob(type, "color", 2,
-                        new AggressiveMobStrategy(3, 10, new Coordinates(-1, 0)));
+                        new OkMobState(new AggressiveMobStrategy(3, 10, new Coordinates(-1, 0))));
             case MOB_COWARD:
                 return new Mob(type, "color", 2,
-                        new CowardMobStrategy(3, 10, new Coordinates(-1, 0)));
+                        new OkMobState(new CowardMobStrategy(3, 10, new Coordinates(-1, 0))));
             default:
-                return new Mob(type, "color", 2, new PassiveMobStrategy());
+                return new Mob(type, "color", 2, new OkMobState(new PassiveMobStrategy()));
         }
     }
 

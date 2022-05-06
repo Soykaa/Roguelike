@@ -60,15 +60,15 @@ public class LevelBuilderTests {
         String level = "{\"victoryPoints\": 5, " +
                 "\"realShelterType\": \"SHELTER_LAVENDER\", " +
                 "\"board\":\n" +
-                    "[[{\"numberOfPoints\":8,\"characterType\":\"POINTS\"}, " +
-                        "{\"characterType\":\"EMPTY\"}, " +
-                        "{\"destroyBonus\":1,\"characterType\":\"OBSTACLE\"}, " +
-                        "{\"lives\":4,\"currentCoordinates\":{\"x\":0,\"y\":3},\"characterType\":\"PLAYER\"}, " +
-                        "{\"characterType\":\"SHELTER_PINK\"}, " +
-                        "{\"characterType\":\"SHELTER_YELLOW\"}, " +
-                        "{\"characterType\":\"SHELTER_LAVENDER\"}, " +
-                        "{\"type\":\"DESTROY\",\"characterType\":\"INVENTORY\"}, " +
-                        "{\"type\":\"PROTECTION\",\"characterType\":\"INVENTORY\"}]]}";
+                "[[{\"numberOfPoints\":8,\"characterType\":\"POINTS\"}, " +
+                "{\"characterType\":\"EMPTY\"}, " +
+                "{\"destroyBonus\":1,\"characterType\":\"OBSTACLE\"}, " +
+                "{\"lives\":4,\"currentCoordinates\":{\"x\":0,\"y\":3},\"characterType\":\"PLAYER\"}, " +
+                "{\"characterType\":\"SHELTER_PINK\"}, " +
+                "{\"characterType\":\"SHELTER_YELLOW\"}, " +
+                "{\"characterType\":\"SHELTER_LAVENDER\"}, " +
+                "{\"type\":\"DESTROY\",\"characterType\":\"INVENTORY\"}, " +
+                "{\"type\":\"PROTECTION\",\"characterType\":\"INVENTORY\"}]]}";
 
         Files.writeString(Paths.get(directory + File.separator + "level0"), level);
         Files.writeString(Paths.get(directory + File.separator + "level1"), level);

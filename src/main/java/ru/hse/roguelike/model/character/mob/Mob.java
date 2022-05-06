@@ -1,22 +1,26 @@
 package ru.hse.roguelike.model.character.mob;
 
-import java.util.Random;
-
+import ru.hse.roguelike.model.Coordinates;
+import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.model.character.CharacterType;
 import ru.hse.roguelike.model.character.GameCharacter;
 import ru.hse.roguelike.model.character.Player;
-import ru.hse.roguelike.model.character.mob.strategy.MobStrategy;
-import ru.hse.roguelike.model.Coordinates;
-import ru.hse.roguelike.model.InventoryItem;
+import ru.hse.roguelike.model.character.mob.state.MobState;
+import ru.hse.roguelike.model.character.mob.state.PanicMobState;
+
+import java.util.Random;
 
 /**
  * Represents mobs.
  **/
 public class Mob extends GameCharacter implements MobPrototype {
-    private final MobStrategy strategy;
     private final float replicationProbability;
     private final String color;
     private final int attackStrength;
+
+    private int lives = 2;
+
+    private MobState state;
 
     /**
      * Creates new Mob instance.
@@ -26,11 +30,11 @@ public class Mob extends GameCharacter implements MobPrototype {
      * @param characterType  mob type
      * @param color          mob color
      * @param attackStrength attack strength
-     * @param strategy       mob strategy
+     * @param state          mob state
      **/
-    public Mob(CharacterType characterType, String color, int attackStrength, MobStrategy strategy) {
+    public Mob(CharacterType characterType, String color, int attackStrength, MobState state) {
         super(characterType);
-        this.strategy = strategy;
+        this.state = state;
         this.color = color;
         this.attackStrength = attackStrength;
         this.replicationProbability = new Random().nextFloat() * 0.01f;
@@ -44,12 +48,12 @@ public class Mob extends GameCharacter implements MobPrototype {
      * @param characterType          mob type
      * @param color                  mob color
      * @param attackStrength         attack strength
-     * @param strategy               mob strategy
+     * @param state                  mob strategy
      * @param replicationProbability probability that the enemy will replicate at each shift
      **/
-    public Mob(CharacterType characterType, String color, int attackStrength, MobStrategy strategy, float replicationProbability) {
+    public Mob(CharacterType characterType, String color, int attackStrength, MobState state, float replicationProbability) {
         super(characterType);
-        this.strategy = strategy;
+        this.state = state;
         this.color = color;
         this.attackStrength = attackStrength;
         this.replicationProbability = replicationProbability;
@@ -65,12 +69,12 @@ public class Mob extends GameCharacter implements MobPrototype {
     }
 
     /**
-     * Returns mob strategy.
+     * Returns mob state.
      *
-     * @return mob strategy
+     * @return mob state
      **/
-    public MobStrategy getStrategy() {
-        return strategy;
+    public MobState getState() {
+        return state;
     }
 
     /**
@@ -81,7 +85,7 @@ public class Mob extends GameCharacter implements MobPrototype {
      * @return new coordinates
      **/
     public Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates) {
-        return strategy.makeNextMove(mobCoordinates, playerCoordinates);
+        return state.makeNextMove(mobCoordinates, playerCoordinates);
     }
 
     /**
@@ -114,7 +118,7 @@ public class Mob extends GameCharacter implements MobPrototype {
      **/
     @Override
     public Mob cloneMob() {
-        return new Mob(this.getCharacterType(), color, attackStrength, strategy, replicationProbability);
+        return new Mob(this.getCharacterType(), color, attackStrength, state, replicationProbability);
     }
 
     /**
@@ -124,5 +128,25 @@ public class Mob extends GameCharacter implements MobPrototype {
      **/
     public float getReplicationProbability() {
         return replicationProbability;
+    }
+
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void decreaseLives() {
+        lives -= 1;
+        if (!(state instanceof PanicMobState)) {
+            state = new PanicMobState(this);
+        }
+    }
+
+    public void increaseLives() {
+        lives += 1;
+    }
+
+    public void changeMobState(MobState newState) {
+        state = newState;
     }
 }

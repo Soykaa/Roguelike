@@ -23,24 +23,6 @@ public class ItemHolder {
         return items.get(currentItemNumber);
     }
 
-    /**
-     * Change current option according to keystroke and returns it.
-     *
-     * @param command pressed key
-     * @return selected item
-     **/
-    public SelectedItem setSelectedItem(InputCommand command) {
-        switch (command) {
-            case DOWN:
-                currentItemNumber = (currentItemNumber + 1) % items.size();
-                break;
-            case UP:
-                currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
-                break;
-        }
-        return items.get(currentItemNumber);
-    }
-
     public void moveDown() {
         currentItemNumber = (currentItemNumber + 1) % items.size();
     }
