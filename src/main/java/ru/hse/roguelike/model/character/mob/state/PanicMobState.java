@@ -12,13 +12,14 @@ public class PanicMobState implements MobState {
     private final MobStrategy prevStrategy;
     private final MobStrategy currentStrategy;
     private int panicTime = 5;
-
     private final Mob mob;
 
-    public MobStrategy getStrategy() {
-        return currentStrategy;
-    }
-
+    /**
+     * Creates new PanicMobState instance.
+     * Initialises mob with the given value and other fields randomly.
+     *
+     * @param mob mob
+     **/
     public PanicMobState(Mob mob) {
         this.mob = mob;
         this.prevStrategy = mob.getState().getStrategy();
@@ -41,6 +42,23 @@ public class PanicMobState implements MobState {
         mob.changeMobState(new OkMobState(prevStrategy));
     }
 
+    /**
+     * Returns mob strategy.
+     *
+     * @return mob strategy
+     **/
+    @Override
+    public MobStrategy getStrategy() {
+        return currentStrategy;
+    }
+
+    /**
+     * Makes next mob move.
+     *
+     * @param mobCoordinates    current mob coordinates
+     * @param playerCoordinates current player coordinates
+     * @return new mob coordinates
+     **/
     @Override
     public Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates) {
         panicTime--;

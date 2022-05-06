@@ -47,9 +47,9 @@ public class LevelGenerator {
      **/
     public Level getNextLevel() {
         if (rand.nextInt() % 2 == 0) {
-            levelBuilder.setEnemyFactory(new RedMobFactory());
+            levelBuilder.setMobFactory(new RedMobFactory());
         } else {
-            levelBuilder.setEnemyFactory(new YellowMobFactory());
+            levelBuilder.setMobFactory(new YellowMobFactory());
         }
         Level level = levelBuilder.build(player);
         if (level == null) {

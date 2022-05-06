@@ -21,12 +21,12 @@ public class Level {
     private GameScreenView gameView;
     private final Player player;
     private final int victoryPoints;
-    private final Map<Mob, Coordinates> enemies;
+    private final Map<Mob, Coordinates> mobs;
     private final CharacterType realShelterType;
     private CharacterType playerShelter = null;
 
-    private final List<Mob> confusedEnemies = new ArrayList<>();
-    private final List<Mob> killedEnemies = new ArrayList<>();
+    private final List<Mob> confusedMobs = new ArrayList<>();
+    private final List<Mob> killedMobs = new ArrayList<>();
 
 
     /**
@@ -34,15 +34,15 @@ public class Level {
      *
      * @param board           game board
      * @param player          player
-     * @param enemies         enemies with their coordinates
+     * @param mobs            mobs with their coordinates
      * @param realShelterType valid shelter type
      * @param victoryPoints   number of points to win
      **/
     public Level(GameCharacter[][] board, Player player,
-                 Map<Mob, Coordinates> enemies, CharacterType realShelterType, int victoryPoints) {
+                 Map<Mob, Coordinates> mobs, CharacterType realShelterType, int victoryPoints) {
         this.board = board;
         this.player = player;
-        this.enemies = enemies;
+        this.mobs = mobs;
         this.realShelterType = realShelterType;
         this.victoryPoints = victoryPoints;
     }
@@ -165,93 +165,93 @@ public class Level {
         return GameState.IS_RUNNING;
     }
 
-    private GameState moveEnemies() throws IOException {
-        Map<Mob, Coordinates> newEnemies = new HashMap<>();
-        for (var entry : enemies.entrySet()) {
-            Mob enemy = entry.getKey();
+    private GameState moveMobs() throws IOException {
+        Map<Mob, Coordinates> newMobs = new HashMap<>();
+        for (var entry : mobs.entrySet()) {
+            Mob mob = entry.getKey();
             Coordinates coordinates = entry.getValue();
-            Coordinates shift = enemy.makeNextMove(coordinates, player.getCurrentCoordinates());
+            Coordinates shift = mob.makeNextMove(coordinates, player.getCurrentCoordinates());
             int newX = coordinates.getX() + shift.getX();
             int newY = coordinates.getY() + shift.getY();
             if (isValidCoordinates(newX, newY)) {
                 if (board[newX][newY].getCharacterType() == CharacterType.EMPTY) {
-                    moveCharacter(enemy, coordinates, newX, newY);
+                    moveCharacter(mob, coordinates, newX, newY);
                 }
             }
             if (charactersAreClose(player.getCurrentCoordinates(), coordinates)) {
-                makeBattle(enemy, coordinates);
+                makeBattle(mob, coordinates);
             }
             gameView.showLives(player.getLives());
 
-            if (new Random().nextFloat() < enemy.getReplicationProbability()
+            if (new Random().nextFloat() < mob.getReplicationProbability()
                     && isValidCoordinates(newX, newY)
-                    && board[newX][newY].getCharacterType() == enemy.getCharacterType()
+                    && board[newX][newY].getCharacterType() == mob.getCharacterType()
             ) {
                 Coordinates newEnemyCoordinates = findFreeCoordinatesNearby(newX, newY);
                 int newEnemyX = newEnemyCoordinates.getX();
                 int newEnemyY = newEnemyCoordinates.getY();
                 if (newEnemyX != -1 && newEnemyY != -1) {
-                    Mob newEnemy = enemy.cloneMob();
-                    newEnemies.put(newEnemy, newEnemyCoordinates);
+                    Mob newEnemy = mob.cloneMob();
+                    newMobs.put(newEnemy, newEnemyCoordinates);
                 }
             }
             if (player.getLives() <= 0) {
                 return GameState.DEFEAT;
             }
         }
-        for (var enemy : newEnemies.entrySet()) {
+        for (var enemy : newMobs.entrySet()) {
             Coordinates newEnemyCoordinates = enemy.getValue();
             int newEnemyX = newEnemyCoordinates.getX();
             int newEnemyY = newEnemyCoordinates.getY();
             if (board[newEnemyX][newEnemyY].getCharacterType() == CharacterType.EMPTY) {
                 board[newEnemyX][newEnemyY] = enemy.getKey();
                 gameView.placeCharacter(enemy.getKey(), newEnemyX, newEnemyY);
-                enemies.put(enemy.getKey(), enemy.getValue());
+                mobs.put(enemy.getKey(), enemy.getValue());
             }
         }
-        changeConfusedEnemies();
-        confusedEnemies.clear();
-        deleteKilledEnemies();
-        killedEnemies.clear();
+        changeConfusedMobs();
+        confusedMobs.clear();
+        deleteKilledMobs();
+        killedMobs.clear();
         return GameState.IS_RUNNING;
     }
 
-    private void changeConfusedEnemies() {
-        for (var enemy : confusedEnemies) {
-            var coordinates = enemies.get(enemy);
+    private void changeConfusedMobs() {
+        for (var mob : confusedMobs) {
+            var coordinates = mobs.get(mob);
             if (coordinates == null) {
                 return;
             }
-            enemies.remove(enemy);
-            Mob newEnemy = new ConfusedMobDecorator(enemy);
-            board[coordinates.getX()][coordinates.getY()] = newEnemy;
-            enemies.put(newEnemy, coordinates);
+            mobs.remove(mob);
+            Mob newMob = new ConfusedMobDecorator(mob);
+            board[coordinates.getX()][coordinates.getY()] = newMob;
+            mobs.put(newMob, coordinates);
         }
     }
 
-    private void deleteKilledEnemies() {
-        for (var enemy : killedEnemies) {
-            var coordinates = enemies.get(enemy);
+    private void deleteKilledMobs() {
+        for (var mob : killedMobs) {
+            var coordinates = mobs.get(mob);
             if (coordinates == null) {
                 return;
             }
-            enemies.remove(enemy);
+            mobs.remove(mob);
         }
     }
 
-    private void makeBattle(Mob enemy, Coordinates coordinates) throws IOException {
+    private void makeBattle(Mob mob, Coordinates coordinates) throws IOException {
         if (player.canConfuse()) {
             player.confuse();
-            confusedEnemies.add(enemy);
+            confusedMobs.add(mob);
             player.increaseExperience(5);
             gameView.showBackpack(player.getBackpack());
             return;
         }
 
         if (player.canDestroy()) {
-            enemy.decreaseLives();
-            if (enemy.getLives() == 0) {
-                killedEnemies.add(enemy);
+            mob.decreaseLives();
+            if (mob.getLives() == 0) {
+                killedMobs.add(mob);
                 player.increaseExperience(5);
                 board[coordinates.getX()][coordinates.getY()] = new Empty();
                 gameView.removeCharacter(coordinates.getX(), coordinates.getY());
@@ -260,7 +260,7 @@ public class Level {
         }
 
         if (playerShelter == null | playerShelter != realShelterType) {
-            enemy.attack(player);
+            mob.attack(player);
         }
     }
 
@@ -277,7 +277,7 @@ public class Level {
         if (movePlayerGameState != GameState.IS_RUNNING) {
             return movePlayerGameState;
         }
-        return moveEnemies();
+        return moveMobs();
     }
 
     /**

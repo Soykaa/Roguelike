@@ -31,7 +31,7 @@ public class FromFileLevelBuilder implements LevelBuilder {
     private final String fileDirectory;
     private int currentLevelNumber = 0;
     private Player player;
-    private MobFactory enemyFactory = new RedMobFactory();
+    private MobFactory mobFactory = new RedMobFactory();
 
     /**
      * Creates new FromFileLevelBuilder instance.
@@ -44,13 +44,13 @@ public class FromFileLevelBuilder implements LevelBuilder {
     }
 
     /**
-     * Sets enemy factory.
+     * Sets mob factory.
      *
-     * @param enemyFactory enemy factory
+     * @param mobFactory mob factory
      **/
     @Override
-    public void setEnemyFactory(MobFactory enemyFactory) {
-        this.enemyFactory = enemyFactory;
+    public void setMobFactory(MobFactory mobFactory) {
+        this.mobFactory = mobFactory;
     }
 
     private GameCharacter getGameCharacterFromJson(JSONObject jsonCharacter, Coordinates coordinates) {
@@ -68,13 +68,13 @@ public class FromFileLevelBuilder implements LevelBuilder {
                 return new Inventory(jsonCharacter.getEnum(InventoryItem.class, "type"));
             case MOB_AGGRESSIVE:
                 JSONObject jsonShift = jsonCharacter.getJSONObject("shift");
-                return enemyFactory.createAggressiveMob(jsonCharacter.getInt("maxSteps"),
+                return mobFactory.createAggressiveMob(jsonCharacter.getInt("maxSteps"),
                         new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case MOB_PASSIVE:
-                return enemyFactory.createPassiveMob();
+                return mobFactory.createPassiveMob();
             case MOB_COWARD:
                 jsonShift = jsonCharacter.getJSONObject("shift");
-                return enemyFactory.createCowardMob(jsonCharacter.getInt("maxSteps"),
+                return mobFactory.createCowardMob(jsonCharacter.getInt("maxSteps"),
                         new Coordinates(jsonShift.getInt("x"), jsonShift.getInt("y")));
             case PLAYER:
                 if (currentLevelNumber == 0) {

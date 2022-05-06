@@ -17,9 +17,9 @@ public interface LevelBuilder {
     Level build(Player player);
 
     /**
-     * Sets enemy factory.
+     * Sets mob factory.
      *
-     * @param enemyFactory enemy factory
+     * @param mobFactory mob factory
      **/
-    void setEnemyFactory(MobFactory enemyFactory);
+    void setMobFactory(MobFactory mobFactory);
 }

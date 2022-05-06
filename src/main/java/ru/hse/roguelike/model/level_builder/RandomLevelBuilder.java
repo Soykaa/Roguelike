@@ -38,33 +38,33 @@ public class RandomLevelBuilder implements LevelBuilder {
 
     private int currentLevelNumber = 0;
 
-    private MobFactory enemyFactory = new YellowMobFactory();
+    private MobFactory mobFactory = new YellowMobFactory();
     private final Random rand = new Random();
 
     /**
-     * Sets enemy factory.
+     * Sets mob factory.
      *
-     * @param enemyFactory enemy factory
+     * @param mobFactory mob factory
      **/
     @Override
-    public void setEnemyFactory(MobFactory enemyFactory) {
-        this.enemyFactory = enemyFactory;
+    public void setMobFactory(MobFactory mobFactory) {
+        this.mobFactory = mobFactory;
     }
 
-    private Mob generateRandomEnemy(CharacterType enemyType) {
+    private Mob generateRandomEnemy(CharacterType mobType) {
         int maxStep = rand.nextInt(4) + 1;
         int randomShift = rand.nextInt(4);
         List<Coordinates> shifts = List.of(new Coordinates(-1, 0),
                 new Coordinates(1, 0),
                 new Coordinates(0, -1),
                 new Coordinates(0, 1));
-        switch (enemyType) {
+        switch (mobType) {
             case MOB_AGGRESSIVE:
-                return enemyFactory.createAggressiveMob(maxStep, shifts.get(randomShift));
+                return mobFactory.createAggressiveMob(maxStep, shifts.get(randomShift));
             case MOB_COWARD:
-                return enemyFactory.createCowardMob(maxStep, shifts.get(randomShift));
+                return mobFactory.createCowardMob(maxStep, shifts.get(randomShift));
             default:
-                return enemyFactory.createPassiveMob();
+                return mobFactory.createPassiveMob();
         }
     }
 

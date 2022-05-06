@@ -4,7 +4,7 @@ import ru.hse.roguelike.controller.Screen;
 import ru.hse.roguelike.controller.input.InputCommand;
 
 /**
- * Interface for commands, connected with screen displaying, with complicated logic.
+ * Interface for commands with complicated logic, connected with screen displaying.
  **/
 public interface MacroCommand {
     /**

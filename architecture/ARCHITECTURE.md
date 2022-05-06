@@ -188,7 +188,7 @@ Confusion: игрок может вводить врага в состояние
 **Методы**:
 
 - `void start()` - начинает работу приложения. Внутри создается цикл, в котором при помощи средств библиотеки для работы
-  с графикой считывается ввод пользователя, который далее передается в `InteractionManager`.
+  с графикой считывается ввод пользователя. Далее этот ввод передается в `InteractionManager`.
 - `void main(String[] args)` - точка входа.
 
 ##### class ItemHolder
@@ -202,9 +202,9 @@ Confusion: игрок может вводить врага в состояние
 
 **Методы**:
 
-- `SelectedItem setSelectedItem(InputCommand command)` - меняет и возвращает текущую опцию в зависимости от введенной
-  команды
 - `SelectedItem getCurrentItem()` - возвращает текущую опцию
+- `void moveDown()` - осуществляет сдвиг на нижний элемент меню
+- `void moveUp()` - осуществляет сдвиг на верхний элемент меню
 
 ##### class InteractionManager
 
@@ -215,12 +215,9 @@ Confusion: игрок может вводить врага в состояние
 **Поля**:
 
 - `Screen screen` - текущее состояние (экран) приложения
-- `MainScreenView mainScreenView` - необходим для отрисовки главного меню игры и выделения опций на нём
-- `ItemHolder itemHolder` - хранит информацию о текущей опции в главном меню, осуществляет смену опций
-- `GameRulesScreenView gameRulesView` - необходим для отрисовки правил игры.
-- `Game game` - объект игры
-- `boolean isRunning` - _true_ пока пользователь не выбрал опцию `exit`
-- `AbstractViewFactory factory` - необходим для отрисовки основных состояний игры
+- `MacroCommand mainMenuCommand` - команда для взаимодействия с главным меню
+- `MacroCommand gameRulesCommand` - команда для взаимодействия с правилами игры
+- `MacroCommand gameCommand` - команда для взаимодействия с игровым полем
 
 **Конструкторы**:
 
@@ -270,10 +267,171 @@ Confusion: игрок может вводить врага в состояние
 - `MAIN_MENU`
 - `GAME_RULES`
 - `GAME`
+- `NONE`
+
+##### interface MacroCommand
+
+Интерфейс для команд со сложной логикой, отвечающих за отображение игровых экранов.
+
+**Методы**:
+
+- `Screen execute(InputCommand inputCommand)` - запускает соответствующую команду
+
+##### class GameMacroCommand
+
+Класс, описывающий взаимодействие с игровым полем. Реализует интерфейс _MacroCommand_
+
+**Поля**:
+
+- `Game game` - сама игра
+- `MainScreenView mainScreenView` - отображение главного меню
+
+**Конструкторы**:
+
+- `GameMacroCommand(Game game, MainScreenView mainScreenView)`
+
+**Методы** - такие же, как в _MacroCommand_
+
+##### class MainMenuMacroCommand
+
+Класс, описывающий взаимодействие с игровым меню. Реализует интерфейс _MacroCommand_
+
+**Поля**:
+
+- `Map<InputCommand, MicroCommand> commands` - соответствие команд из ввода и простых команд контроллера
+
+**Конструкторы**:
+
+- `MainMenuMacroCommand(MainScreenView mainScreenView, Game game, AbstractViewFactory factory, GameRulesScreenView gameRulesView)`
+
+**Методы** - такие же, как в _MacroCommand_
+
+##### class RulesMacroCommand
+
+Класс, описывающий взаимодействие с правилами игры. Реализует интерфейс _MacroCommand_
+
+**Поля**:
+
+- `MainScreenView mainScreenView` - отображение главного меню
+
+**Конструкторы**:
+
+- `RulesMacroCommand(MainScreenView mainScreenView)`
+
+**Методы** - такие же, как в _MacroCommand_
+
+##### interface MicroCommand
+
+Интерфейс для команд с простой логикой, отвечающих за отображение игровых экранов.
+
+**Методы**:
+
+- `Screen execute(InputCommand inputCommand)` - запускает соответствующую команду
+
+##### class MainMenuUpCommand
+
+Класс, описывающий сдвиг на верхний элемент игрового меню. Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `ItemHolder itemHolder` - элементы меню
+- `MainScreenView mainScreenView` - отображение главного меню
+
+**Конструкторы**:
+
+- `MainMenuUpCommand(ItemHolder itemHolder, MainScreenView mainScreenView)`
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuStartGameFromFileCommand
+
+Класс, описывающий опцию "старт игры из файла" (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `Game game` - сама игра
+- `AbstractViewFactory factory` - фабрика отображений
+
+**Конструкторы**:
+
+- `MainMenuStartGameFromFileCommand(Game game, AbstractViewFactory factory)`
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuStartGameCommand
+
+Класс, описывающий опцию "старт игры" (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `Game game` - сама игра
+- `AbstractViewFactory factory` - фабрика отображений
+
+**Конструкторы**:
+
+- `MainMenuStartGameCommand(Game game, AbstractViewFactory factory)`
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuShowRulesCommand
+
+Класс, описывающий опцию "правила игры" (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `GameRulesScreenView gameRulesView` - отображение правил игры
+
+**Конструкторы**:
+
+- `MainMenuShowRulesCommand(GameRulesScreenView gameRulesView)`
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuExitCommand
+
+Класс, описывающий опцию "выход из игры" (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuEnterCommand
+
+Класс, описывающий команду "enter" в главном меню (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `ItemHolder itemHolder` - элементы главного меню
+- `Map<SelectedItem, MicroCommand> command` - соответствие выбранного элемента и команд с простой логикой из контроллера
+
+**Конструкторы**:
+
+- `MainMenuEnterCommand(Game game, AbstractViewFactory factory, ItemHolder itemHolder, GameRulesScreenView gameRulesView)`
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuEmptyCommand
+
+Класс, описывающий ситуацию, когда игра не идет (с т.з. отображения). Реализует интерфейс _MicroCommand_
+
+**Методы** - такие же, как в _MicroCommand_
+
+##### class MainMenuDownCommand
+
+Класс, описывающий сдвиг на нижний элемент игрового меню. Реализует интерфейс _MicroCommand_
+
+**Поля**:
+
+- `ItemHolder itemHolder` - элементы меню
+- `MainScreenView mainScreenView` - отображение главного меню
+
+**Конструкторы**:
+
+- `MainMenuDownCommand(ItemHolder itemHolder, MainScreenView mainScreenView)`
+
+**Методы** - такие же, как в _MicroCommand_
 
 ##### Диаграмма:
 
-<img src="images/controller_component_v2.png"/>
+<img src="images/controller_component_v3.png"/>
 
 #### Model
 
@@ -383,15 +541,16 @@ Confusion: игрок может вводить врага в состояние
 
 **Реализации**:
 
-- **class Enemy**: враг, двигается определенным образом и атакует игрока, если он рядом. Реализует интерфейс _
-  EnemyPrototype_.
+- **class Mob**: моб, двигается определенным образом и атакует игрока, если он рядом. Реализует интерфейс _
+  MobPrototype_.
 
   **Поля**:
 
-    - `MobStrategy strategy` - механика движения, задается в зависимости от типа врага
-    - `float replicationProbability` - вероятность репликации новых врагов
-    - `String color` - цвет врага
+    - `MobState state` - состояние, хранит в себе информацию о поведении моба
+    - `float replicationProbability` - вероятность репликации новых мобов
+    - `String color` - цвет моба
     - `int attackStrength` - сила атаки
+    - `int lives` - количество жизней
 
   **Конструкторы**:
 
@@ -400,13 +559,17 @@ Confusion: игрок может вводить врага в состояние
 
   **Методы**:
 
-    - `Coordinates makeNextMove()` - возвращает сдвиг координаты, на которые должен передвинуться враг
+    - `Coordinates makeNextMove()` - возвращает сдвиг координаты, на которые должен передвинуться моб
     - `void attack(Player player)` - атакует игрока
-    - `MobStrategy getStrategy()` - возвращает стратегию (механику передвижения)
-    - `String getColor()` - возвращает цвет врага
+    - `MobState getState()` - возвращает состояние
+    - `String getColor()` - возвращает цвет моба
     - `int getAttackStrength()` - возвращает силу атаки
-    - `float getReplicationProbability()` - возвращает вероятность репликации новых врагов
-    - `Enemy cloneEnemy()` - клонирует врага (текущего)
+    - `float getReplicationProbability()` - возвращает вероятность репликации новых мобов
+    - `Mob cloneMob()` - клонирует моба (текущего)
+    - `int getLives()` - возвращает количество жизней
+    - `void decreaseLives()` - уменьшает количество жизней
+    - `void increaseLives()` - увеличивает количество жизней
+    - `void changeMobState(MobState newState)` - меняет состояние моба на переданное
 
 - **class Player**: игрок, управляется пользователем.
 
@@ -438,8 +601,8 @@ Confusion: игрок может вводить врага в состояние
     - `boolean canDestroy()` - если у игрока в рюкзаке есть инвентарь, увеличивающий силу удара, возвращает `true`,
       иначе `false`
     - `void decreaseLives(int delta)` - при атаке уменьшает количество жизней на переданное число
-    - `boolean canConfuse()` - если игрок может ввести врага в состояние конфузии, вернет _true_, иначе _false_
-    - `void confuse()` - вводит врага в состояние конфузии
+    - `boolean canConfuse()` - если игрок может ввести моба в состояние конфузии, вернет _true_, иначе _false_
+    - `void confuse()` - вводит моба в состояние конфузии
     - `int getExperienceIncreaseForNextLevel()` - возвращает число очков опыта, необходимое для перехода на следующую
       ступень (с т.з. опыта)
     - `int getExperience()` - возвращает число очков опыта
@@ -509,13 +672,13 @@ Confusion: игрок может вводить врага в состояние
     - `boolean equals(Object o)` - проверка двух объектов из инвентаря на равенство
     - `int hashCode()` - подсчет хешей
 
-##### interface EnemyPrototype
+##### interface MobPrototype
 
-Прототип для персонажа-врага.
+Прототип для персонажа-моба.
 
 **Методы**:
 
-- `Enemy cloneEnemy()` - клонирует врага (текущего)
+- `Mob cloneMob()` - клонирует моба (текущего)
 
 ##### enum CharacterType
 
@@ -523,9 +686,9 @@ Confusion: игрок может вводить врага в состояние
 
 **Элементы**:
 
-- `ENEMY_AGGRESSIVE`
-- `ENEMY_PASSIVE`,
-- `ENEMY_COWARD`,
+- `MOB_AGGRESSIVE`
+- `MOB_PASSIVE`,
+- `MOB_COWARD`,
 - `OBSTACLE`
 - `EMPTY`
 - `SHELTER_LAVENDER`
@@ -575,7 +738,7 @@ Confusion: игрок может вводить врага в состояние
 
 **Методы**:
 
-- `void setEnemyFactory(EnemyFactory enemyFactory)` - меняет значение `enemyFactory` на переданное
+- `void setMobFactory(MobFactory mobFactory)` - меняет значение `mobFactory` на переданное
 - `Level build(Player player)` - "строит" новый уровень с переданным игроком
 
 ##### FromFileLevelBuilder
@@ -587,7 +750,7 @@ Confusion: игрок может вводить врага в состояние
 - `String fileDirectory` - директория с конфигом
 - `int currentLevelNumber` - номер текущего уровня
 - `Player player` - игрок
-- `EnemyFactory enemyFactory` - фабрика врагов, генерящихся на данном уровне
+- `MobFactory mobFactory` - фабрика мобов, генерящихся на данном уровне
 
 **Конструкторы**:
 
@@ -603,7 +766,7 @@ Confusion: игрок может вводить врага в состояние
 
 - `List<LevelCharacteristic> levelCharacteristics` - список характеристик уровней
 - `int currentLevelNumber` - номер текущего уровня
-- `EnemyFactory enemyFactory` - фабрика врагов, генерящихся на данном уровне
+- `MobFactory mobFactory` - фабрика мобов, генерящихся на данном уровне
 - `Random rand` - рандом :)
 
 **Методы** - такие же, как в _LevelBuilder_
@@ -635,27 +798,27 @@ Confusion: игрок может вводить врага в состояние
 **Поля**:
 
 - `GameCharacter[][] board` - поле. В клетке находится текущий `GameCharacter`
-- `Map<Enemy, Coordinates> enemies` - враги, которые есть на поле
+- `Map<Mob, Coordinates> mobs` - мобы, которые есть на поле
 - `GameScreenView gameView` - объект для отрисовки на экране изменений на поле
 - `Player player` - игрок
 - `int victoryPoints` - количество очков, необходимое для победы на текущем уровне
 - `CharacterType realShelterType` - тип убежища, валидный на данном уровне
 - `CharacterType playerShelter` - тип убежища, в котором прячестся игрок
-- `List<Enemy> confusedEnemies` - враги в состоянии конфузии
-- `List<Enemy> killedEnemies` - убитые враги
+- `List<Mob> confusedMobs` - мобы в состоянии конфузии
+- `List<Mob> killedMobs` - убитые мобы
 
 _Примечание_: на каждом уровне является валидным ("работающим") только определенный тип убежища.
 
 **Конструкторы**:
 
-- `Level(GameCharacter[][] board, GameScreenView gameView, Player player, Map<Enemy, Coordinates> enemies, CharacterType realShelterType, int victoryPoints)`
+- `Level(GameCharacter[][] board, GameScreenView gameView, Player player, Map<Mob, Coordinates> mobs, CharacterType realShelterType, int victoryPoints)`
 
 **Методы**:
 
 - `GameScreenView getGameView()` - возвращает _gameView_
 - `GameCharacter[][] getBoard()` - возвращает игровую доску
 - `void setGameView(GameScreenView gameView)` - меняет _gameView_ на переданную
-- `GameState moveCharacters(int dx, int dy)` - передвижение игрока на поле и врагов (враги делают шаг на каждый ход
+- `GameState moveCharacters(int dx, int dy)` - передвижение игрока на поле и мобов (мобы делают шаг на каждый ход
   игрока) на переданную дельту. Возвращает текущее состояние игры
 - `void changeEquiption()` - изменение элемента инвентаря, который использует игрок
 - `GameState destroyObstacle()` - разрушение игроком препятствия. Возвращает текущее состояние игры
@@ -679,14 +842,14 @@ _Примечание_: на каждом уровне является вали
 
 ##### abstract class MobStrategy
 
-Абстрактный класс для предоставления алгоритма передвижения врага.
+Абстрактный класс для предоставления алгоритма передвижения моба.
 
 **Поля**:
 
-- `int visibility` - определяет, в каких пределах игрок будет виден для врага.
-- `int maxSteps` - сколько шагов по вертикали или горизонтали максимум может сделать враг.
+- `int visibility` - определяет, в каких пределах игрок будет виден для моба.
+- `int maxSteps` - сколько шагов по вертикали или горизонтали максимум может сделать моб.
 - `int stepCount` - сколько шагов уже было сделано в текущем направлении.
-- `Coordinates shift` - в каком направлении ходит враг в обычном состоянии.
+- `Coordinates shift` - в каком направлении ходит моб в обычном состоянии.
 
 **Конструкторы**:
 
@@ -695,8 +858,8 @@ _Примечание_: на каждом уровне является вали
 
 **Методы**:
 
-- `Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates)` - рассчитать сдвиг координата
-  врага в зависимости от местоположения игрока
+- `Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates)` - рассчитать сдвиг координат
+  моба в зависимости от местоположения игрока
 
 **Наследники**:
 
@@ -704,35 +867,35 @@ _Примечание_: на каждом уровне является вали
 - **class PassiveMobStrategy**
 - **class CowardMobStrategy**
 
-##### abstract class EnemyDecorator
+##### abstract class MobDecorator
 
-Абстрактный класc, позволяющий декорировать класс врага.
+Абстрактный класc, позволяющий декорировать класс моба.
 
 **Поля**:
 
-- `Enemy enemy` - объект врага, запросы к которому будут переадресовываться при необходимости.
+- `Mob mob` - объект моба, запросы к которому будут переадресовываться при необходимости.
 
 **Конструкторы**:
 
-- `EnemyDecorator(Enemy enemy)`
+- `MobDecorator(Mob mob)`
 
 **Наследники**:
 
-- **class ConfusedEnemyDecorator**
+- **class ConfusedMobDecorator**
 
-##### interface EnemyFactory
+##### interface MobFactory
 
-Интерфейс фабрики для создания врагов с разными стратегиями поведения.
+Интерфейс фабрики для создания мобов с разными стратегиями поведения.
 
 **Методы**:
 
-- `Enemy createAggressiveEnemy(int maxSteps, Coordinates shift)` - создает агрессивного врага
-- `Enemy createPassiveEnemy(int maxSteps, Coordinates shift)` - создает пассивного врага
-- `Enemy createCowardEnemy(int maxSteps, Coordinates shift)` - создает трусливого врага
+- `Mob createAggressiveEnemy(int maxSteps, Coordinates shift)` - создает агрессивного моба
+- `Mob createPassiveEnemy(int maxSteps, Coordinates shift)` - создает пассивного моба
+- `Mob createCowardEnemy(int maxSteps, Coordinates shift)` - создает трусливого моба
 
 ##### class RedEnemyFactory
 
-Фабрика для создания красных врагов с разными стратегиями поведения.
+Фабрика для создания красных мобов с разными стратегиями поведения.
 
 **Поля**:
 
@@ -740,11 +903,11 @@ _Примечание_: на каждом уровне является вали
 - `String color` - цвет
 - `int attackStrength` - сила атаки
 
-**Методы** - такие же, как в _EnemyFactory_
+**Методы** - такие же, как в _MobFactory_
 
 ##### class YellowEnemyFactory
 
-Фабрика для создания красных врагов с разными стратегиями поведения.
+Фабрика для создания красных мобов с разными стратегиями поведения.
 
 **Поля**:
 
@@ -752,7 +915,47 @@ _Примечание_: на каждом уровне является вали
 - `String color` - цвет
 - `int attackStrength` - сила атаки
 
-**Методы** - такие же, как в _EnemyFactory_
+**Методы** - такие же, как в _MobFactory_
+
+##### interface MobState
+
+Интерфейс, содержащий описание поведения мобов и отвечающий за их передвижение.
+
+**Методы**:
+
+- `MobStrategy getStrategy()` - возвращает стратегию моба
+- `Coordinates makeNextMove(Coordinates mobCoordinates, Coordinates playerCoordinates)` - совершает следующий шаг
+
+##### class OkMobState
+
+Класс, описывающий состояние моба "все ок".
+
+**Поля**:
+
+- `MobStrategy strategy` - стратегия моба
+
+**Конструкторы**:
+
+- `OkMobState(MobStrategy strategy)` - возвращает стратегию моба
+
+**Методы** - такие же, как в _MobState_
+
+##### class PanicMobState
+
+Класс, описывающий паническое состояние моба.
+
+**Поля**:
+
+- `MobStrategy prevStrategy` - предыдущая стратегия моба
+- `MobStrategy currentStrategy` - нынешняя стратегия
+- `int panicTime` - время паники
+- `Mob mob` - моб
+
+**Конструкторы**:
+
+- `PanicMobState(MobStrategy strategy)` - возвращает стратегию моба
+
+**Методы** - такие же, как в _MobState_
 
 <img src="images/model_component_v3.png">
 

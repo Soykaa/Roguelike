@@ -1,7 +1,5 @@
 package ru.hse.roguelike.controller;
 
-import ru.hse.roguelike.controller.input.InputCommand;
-
 import java.util.List;
 
 /**
@@ -23,10 +21,16 @@ public class ItemHolder {
         return items.get(currentItemNumber);
     }
 
+    /**
+     * Moves down to the next menu item.
+     **/
     public void moveDown() {
         currentItemNumber = (currentItemNumber + 1) % items.size();
     }
 
+    /**
+     * Moves up to the next menu item.
+     **/
     public void moveUp() {
         currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
     }

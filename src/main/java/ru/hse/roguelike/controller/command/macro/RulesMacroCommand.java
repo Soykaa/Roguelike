@@ -19,7 +19,6 @@ public class RulesMacroCommand implements MacroCommand {
         this.mainScreenView = mainScreenView;
     }
 
-
     /**
      * Executes passed command.
      *

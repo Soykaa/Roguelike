@@ -25,7 +25,6 @@ public class GameMacroCommand implements MacroCommand {
         this.mainScreenView = mainScreenView;
     }
 
-
     /**
      * Executes passed command.
      *

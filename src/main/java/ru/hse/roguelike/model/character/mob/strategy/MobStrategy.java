@@ -8,9 +8,7 @@ import ru.hse.roguelike.model.Coordinates;
 public abstract class MobStrategy {
     private int visibility = 0;
     private final int maxSteps;
-
     private int stepCount = 0;
-
     private final Coordinates shift;
 
     /**

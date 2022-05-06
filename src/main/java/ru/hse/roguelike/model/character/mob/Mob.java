@@ -17,10 +17,8 @@ public class Mob extends GameCharacter implements MobPrototype {
     private final float replicationProbability;
     private final String color;
     private final int attackStrength;
-
-    private int lives = 2;
-
     private MobState state;
+    private int lives = 2;
 
     /**
      * Creates new Mob instance.
@@ -130,11 +128,18 @@ public class Mob extends GameCharacter implements MobPrototype {
         return replicationProbability;
     }
 
-
+    /**
+     * Returns mob lives.
+     *
+     * @return number of lives
+     **/
     public int getLives() {
         return lives;
     }
 
+    /**
+     * Decreases number of lives.
+     **/
     public void decreaseLives() {
         lives -= 1;
         if (!(state instanceof PanicMobState)) {
@@ -142,10 +147,18 @@ public class Mob extends GameCharacter implements MobPrototype {
         }
     }
 
+    /**
+     * Increases number of lives.
+     **/
     public void increaseLives() {
         lives += 1;
     }
 
+    /**
+     * Changes mob state.
+     *
+     * @param newState new mob state
+     **/
     public void changeMobState(MobState newState) {
         state = newState;
     }
