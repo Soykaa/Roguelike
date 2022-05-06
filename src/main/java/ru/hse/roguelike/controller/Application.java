@@ -76,7 +76,7 @@ public class Application {
             while (true) {
                 InputCommand command = getCommand(keyStroke);
                 interactionManager.processCommand(command);
-                if (!interactionManager.isRunning) {
+                if (interactionManager.getScreen() == Screen.NONE) {
                     break;
                 }
                 keyStroke = terminal.readInput();

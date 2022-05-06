@@ -40,4 +40,12 @@ public class ItemHolder {
         }
         return items.get(currentItemNumber);
     }
+
+    public void moveDown() {
+        currentItemNumber = (currentItemNumber + 1) % items.size();
+    }
+
+    public void moveUp() {
+        currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
+    }
 }

@@ -15,5 +15,9 @@ public enum Screen {
     /**
      * Game itself.
      **/
-    GAME
+    GAME,
+    /**
+     * Application is not running
+     */
+    NONE
 }
