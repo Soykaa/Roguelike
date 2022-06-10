@@ -228,7 +228,7 @@
 
 ##### Диаграмма:
 
-<img src="images/input_component.png"/>
+<img src="images/input_component_v2.png"/>
 
 #### Controller
 
@@ -300,7 +300,7 @@
 
 ##### Диаграмма:
 
-<img src="images/controller_component.png"/>
+<img src="images/controller_component_v2.png"/>
 
 #### Model
 
@@ -485,7 +485,7 @@
 - `void changeEquiption()` - изменение элемента инвентаря, который использует игрок
 - `void attackFromPlayer()` - атака игроком препятствия
 
-<img src="images/model_component.png"/>
+<img src="images/model_component_v2.png"/>
 
 #### View
 
@@ -561,7 +561,7 @@
 
 ##### Диаграмма:
 
-<img src="images/view_component.png"/>
+<img src="images/view_component_v2.png"/>
 
 ### Взаимодействия и состояния
 
