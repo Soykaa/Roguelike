@@ -2,11 +2,12 @@ package ru.hse.roguelike.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.hse.roguelike.model.Characters.CharacterType;
-import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.strategies.AggressiveMobStrategy;
-import ru.hse.roguelike.model.Characters.strategies.CowardMobStrategy;
-import ru.hse.roguelike.model.Characters.strategies.PassiveMobStrategy;
+import ru.hse.roguelike.model.character.CharacterType;
+import ru.hse.roguelike.model.character.mob.Mob;
+import ru.hse.roguelike.model.character.mob.state.OkMobState;
+import ru.hse.roguelike.model.character.mob.strategy.AggressiveMobStrategy;
+import ru.hse.roguelike.model.character.mob.strategy.CowardMobStrategy;
+import ru.hse.roguelike.model.character.mob.strategy.PassiveMobStrategy;
 
 public class MobStrategyTest {
     private Coordinates addCoordinates(Coordinates coordinates, Coordinates shift) {
@@ -15,8 +16,8 @@ public class MobStrategyTest {
 
     @Test
     public void testAggressiveMobPlayerIsClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, "color", 2,
-                new AggressiveMobStrategy(3, 10, new Coordinates(1, 0)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_AGGRESSIVE, "color", 2,
+                new OkMobState(new AggressiveMobStrategy(3, 10, new Coordinates(1, 0))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(3, 1);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -31,8 +32,8 @@ public class MobStrategyTest {
 
     @Test
     public void testAggressiveMobPlayerIsNotClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, "color", 2,
-                new AggressiveMobStrategy(3, 10, new Coordinates(0, 1)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_AGGRESSIVE, "color", 2,
+                new OkMobState(new AggressiveMobStrategy(3, 10, new Coordinates(0, 1))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(4, 1);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -44,8 +45,8 @@ public class MobStrategyTest {
 
     @Test
     public void testAggressiveMobStartChasingPlayerAfterSomeTime() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_AGGRESSIVE, "color", 2,
-                new AggressiveMobStrategy(3, 10, new Coordinates(1, 0)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_AGGRESSIVE, "color", 2,
+                new OkMobState(new AggressiveMobStrategy(3, 10, new Coordinates(1, 0))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(4, 1);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -60,8 +61,8 @@ public class MobStrategyTest {
 
     @Test
     public void testCowardMobPlayerIsClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_COWARD, "color", 2,
-                new CowardMobStrategy(3, 10, new Coordinates(1, 0)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_COWARD, "color", 2,
+                new OkMobState(new CowardMobStrategy(3, 10, new Coordinates(1, 0))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(1, 1);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -76,8 +77,8 @@ public class MobStrategyTest {
 
     @Test
     public void testCowardMobPlayerIsNotClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_COWARD, "color", 2,
-                new CowardMobStrategy(3, 10, new Coordinates(1, 0)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_COWARD, "color", 2,
+                new OkMobState(new CowardMobStrategy(3, 10, new Coordinates(1, 0))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(1, 5);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -89,8 +90,8 @@ public class MobStrategyTest {
 
     @Test
     public void testCowardMobStopEscapingPlayerAfterSomeTime() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_COWARD, "color", 2,
-                new CowardMobStrategy(3, 10, new Coordinates(1, 0)));
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_COWARD, "color", 2,
+                new OkMobState(new CowardMobStrategy(3, 10, new Coordinates(1, 0))));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(3, 3);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -102,7 +103,8 @@ public class MobStrategyTest {
 
     @Test
     public void testPassiveMobPlayerIsClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_PASSIVE, "color", 2, new PassiveMobStrategy());
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_PASSIVE, "color", 2,
+                new OkMobState(new PassiveMobStrategy()));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(3, 1);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));
@@ -111,7 +113,8 @@ public class MobStrategyTest {
 
     @Test
     public void testPassiveMobPlayerIsNotClose() {
-        Enemy aggressiveEnemy = new Enemy(CharacterType.ENEMY_PASSIVE, "color", 2, new PassiveMobStrategy());
+        Mob aggressiveEnemy = new Mob(CharacterType.MOB_PASSIVE, "color", 2,
+                new OkMobState(new PassiveMobStrategy()));
         Coordinates enemyCoordinates = new Coordinates(0, 0);
         Coordinates playerCoordinates = new Coordinates(4, 4);
         enemyCoordinates = addCoordinates(enemyCoordinates, aggressiveEnemy.makeNextMove(enemyCoordinates, playerCoordinates));

@@ -10,10 +10,10 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 import ru.hse.roguelike.model.Backpack;
-import ru.hse.roguelike.model.Characters.Empty;
-import ru.hse.roguelike.model.Characters.Enemy;
-import ru.hse.roguelike.model.Characters.GameCharacter;
-import ru.hse.roguelike.model.Characters.Points;
+import ru.hse.roguelike.model.character.Empty;
+import ru.hse.roguelike.model.character.mob.Mob;
+import ru.hse.roguelike.model.character.GameCharacter;
+import ru.hse.roguelike.model.character.Points;
 import ru.hse.roguelike.model.InventoryItem;
 import ru.hse.roguelike.view.abstract_view.GameScreenView;
 
@@ -54,10 +54,10 @@ public class GameScreenViewConsole implements GameScreenView {
         textGraphics.setForegroundColor(ANSI.WHITE);
         textGraphics.setBackgroundColor(ANSI.BLACK);
         switch (character.getCharacterType()) {
-            case ENEMY_AGGRESSIVE:
-            case ENEMY_PASSIVE:
-            case ENEMY_COWARD:
-                var enemy = (Enemy) character;
+            case MOB_AGGRESSIVE:
+            case MOB_PASSIVE:
+            case MOB_COWARD:
+                var enemy = (Mob) character;
                 if (enemy.getColor().equals("red")) {
                     textGraphics.setForegroundColor(ANSI.RED_BRIGHT);
                 } else {

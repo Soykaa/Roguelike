@@ -1,7 +1,5 @@
 package ru.hse.roguelike.controller;
 
-import ru.hse.roguelike.controller.input.InputCommand;
-
 import java.util.List;
 
 /**
@@ -24,20 +22,16 @@ public class ItemHolder {
     }
 
     /**
-     * Change current option according to keystroke and returns it.
-     *
-     * @param command pressed key
-     * @return selected item
+     * Moves down to the next menu item.
      **/
-    public SelectedItem setSelectedItem(InputCommand command) {
-        switch (command) {
-            case DOWN:
-                currentItemNumber = (currentItemNumber + 1) % items.size();
-                break;
-            case UP:
-                currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
-                break;
-        }
-        return items.get(currentItemNumber);
+    public void moveDown() {
+        currentItemNumber = (currentItemNumber + 1) % items.size();
+    }
+
+    /**
+     * Moves up to the next menu item.
+     **/
+    public void moveUp() {
+        currentItemNumber = (items.size() + currentItemNumber - 1) % items.size();
     }
 }

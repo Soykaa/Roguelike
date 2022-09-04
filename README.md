@@ -3,7 +3,7 @@
 ### Документация
 
 Документация,  а также правила игры
-находятся [по ссылке](https://github.com/Soykaa/Roguelike/blob/task-03-mobs/architecture/ARCHITECTURE.md).
+находятся [по ссылке](https://github.com/Soykaa/Roguelike/blob/task-05/architecture/ARCHITECTURE.md).
 
 ### Тестирование и запуск
 
